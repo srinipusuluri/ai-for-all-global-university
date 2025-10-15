@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI for All Virtual University</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../AIUniv.png">
     <style>
         * {
             margin: 0;
@@ -76,10 +77,10 @@
         }
 
         .logo {
-            font-size: 3.5rem;
-            font-weight: 700;
+            max-width: 400px;
+            height: auto;
             margin-bottom: 20px;
-            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
         }
 
         .tagline {
@@ -255,7 +256,7 @@
 
         @media (max-width: 768px) {
             .logo {
-                font-size: 2.5rem;
+                max-width: 300px;
             }
 
             .grid {
@@ -287,7 +288,7 @@
                 </div>
                 <div class="ai-icon">⚡</div>
             </div>
-            <h1 class="logo">AI for All Virtual University</h1>
+            <img src="../AIUniv.png" alt="AI for All Virtual University" class="logo">
             <div class="mission-vision">
                 <p style="margin: 10px 0; font-size: 1.1rem; opacity: 0.9;"><strong>Mission:</strong> Enable everyone to learn and build AI step by step.</p>
                 <p style="margin: 10px 0; font-size: 1.1rem; opacity: 0.9;"><strong>Vision:</strong> Democratize AI so it's accessible to all, empowering innovation.</p>

@@ -14,11 +14,17 @@
     <img src="https://img.shields.io/github/issues/srinipusuluri/ai-for-all-global-university" alt="Issues">
   </p>
 
+  <p style="font-size:50%;">
+    <span style="color:#FF6B6B;font-weight:bold;">20+</span>&nbsp;Courses • 
+    <span style="color:#4ECDC4;font-weight:bold;">4</span>&nbsp;Levels • 
+    <span style="color:#45B7D1;font-weight:bold;">∞</span>&nbsp;Students
+  </p>
+
   <br>
 
-  **Mission:** Enable everyone to learn and build AI step by step.<br>
-  **Vision:** Democratize AI so it's accessible to all, empowering innovation.<br>
-  **Goal:** Empowering global AI education for everyone, everywhere.
+  <span style="font-size:50%;"><strong>Mission:</strong> Enable everyone to learn and build AI step by step.<br>
+  <strong>Vision:</strong> Democratize AI so it's accessible to all, empowering innovation.<br>
+  <strong>Goal:</strong> Empowering global AI education for everyone, everywhere.</span>
 
   <br>
 
