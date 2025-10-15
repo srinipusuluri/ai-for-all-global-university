@@ -28,11 +28,14 @@ A comprehensive, accessible AI education platform providing structured course ma
 
 ## 📖 How to Access Courses
 
-All course materials are provided as HTML files in the `docs/` directory. To view any course:
+🎉 **New: Interactive Homepage!** Visit our modern course catalog at [`docs/index.html`](docs/index.html) for an organized, visual overview of all available courses.
 
-1. Clone this repository
-2. Open the desired HTML file in your web browser
-3. All courses are self-contained with embedded resources
+**Direct Access:** All course materials are provided as HTML files in the `docs/` directory. To view any course:
+
+1. Clone this repository: `git clone https://github.com/srinipusuluri/ai-for-all-global-university`
+2. Navigate to the `docs/` folder and open `index.html` in your web browser for the course catalog
+3. Or directly open any HTML course file (e.g., `docs/1-AAIBasics.html`)
+4. All courses are self-contained with embedded resources
 
 ## 🏗️ Repository Structure
 
