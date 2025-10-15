@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐍 Python for High School - Advanced Programming Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #4a90e2 0%, #7b68ee 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .quiz-header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .quiz-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .quiz-progress {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #fff, #f8f9fa);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-counter {
+            font-size: 1.1em;
+        }
+
+        .score-display {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .quiz-main {
+            padding: 30px;
+        }
+
+        .screen {
+            display: block;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #start-screen h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        #start-screen p {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+
+        #start-screen ul {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+
+        #start-screen li {
+            margin: 8px 0;
+            color: #34495e;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        #question-screen {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+        }
+
+        .question-section {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .question-content {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        #question-text {
+            font-size: 1.3em;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .options {
+            display: grid;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .option {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .option:hover {
+            border-color: #3498db;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            border-color: #3498db;
+            background: #e7f3ff;
+        }
+
+        .option.correct {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+        .option.incorrect {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        label {
+            font-size: 1.1em;
+            color: #495057;
+            cursor: pointer;
+        }
+
+        .question-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin: 25px 0;
+        }
+
+        .feedback {
+            background: #e7f3ff;
+            border: 1px solid #b8daff;
+            color: #004085;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+
+        .feedback.incorrect {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        #result-screen {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .result-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .final-score {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .score-breakdown {
+            display: grid;
+            gap: 15px;
+        }
+
+        .score-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .score-label {
+            color: #6c757d;
+        }
+
+        .score-value {
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .score-value.correct {
+            color: #28a745;
+        }
+
+        .score-value.incorrect {
+            color: #dc3545;
+        }
+
+        .score-value.skipped {
+            color: #ffc107;
+        }
+
+        .performance-badge {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+        }
+
+        .result-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .quiz-footer {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            color: #6c757d;
+        }
+
+        .quiz-footer a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .quiz-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .code-snippet {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .quiz-container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+
+            .quiz-header h1 {
+                font-size: 2em;
+            }
+
+            .question-navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .result-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <header class="quiz-header">
+            <h1>🐍 Python for High School - Advanced Programming Quiz</h1>
+            <div class="quiz-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="question-counter">Question <span id="current-question">1</span> of <span id="total-questions">100</span></div>
+            </div>
+            <div class="score-display">
+                <span class="current-score">Score: <span id="score">0</span></span>
+            </div>
+        </header>
+
+        <main class="quiz-main">
+            <div id="start-screen" class="screen">
+                <h2>Welcome to Advanced Python Programming!</h2>
+                <p>Challenge yourself with 100 comprehensive questions covering advanced Python concepts for high school students:</p>
+                <ul>
+                    <li>🏗️ Object-Oriented Programming</li>
+                    <li>📊 Data Structures & Algorithms</li>
+                    <li>📁 File Handling & I/O Operations</li>
+                    <li>🛡️ Error Handling & Exceptions</li>
+                    <li>🔧 Functions & Lambda Expressions</li>
+                    <li>📦 Modules & Libraries</li>
+                    <li>🌐 Web Development Basics</li>
+                    <li>💾 Database Operations</li>
+                </ul>
+                <button id="start-btn" class="btn-primary">Start Advanced Quiz</button>
+            </div>
+
+            <div id="question-screen" class="screen hidden">
+                <div class="question-section">
+                    <h3 id="question-section">🏗️ Object-Oriented Programming</h3>
+                </div>
+                <div class="question-content">
+                    <h2 id="question-text">What is the correct way to define a class in Python?</h2>
+                    <div class="options">
+                        <div class="option" data-letter="a">
+                            <input type="radio" id="option-a" name="answer" value="a">
+                            <label for="option-a" id="option-a-text">A) def class MyClass:</label>
+                        </div>
+                        <div class="option" data-letter="b">
+                            <input type="radio" id="option-b" name="answer" value="b">
+                            <label for="option-b" id="option-b-text">B) class MyClass:</label>
+                        </div>
+                        <div class="option" data-letter="c">
+                            <input type="radio" id="option-c" name="answer" value="c">
+                            <label for="option-c" id="option-c-text">C) MyClass = class:</label>
+                        </div>
+                        <div class="option" data-letter="d">
+                            <input type="radio" id="option-d" name="answer" value="d">
+                            <label for="option-d" id="option-d-text">D) create class MyClass:</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="question-navigation">
+                    <button id="prev-btn" class="btn-secondary">Previous</button>
+                    <button id="next-btn" class="btn-primary">Next</button>
+                </div>
+                <div class="feedback hidden" id="feedback"></div>
+            </div>
+
+            <div id="result-screen" class="screen hidden">
+                <h2>Quiz Complete! 🎉</h2>
+                <div class="result-stats">
+                    <div class="final-score">
+                        <h3>Final Score</h3>
+                        <p id="final-score">0/100</p>
+                        <p id="percentage">0%</p>
+                    </div>
+                    <div class="score-breakdown">
+                        <div class="score-item">
+                            <span class="score-label">Correct:</span>
+                            <span id="correct-count" class="score-value correct">0</span>
+                        </div>
+                        <div class="score-item">
+                            <span class="score-label">Incorrect:</span>
+                            <span id="incorrect-count" class="score-value incorrect">0</span>
+                        </div>
+                        <div class="score-item">
+                            <span class="score-label">Skipped:</span>
+                            <span id="skipped-count" class="score-value skipped">0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="performance-badge" id="performance-badge">
+                    <h4 id="badge-title">Badge Earned!</h4>
+                    <p id="badge-description">Complete the quiz to see your badge!</p>
+                </div>
+                <div class="result-actions">
+                    <button id="review-btn" class="btn-secondary">Review Answers</button>
+                    <button id="restart-btn" class="btn-primary">Take Quiz Again</button>
+                </div>
+            </div>
+        </main>
+
+        <footer class="quiz-footer">
+            <p>Created by <a href="https://www.linkedin.com/in/pusulurisrinivasa/" target="_blank">https://www.linkedin.com/in/pusulurisrinivasa/</a></p>
+        </footer>
+    </div>
+
+    <script>
+        // High School Python Quiz Questions Database
+        class PythonHighSchoolQuiz {
+            constructor() {
+                this.questions = this.parseQuestions();
+                this.currentQuestionIndex = 0;
+                this.score = 0;
+                this.answers = new Array(this.questions.length).fill(null);
+                this.scoredQuestions = new Set();
+                this.startTime = null;
+                this.endTime = null;
+
+                this.initializeElements();
+                this.bindEvents();
+                this.showStartScreen();
+            }
+
+            parseQuestions() {
+                return [
+                    // Object-Oriented Programming (1-15)
+                    {
+                        section: "🏗️ Object-Oriented Programming",
+                        question: "What is the correct way to define a class in Python?",
+                        options: {
+                            a: "def class MyClass:",
+                            b: "class MyClass:",
+                            c: "MyClass = class:",
+                            d: "create class MyClass:"
+                        },
+                        correct: "b"
+                    },
+                    {
+                        section: "🏗️ Object-Oriented Programming",
+                        question: "What is the purpose of __init__ method?",
+                        options: {
+                            a: "Initialize class variables",
+                            b: "Create class instance",
+                            c: "Define class methods",
+                            d: "Import class modules"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🏗️ Object-Oriented Programming",
+                        question: "How do you create an instance of a class?",
+                        options: {
+                            a: "instance = Class()",
+                            b: "instance = new Class()",
+                            c: "instance = Class.create()",
+                            d: "instance = Class{}"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🏗️ Object-Oriented Programming",
+                        question: "What is inheritance in OOP?",
+                        options: {
+                            a: "Creating new classes from existing ones",
+                            b: "Hiding class implementation",
+                            c: "Overloading methods",
+                            d: "Creating multiple instances"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🏗️ Object-Oriented Programming",
+                        question: "What does 'self' represent in a class method?",
+                        options: {
+                            a: "The class itself",
+                            b: "The instance of the class",
+                            c: "A method parameter",
+                            d: "A local variable"
+                        },
+                        correct: "b"
+                    },
+                    {
+                        section: "🏗️ Object-Oriented Programming",
+                        question: "What is method overriding?",
+                        options: {
+                            a: "Changing method behavior in subclass",
+                            b: "Creating new methods",
+                            c: "Deleting methods",
+                            d: "Renaming methods"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🏗️ Object-Oriented Programming",
+                        question: "What is encapsulation?",
+                        options: {
+                            a: "Wrapping data and methods together",
+                            b: "Inheriting from multiple classes",
+                            c: "Creating abstract methods",
+                            d: "Overloading operators"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🏗️ Object-Oriented Programming",
+                        question: "How do you define a private method?",
+                        options: {
+                            a: "def method(self):",
+                            b: "def _method(self):",
+                            c: "def __method(self):",
+                            d: "private def method(self):"
+                        },
+                        correct: "b"
+                    },
+                    {
+                        section: "🏗️ Object-Oriented Programming",
+                        question: "What is polymorphism?",
+                        options: {
+                            a: "Many forms - same method, different behavior",
+                            b: "One form for all classes",
+                            c: "Hiding implementation details",
+                            d: "Creating multiple instances"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🏗️ Object-Oriented Programming",
+                        question: "How do you call a parent class method?",
+                        options: {
+                            a: "super().method()",
+                            b: "parent.method()",
+                            c: "self.parent.method()",
+                            d: "Class.method()"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🏗️ Object-Oriented Programming",
+                        question: "What is an abstract class?",
+                        options: {
+                            a: "Class that cannot be instantiated",
+                            b: "Class with only abstract methods",
+                            c: "Base class for other classes",
+                            d: "All of the above"
+                        },
+                        correct: "d"
+                    },
+                    {
+                        section: "🏗️ Object-Oriented Programming",
+                        question: "What is method overloading?",
+                        options: {
+                            a: "Multiple methods with same name",
+                            b: "Python doesn't support method overloading",
+                            c: "Overriding parent methods",
+                            d: "Creating method aliases"
+                        },
+                        correct: "b"
+                    },
+                    {
+                        section: "🏗️ Object-Oriented Programming",
+                        question: "What is the @property decorator used for?",
+                        options: {
+                            a: "Create getter methods",
+                            b: "Define class properties",
+                            c: "Access private attributes",
+                            d: "All of the above"
+                        },
+                        correct: "d"
+                    },
+                    {
+                        section: "🏗️ Object-Oriented Programming",
+                        question: "What is the difference between class and instance variables?",
+                        options: {
+                            a: "Class variables are shared, instance are unique",
+                            b: "Instance variables are shared, class are unique",
+                            c: "No difference",
+                            d: "Class variables are private"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🏗️ Object-Oriented Programming",
+                        question: "What is multiple inheritance?",
+                        options: {
+                            a: "Inheriting from one class",
+                            b: "Inheriting from multiple classes",
+                            c: "Creating multiple instances",
+                            d: "Inheriting methods only"
+                        },
+                        correct: "b"
+                    },
+
+                    // Data Structures & Algorithms (16-30)
+                    {
+                        section: "📊 Data Structures & Algorithms",
+                        question: "What is the time complexity of list append()?",
+                        options: {
+                            a: "O(1)",
+                            b: "O(n)",
+                            c: "O(n²)",
+                            d: "O(log n)"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "📊 Data Structures & Algorithms",
+                        question: "Which data structure uses LIFO?",
+                        options: {
+                            a: "Queue",
+                            b: "Stack",
+                            c: "List",
+                            d: "Dictionary"
+                        },
+                        correct: "b"
+                    },
+                    {
+                        section: "📊 Data Structures & Algorithms",
+                        question: "What is a dictionary in Python?",
+                        options: {
+                            a: "Unordered collection of key-value pairs",
+                            b: "Ordered list of items",
+                            c: "Set of unique items",
+                            d: "Tuple of immutable items"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "📊 Data Structures & Algorithms",
+                        question: "What is the difference between list and tuple?",
+                        options: {
+                            a: "Lists are mutable, tuples are immutable",
+                            b: "Tuples are faster",
+                            c: "Lists use [], tuples use ()",
+                            d: "All of the above"
+                        },
+                        correct: "d"
+                    },
+                    {
+                        section: "📊 Data Structures & Algorithms",
+                        question: "What is a set in Python?",
+                        options: {
+                            a: "Unordered collection of unique items",
+                            b: "Ordered list with duplicates",
+                            c: "Key-value pairs",
+                            d: "Immutable sequence"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "📊 Data Structures & Algorithms",
+                        question: "How do you remove duplicates from a list?",
+                        options: {
+                            a: "list(set(my_list))",
+                            b: "my_list.unique()",
+                            c: "remove_duplicates(my_list)",
+                            d: "my_list.remove_duplicates()"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "📊 Data Structures & Algorithms",
+                        question: "What is list comprehension?",
+                        options: {
+                            a: "Creating lists in one line",
+                            b: "Compressing lists",
+                            c: "List documentation",
+                            d: "List compression algorithm"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "📊 Data Structures & Algorithms",
+                        question: "What does this create? <code class='code-snippet'>[x**2 for x in range(5)]</code>",
+                        options: {
+                            a: "[0, 1, 4, 9, 16]",
+                            b: "[1, 4, 9, 16, 25]",
+                            c: "[0, 1, 2, 3, 4]",
+                            d: "Error"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "📊 Data Structures & Algorithms",
+                        question: "What is the time complexity of dictionary lookup?",
+                        options: {
+                            a: "O(1)",
+                            b: "O(n)",
+                            c: "O(n²)",
+                            d: "O(log n)"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "📊 Data Structures & Algorithms",
+                        question: "How do you sort a list in Python?",
+                        options: {
+                            a: "list.sort()",
+                            b: "sorted(list)",
+                            c: "list.order()",
+                            d: "Both A and B"
+                        },
+                        correct: "d"
+                    },
+                    {
+                        section: "📊 Data Structures & Algorithms",
+                        question: "What is the difference between == and is?",
+                        options: {
+                            a: "== compares values, is compares identity",
+                            b: "== compares identity, is compares values",
+                            c: "No difference",
+                            d: "is is faster than =="
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "📊 Data Structures & Algorithms",
+                        question: "What is a lambda function?",
+                        options: {
+                            a: "Anonymous function",
+                            b: "Built-in function",
+                            c: "Class method",
+                            d: "Module function"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "📊 Data Structures & Algorithms",
+                        question: "What does map() function do?",
+                        options: {
+                            a: "Applies function to each item in iterable",
+                            b: "Creates a map of items",
+                            c: "Filters items",
+                            d: "Reduces items"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "📊 Data Structures & Algorithms",
+                        question: "What does filter() function do?",
+                        options: {
+                            a: "Applies function to items",
+                            b: "Filters items based on condition",
+                            c: "Maps items to new values",
+                            d: "Reduces items to single value"
+                        },
+                        correct: "b"
+                    },
+                    {
+                        section: "📊 Data Structures & Algorithms",
+                        question: "What is recursion?",
+                        options: {
+                            a: "Function calling itself",
+                            b: "Looping through items",
+                            c: "Iterative process",
+                            d: "Function importing itself"
+                        },
+                        correct: "a"
+                    },
+
+                    // File Handling (31-45)
+                    {
+                        section: "📁 File Handling",
+                        question: "How do you open a file for reading?",
+                        options: {
+                            a: "open('file.txt', 'r')",
+                            b: "open('file.txt', 'w')",
+                            c: "open('file.txt', 'a')",
+                            d: "open('file.txt')"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "📁 File Handling",
+                        question: "What is the 'with' statement used for?",
+                        options: {
+                            a: "File handling with automatic closing",
+                            b: "Context management",
+                            c: "Resource management",
+                            d: "All of the above"
+                        },
+                        correct: "d"
+                    },
+                    {
+                        section: "📁 File Handling",
+                        question: "How do you read all lines from a file?",
+                        options: {
+                            a: "file.read()",
+                            b: "file.readlines()",
+                            c: "file.readall()",
+                            d: "file.getlines()"
+                        },
+                        correct: "b"
+                    },
+                    {
+                        section: "📁 File Handling",
+                        question: "What is the difference between 'w' and 'a' modes?",
+                        options: {
+                            a: "'w' overwrites, 'a' appends",
+                            b: "'a' overwrites, 'w' appends",
+                            c: "No difference",
+                            d: "'w' for writing, 'a' for appending"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "📁 File Handling",
+                        question: "How do you write to a file?",
+                        options: {
+                            a: "file.write(text)",
+                            b: "file.add(text)",
+                            c: "file.insert(text)",
+                            d: "file.put(text)"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "📁 File Handling",
+                        question: "What is JSON used for?",
+                        options: {
+                            a: "Data interchange format",
+                            b: "Image format",
+                            c: "Audio format",
+                            d: "Video format"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "📁 File Handling",
+                        question: "How do you parse JSON in Python?",
+                        options: {
+                            a: "json.loads()",
+                            b: "json.parse()",
+                            c: "json.read()",
+                            d: "json.import()"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "📁 File Handling",
+                        question: "What is CSV format?",
+                        options: {
+                            a: "Comma-Separated Values",
+                            b: "Comma-Separated Variables",
+                            c: "Character-Separated Values",
+                            d: "Comma-Separated Vectors"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "📁 File Handling",
+                        question: "How do you handle file not found error?",
+                        options: {
+                            a: "try-except block",
+                            b: "if file exists",
+                            c: "file validation",
+                            d: "All of the above"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "📁 File Handling",
+                        question: "What is the purpose of 'finally' block?",
+                        options: {
+                            a: "Always executes after try-except",
+                            b: "Handles exceptions",
+                            c: "Skips errors",
+                            d: "Repeats code"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "📁 File Handling",
+                        question: "How do you read a CSV file?",
+                        options: {
+                            a: "import csv; csv.reader()",
+                            b: "import pandas; pd.read_csv()",
+                            c: "open('file.csv')",
+                            d: "Both A and B"
+                        },
+                        correct: "d"
+                    },
+                    {
+                        section: "📁 File Handling",
+                        question: "What is the 'os' module used for?",
+                        options: {
+                            a: "Operating system interface",
+                            b: "File operations",
+                            c: "Path operations",
+                            d: "All of the above"
+                        },
+                        correct: "d"
+                    },
+                    {
+                        section: "📁 File Handling",
+                        question: "How do you check if a file exists?",
+                        options: {
+                            a: "os.path.exists()",
+                            b: "os.file.exists()",
+                            c: "pathlib.Path.exists()",
+                            d: "Both A and C"
+                        },
+                        correct: "d"
+                    },
+                    {
+                        section: "📁 File Handling",
+                        question: "What is pathlib used for?",
+                        options: {
+                            a: "Object-oriented path handling",
+                            b: "File management",
+                            c: "Directory operations",
+                            d: "All of the above"
+                        },
+                        correct: "d"
+                    },
+                    {
+                        section: "📁 File Handling",
+                        question: "How do you create a directory?",
+                        options: {
+                            a: "os.mkdir()",
+                            b: "os.create_dir()",
+                            c: "pathlib.mkdir()",
+                            d: "Both A and C"
+                        },
+                        correct: "d"
+                    },
+
+                    // Error Handling (46-60)
+                    {
+                        section: "🛡️ Error Handling",
+                        question: "What is an exception in Python?",
+                        options: {
+                            a: "Error that occurs during execution",
+                            b: "Syntax error",
+                            c: "Logic error",
+                            d: "Compilation error"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🛡️ Error Handling",
+                        question: "What is the purpose of try-except?",
+                        options: {
+                            a: "Handle exceptions gracefully",
+                            b: "Create exceptions",
+                            c: "Ignore errors",
+                            d: "Debug code"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🛡️ Error Handling",
+                        question: "What is a built-in exception?",
+                        options: {
+                            a: "ValueError",
+                            b: "TypeError",
+                            c: "IndexError",
+                            d: "All of the above"
+                        },
+                        correct: "d"
+                    },
+                    {
+                        section: "🛡️ Error Handling",
+                        question: "How do you raise a custom exception?",
+                        options: {
+                            a: "raise Exception('message')",
+                            b: "throw Exception('message')",
+                            c: "error Exception('message')",
+                            d: "except Exception('message')"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🛡️ Error Handling",
+                        question: "What is the 'else' block in try-except?",
+                        options: {
+                            a: "Executes if no exception occurs",
+                            b: "Executes if exception occurs",
+                            c: "Always executes",
+                            d: "Never executes"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🛡️ Error Handling",
+                        question: "What is 'finally' block used for?",
+                        options: {
+                            a: "Cleanup code that always runs",
+                            b: "Exception handling",
+                            c: "Conditional execution",
+                            d: "Error generation"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🛡️ Error Handling",
+                        question: "What is IndexError?",
+                        options: {
+                            a: "Accessing invalid index in list",
+                            b: "Type mismatch",
+                            c: "Value error",
+                            d: "Key error"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🛡️ Error Handling",
+                        question: "What is KeyError?",
+                        options: {
+                            a: "Accessing non-existent dictionary key",
+                            b: "List index error",
+                            c: "Type error",
+                            d: "Value error"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🛡️ Error Handling",
+                        question: "How do you handle multiple exception types?",
+                        options: {
+                            a: "Multiple except blocks",
+                            b: "except (Type1, Type2):",
+                            c: "except all:",
+                            d: "Both A and B"
+                        },
+                        correct: "d"
+                    },
+                    {
+                        section: "🛡️ Error Handling",
+                        question: "What is the purpose of 'assert' statement?",
+                        options: {
+                            a: "Debugging and testing",
+                            b: "Error handling",
+                            c: "Input validation",
+                            d: "All of the above"
+                        },
+                        correct: "d"
+                    },
+                    {
+                        section: "🛡️ Error Handling",
+                        question: "What happens when assertion fails?",
+                        options: {
+                            a: "AssertionError is raised",
+                            b: "Program continues",
+                            c: "Assertion passes",
+                            d: "Syntax error"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🛡️ Error Handling",
+                        question: "What is the difference between error and exception?",
+                        options: {
+                            a: "Errors are serious, exceptions are recoverable",
+                            b: "Exceptions are serious, errors are recoverable",
+                            c: "No difference",
+                            d: "Errors are syntax, exceptions are runtime"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🛡️ Error Handling",
+                        question: "How do you create a custom exception class?",
+                        options: {
+                            a: "class MyError(Exception):",
+                            b: "def MyError(Exception):",
+                            c: "MyError = Exception()",
+                            d: "create exception MyError:"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🛡️ Error Handling",
+                        question: "What is the 'traceback' module used for?",
+                        options: {
+                            a: "Exception stack trace",
+                            b: "Error tracking",
+                            c: "Debug information",
+                            d: "All of the above"
+                        },
+                        correct: "d"
+                    },
+                    {
+                        section: "🛡️ Error Handling",
+                        question: "What is a context manager?",
+                        options: {
+                            a: "Manages resources with with statement",
+                            b: "Exception handler",
+                            c: "Error manager",
+                            d: "Resource allocator"
+                        },
+                        correct: "a"
+                    },
+
+                    // Functions & Lambda (61-75)
+                    {
+                        section: "🔧 Functions & Lambda",
+                        question: "What is a function parameter?",
+                        options: {
+                            a: "Input to a function",
+                            b: "Function output",
+                            c: "Function name",
+                            d: "Function body"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🔧 Functions & Lambda",
+                        question: "What is the difference between parameter and argument?",
+                        options: {
+                            a: "Parameter is definition, argument is call",
+                            b: "Argument is definition, parameter is call",
+                            c: "No difference",
+                            d: "Parameter is required, argument is optional"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🔧 Functions & Lambda",
+                        question: "What is a default parameter?",
+                        options: {
+                            a: "Parameter with default value",
+                            b: "Required parameter",
+                            c: "Optional parameter",
+                            d: "Function parameter"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🔧 Functions & Lambda",
+                        question: "What is *args used for?",
+                        options: {
+                            a: "Variable number of positional arguments",
+                            b: "Keyword arguments",
+                            c: "Default arguments",
+                            d: "Function decorators"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🔧 Functions & Lambda",
+                        question: "What is **kwargs used for?",
+                        options: {
+                            a: "Variable keyword arguments",
+                            b: "Positional arguments",
+                            c: "Default arguments",
+                            d: "Function parameters"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🔧 Functions & Lambda",
+                        question: "What is a lambda function?",
+                        options: {
+                            a: "Single-line anonymous function",
+                            b: "Built-in function",
+                            c: "Class method",
+                            d: "Module function"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🔧 Functions & Lambda",
+                        question: "What is function scope?",
+                        options: {
+                            a: "Where variables are accessible",
+                            b: "Function size",
+                            c: "Function parameters",
+                            d: "Function return value"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🔧 Functions & Lambda",
+                        question: "What is a global variable?",
+                        options: {
+                            a: "Variable accessible everywhere",
+                            b: "Local variable",
+                            c: "Function variable",
+                            d: "Class variable"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🔧 Functions & Lambda",
+                        question: "How do you modify a global variable in a function?",
+                        options: {
+                            a: "global variable_name",
+                            b: "nonlocal variable_name",
+                            c: "modify variable_name",
+                            d: "change variable_name"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🔧 Functions & Lambda",
+                        question: "What is a recursive function?",
+                        options: {
+                            a: "Function that calls itself",
+                            b: "Function that calls other functions",
+                            c: "Built-in function",
+                            d: "Lambda function"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🔧 Functions & Lambda",
+                        question: "What is the base case in recursion?",
+                        options: {
+                            a: "Condition that stops recursion",
+                            b: "First recursive call",
+                            c: "Last recursive call",
+                            d: "Recursive function name"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🔧 Functions & Lambda",
+                        question: "What is a decorator?",
+                        options: {
+                            a: "Function that modifies other functions",
+                            b: "Function wrapper",
+                            c: "Design pattern",
+                            d: "All of the above"
+                        },
+                        correct: "d"
+                    },
+                    {
+                        section: "🔧 Functions & Lambda",
+                        question: "How do you define a decorator?",
+                        options: {
+                            a: "@decorator_name",
+                            b: "def decorator_name(func):",
+                            c: "Both A and B",
+                            d: "decorator = decorator_name"
+                        },
+                        correct: "c"
+                    },
+                    {
+                        section: "🔧 Functions & Lambda",
+                        question: "What is the purpose of 'return' statement?",
+                        options: {
+                            a: "Exit function and return value",
+                            b: "Print value",
+                            c: "Store value",
+                            d: "End program"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🔧 Functions & Lambda",
+                        question: "What happens if a function has no return statement?",
+                        options: {
+                            a: "Returns None",
+                            b: "Syntax error",
+                            c: "Runtime error",
+                            d: "Returns 0"
+                        },
+                        correct: "a"
+                    },
+
+                    // Modules & Libraries (76-90)
+                    {
+                        section: "📦 Modules & Libraries",
+                        question: "How do you import a module?",
+                        options: {
+                            a: "import module_name",
+                            b: "include module_name",
+                            c: "require module_name",
+                            d: "load module_name"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "📦 Modules & Libraries",
+                        question: "What is the difference between import and from import?",
+                        options: {
+                            a: "import uses module.function, from import uses function",
+                            b: "from import is faster",
+                            c: "import is for classes, from import for functions",
+                            d: "No difference"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "📦 Modules & Libraries",
+                        question: "How do you install external packages?",
+                        options: {
+                            a: "pip install package_name",
+                            b: "python install package_name",
+                            c: "conda install package_name",
+                            d: "Both A and C"
+                        },
+                        correct: "d"
+                    },
+                    {
+                        section: "📦 Modules & Libraries",
+                        question: "What is a virtual environment?",
+                        options: {
+                            a: "Isolated Python environment",
+                            b: "Virtual machine",
+                            c: "Cloud environment",
+                            d: "Development environment"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "📦 Modules & Libraries",
+                        question: "What is the purpose of requirements.txt?",
+                        options: {
+                            a: "List project dependencies",
+                            b: "Project documentation",
+                            c: "Code requirements",
+                            d: "Installation guide"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "📦 Modules & Libraries",
+                        question: "What is the 'random' module used for?",
+                        options: {
+                            a: "Generate random numbers",
+                            b: "Random text generation",
+                            c: "Random selection",
+                            d: "All of the above"
+                        },
+                        correct: "d"
+                    },
+                    {
+                        section: "📦 Modules & Libraries",
+                        question: "What is the 'datetime' module used for?",
+                        options: {
+                            a: "Date and time operations",
+                            b: "Calendar operations",
+                            c: "Time zone handling",
+                            d: "All of the above"
+                        },
+                        correct: "d"
+                    },
+                    {
+                        section: "📦 Modules & Libraries",
+                        question: "What is the 'math' module used for?",
+                        options: {
+                            a: "Mathematical functions",
+                            b: "Advanced calculations",
+                            c: "Trigonometric functions",
+                            d: "All of the above"
+                        },
+                        correct: "d"
+                    },
+                    {
+                        section: "📦 Modules & Libraries",
+                        question: "How do you create your own module?",
+                        options: {
+                            a: "Create .py file",
+                            b: "Write functions and classes",
+                            c: "Import in other files",
+                            d: "All of the above"
+                        },
+                        correct: "d"
+                    },
+                    {
+                        section: "📦 Modules & Libraries",
+                        question: "What is a package in Python?",
+                        options: {
+                            a: "Collection of modules",
+                            b: "Single module",
+                            c: "Built-in module",
+                            d: "External library"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "📦 Modules & Libraries",
+                        question: "What is __name__ == '__main__' used for?",
+                        options: {
+                            a: "Script execution guard",
+                            b: "Module naming",
+                            c: "Function naming",
+                            d: "Class naming"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "📦 Modules & Libraries",
+                        question: "What is the 'sys' module used for?",
+                        options: {
+                            a: "System-specific parameters",
+                            b: "Command line arguments",
+                            c: "Exit functions",
+                            d: "All of the above"
+                        },
+                        correct: "d"
+                    },
+                    {
+                        section: "📦 Modules & Libraries",
+                        question: "What is the 'os' module used for?",
+                        options: {
+                            a: "Operating system interface",
+                            b: "File operations",
+                            c: "Environment variables",
+                            d: "All of the above"
+                        },
+                        correct: "d"
+                    },
+                    {
+                        section: "📦 Modules & Libraries",
+                        question: "What is the 're' module used for?",
+                        options: {
+                            a: "Regular expressions",
+                            b: "Text search",
+                            c: "Pattern matching",
+                            d: "All of the above"
+                        },
+                        correct: "d"
+                    },
+                    {
+                        section: "📦 Modules & Libraries",
+                        question: "What is the 'collections' module used for?",
+                        options: {
+                            a: "Specialized container types",
+                            b: "Data collections",
+                            c: "Advanced data structures",
+                            d: "All of the above"
+                        },
+                        correct: "d"
+                    },
+
+                    // Web Development & Database (91-100)
+                    {
+                        section: "🌐 Web Development",
+                        question: "What is Flask used for?",
+                        options: {
+                            a: "Web framework",
+                            b: "Database ORM",
+                            c: "Template engine",
+                            d: "API development"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🌐 Web Development",
+                        question: "What is Django used for?",
+                        options: {
+                            a: "Full-stack web framework",
+                            b: "Micro web framework",
+                            c: "Database framework",
+                            d: "Template framework"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🌐 Web Development",
+                        question: "What is an API?",
+                        options: {
+                            a: "Application Programming Interface",
+                            b: "Application Program Integration",
+                            c: "Advanced Programming Interface",
+                            d: "Application Process Interface"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🌐 Web Development",
+                        question: "What is JSON used for in web development?",
+                        options: {
+                            a: "Data exchange format",
+                            b: "Styling",
+                            c: "Database storage",
+                            d: "Image format"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🌐 Web Development",
+                        question: "What is SQLite used for?",
+                        options: {
+                            a: "Lightweight database",
+                            b: "Web server",
+                            c: "Template engine",
+                            d: "Styling framework"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🌐 Web Development",
+                        question: "What is the 'requests' library used for?",
+                        options: {
+                            a: "HTTP requests",
+                            b: "Database queries",
+                            c: "File operations",
+                            d: "Image processing"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🌐 Web Development",
+                        question: "What is REST API?",
+                        options: {
+                            a: "Representational State Transfer",
+                            b: "RESTful web service",
+                            c: "API design pattern",
+                            d: "All of the above"
+                        },
+                        correct: "d"
+                    },
+                    {
+                        section: "🌐 Web Development",
+                        question: "What is the purpose of 'virtualenv'?",
+                        options: {
+                            a: "Isolated Python environments",
+                            b: "Virtual machine",
+                            c: "Cloud deployment",
+                            d: "Development environment"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🌐 Web Development",
+                        question: "What is the 'urllib' module used for?",
+                        options: {
+                            a: "URL handling and HTTP requests",
+                            b: "Image processing",
+                            c: "Database operations",
+                            d: "File management"
+                        },
+                        correct: "a"
+                    },
+                    {
+                        section: "🌐 Web Development",
+                        question: "What is the purpose of 'pip'?",
+                        options: {
+                            a: "Python package installer",
+                            b: "Package manager",
+                            c: "Dependency resolver",
+                            d: "All of the above"
+                        },
+                        correct: "d"
+                    }
+                ];
+            }
+
+            initializeElements() {
+                this.startScreen = document.getElementById('start-screen');
+                this.questionScreen = document.getElementById('question-screen');
+                this.resultScreen = document.getElementById('result-screen');
+
+                this.questionSection = document.getElementById('question-section');
+                this.questionText = document.getElementById('question-text');
+                this.optionLabels = {
+                    a: document.getElementById('option-a-text'),
+                    b: document.getElementById('option-b-text'),
+                    c: document.getElementById('option-c-text'),
+                    d: document.getElementById('option-d-text')
+                };
+
+                this.currentQuestionSpan = document.getElementById('current-question');
+                this.totalQuestionsSpan = document.getElementById('total-questions');
+                this.scoreSpan = document.getElementById('score');
+                this.progressFill = document.querySelector('.progress-fill');
+                this.feedback = document.getElementById('feedback');
+
+                this.totalQuestionsSpan.textContent = this.questions.length;
+            }
+
+            bindEvents() {
+                document.getElementById('start-btn').addEventListener('click', () => this.startQuiz());
+                document.getElementById('next-btn').addEventListener('click', () => this.nextQuestion());
+                document.getElementById('prev-btn').addEventListener('click', () => this.previousQuestion());
+                document.getElementById('restart-btn').addEventListener('click', () => this.restartQuiz());
+                document.getElementById('review-btn').addEventListener('click', () => this.reviewAnswers());
+
+                document.querySelectorAll('.option').forEach(option => {
+                    option.addEventListener('click', (e) => this.selectOption(e));
+                });
+            }
+
+            showStartScreen() {
+                this.startScreen.classList.remove('hidden');
+                this.questionScreen.classList.add('hidden');
+                this.resultScreen.classList.add('hidden');
+            }
+
+            startQuiz() {
+                this.currentQuestionIndex = 0;
+                this.score = 0;
+                this.answers.fill(null);
+                this.scoredQuestions.clear();
+                this.startTime = new Date();
+
+                this.startScreen.classList.add('hidden');
+                this.questionScreen.classList.remove('hidden');
+                this.resultScreen.classList.add('hidden');
+
+                this.showQuestion();
+            }
+
+            showQuestion() {
+                const question = this.questions[this.currentQuestionIndex];
+
+                this.questionSection.textContent = question.section;
+                this.questionText.textContent = question.question;
+
+                Object.keys(this.optionLabels).forEach(letter => {
+                    this.optionLabels[letter].textContent = `${letter.toUpperCase()}) ${question.options[letter]}`;
+                });
+
+                document.querySelectorAll('.option').forEach(option => {
+                    option.classList.remove('selected', 'correct', 'incorrect');
+                });
+                document.querySelectorAll('input[name="answer"]').forEach(input => {
+                    input.checked = false;
+                });
+
+                if (this.answers[this.currentQuestionIndex]) {
+                    const selectedOption = document.querySelector(`[data-letter="${this.answers[this.currentQuestionIndex]}"]`);
+                    if (selectedOption) {
+                        selectedOption.classList.add('selected');
+                        document.getElementById(`option-${this.answers[this.currentQuestionIndex]}`).checked = true;
+
+                        const currentQ = this.questions[this.currentQuestionIndex];
+                        if (this.answers[this.currentQuestionIndex] === currentQ.correct) {
+                            selectedOption.classList.add('correct');
+                        } else {
+                            selectedOption.classList.add('incorrect');
+                            const correctOption = document.querySelector(`[data-letter="${currentQ.correct}"]`);
+                            if (correctOption) {
+                                correctOption.classList.add('correct');
+                            }
+                        }
+                    }
+                }
+
+                this.currentQuestionSpan.textContent = this.currentQuestionIndex + 1;
+                this.updateProgress();
+                this.updateScore();
+
+                document.getElementById('prev-btn').style.display = this.currentQuestionIndex > 0 ? 'inline-block' : 'none';
+                document.getElementById('next-btn').textContent = this.currentQuestionIndex === this.questions.length - 1 ? 'Finish' : 'Next';
+
+                this.feedback.classList.add('hidden');
+            }
+
+            selectOption(e) {
+                const option = e.currentTarget;
+                const letter = option.dataset.letter;
+                const question = this.questions[this.currentQuestionIndex];
+                const questionIndex = this.currentQuestionIndex;
+
+                document.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected', 'correct', 'incorrect');
+                });
+                document.querySelectorAll('input[name="answer"]').forEach(input => {
+                    input.checked = false;
+                });
+
+                option.classList.add('selected');
+                document.getElementById(`option-${letter}`).checked = true;
+
+                if (letter === question.correct) {
+                    option.classList.add('correct');
+
+                    if (!this.scoredQuestions.has(questionIndex)) {
+                        this.score++;
+                        this.scoredQuestions.add(questionIndex);
+                        this.updateScore();
+                    }
+
+                    this.feedback.textContent = "🎉 Excellent! You're mastering advanced Python!";
+                    this.feedback.className = "feedback correct";
+                    this.feedback.classList.remove('hidden');
+                } else {
+                    option.classList.add('incorrect');
+
+                    if (this.scoredQuestions.has(questionIndex)) {
+                        this.score--;
+                        this.scoredQuestions.delete(questionIndex);
+                        this.updateScore();
+                    }
+
+                    const correctOption = document.querySelector(`[data-letter="${question.correct}"]`);
+                    if (correctOption) {
+                        correctOption.classList.add('correct');
+                    }
+
+                    this.feedback.textContent = `💡 Good attempt! The correct answer is ${question.correct.toUpperCase()}) ${question.options[question.correct]}`;
+                    this.feedback.className = "feedback incorrect";
+                    this.feedback.classList.remove('hidden');
+                }
+
+                this.answers[this.currentQuestionIndex] = letter;
+            }
+
+            nextQuestion() {
+                if (this.currentQuestionIndex < this.questions.length - 1) {
+                    this.currentQuestionIndex++;
+                    this.showQuestion();
+                } else {
+                    this.finishQuiz();
+                }
+            }
+
+            previousQuestion() {
+                if (this.currentQuestionIndex > 0) {
+                    this.currentQuestionIndex--;
+                    this.showQuestion();
+                }
+            }
+
+            updateProgress() {
+                const progress = ((this.currentQuestionIndex + 1) / this.questions.length) * 100;
+                this.progressFill.style.width = `${progress}%`;
+            }
+
+            updateScore() {
+                this.scoreSpan.textContent = this.score;
+            }
+
+            finishQuiz() {
+                this.endTime = new Date();
+                this.calculateFinalScore();
+
+                this.questionScreen.classList.add('hidden');
+                this.resultScreen.classList.remove('hidden');
+
+                this.displayResults();
+            }
+
+            calculateFinalScore() {
+                let calculatedScore = 0;
+                this.answers.forEach((answer, index) => {
+                    if (answer === this.questions[index].correct) {
+                        calculatedScore++;
+                    }
+                });
+
+                if (calculatedScore !== this.score) {
+                    this.score = calculatedScore;
+                }
+            }
+
+            displayResults() {
+                const correct = this.score;
+                const incorrect = this.answers.filter((answer, index) =>
+                    answer !== null && answer !== this.questions[index].correct
+                ).length;
+                const skipped = this.answers.filter(answer => answer === null).length;
+
+                document.getElementById('final-score').textContent = `${correct}/${this.questions.length}`;
+                document.getElementById('percentage').textContent = `${Math.round((correct / this.questions.length) * 100)}%`;
+                document.getElementById('correct-count').textContent = correct;
+                document.getElementById('incorrect-count').textContent = incorrect;
+                document.getElementById('skipped-count').textContent = skipped;
+
+                this.displayPerformanceBadge(correct);
+            }
+
+            displayPerformanceBadge(score) {
+                const percentage = (score / this.questions.length) * 100;
+                const badgeTitle = document.getElementById('badge-title');
+                const badgeDescription = document.getElementById('badge-description');
+
+                if (percentage >= 90) {
+                    badgeTitle.textContent = "🏆 Python Master!";
+                    badgeDescription.textContent = "Outstanding! You're a Python expert!";
+                    document.getElementById('performance-badge').style.background = "linear-gradient(135deg, #28a745, #20c997)";
+                } else if (percentage >= 80) {
+                    badgeTitle.textContent = "⭐ Python Advanced!";
+                    badgeDescription.textContent = "Excellent! You have strong Python skills!";
+                    document.getElementById('performance-badge').style.background = "linear-gradient(135deg, #007bff, #6610f2)";
+                } else if (percentage >= 70) {
+                    badgeTitle.textContent = "🔥 Python Developer!";
+                    badgeDescription.textContent = "Great job! You're building solid Python knowledge!";
+                    document.getElementById('performance-badge').style.background = "linear-gradient(135deg, #ffc107, #fd7e14)";
+                } else if (percentage >= 60) {
+                    badgeTitle.textContent = "⚙️ Python Coder!";
+                    badgeDescription.textContent = "Good work! Keep practicing Python!";
+                    document.getElementById('performance-badge').style.background = "linear-gradient(135deg, #6f42c1, #e83e8c)";
+                } else {
+                    badgeTitle.textContent = "🌱 Python Learner!";
+                    badgeDescription.textContent = "Keep learning! Python mastery takes practice!";
+                    document.getElementById('performance-badge').style.background = "linear-gradient(135deg, #dc3545, #c82333)";
+                }
+            }
+
+            restartQuiz() {
+                this.currentQuestionIndex = 0;
+                this.score = 0;
+                this.answers.fill(null);
+                this.scoredQuestions.clear();
+                this.showStartScreen();
+            }
+
+            reviewAnswers() {
+                this.currentQuestionIndex = 0;
+                this.questionScreen.classList.remove('hidden');
+                this.resultScreen.classList.add('hidden');
+
+                document.getElementById('next-btn').textContent = 'Next';
+                this.showQuestionWithReview();
+            }
+
+            showQuestionWithReview() {
+                const question = this.questions[this.currentQuestionIndex];
+                const userAnswer = this.answers[this.currentQuestionIndex];
+
+                this.questionSection.textContent = question.section;
+                this.questionText.textContent = question.question;
+
+                Object.keys(this.optionLabels).forEach(letter => {
+                    this.optionLabels[letter].textContent = `${letter.toUpperCase()}) ${question.options[letter]}`;
+                });
+
+                document.querySelectorAll('.option').forEach(option => {
+                    const letter = option.dataset.letter;
+                    option.classList.remove('selected', 'correct', 'incorrect');
+
+                    if (letter === question.correct) {
+                        option.classList.add('correct');
+                    }
+                    if (letter === userAnswer && userAnswer !== question.correct) {
+                        option.classList.add('incorrect');
+                    }
+                    if (letter === userAnswer && userAnswer === question.correct) {
+                        option.classList.add('correct');
+                    }
+                });
+
+                document.querySelectorAll('input[name="answer"]').forEach(input => {
+                    input.disabled = true;
+                });
+
+                if (userAnswer === null) {
+                    this.feedback.textContent = "❓ You skipped this question";
+                    this.feedback.className = "feedback";
+                } else if (userAnswer === question.correct) {
+                    this.feedback.textContent = "✅ You got this one right!";
+                    this.feedback.className = "feedback correct";
+                } else {
+                    this.feedback.textContent = `❌ You chose ${userAnswer.toUpperCase()}), but the correct answer was ${question.correct.toUpperCase()}) ${question.options[question.correct]}`;
+                    this.feedback.className = "feedback incorrect";
+                }
+                this.feedback.classList.remove('hidden');
+
+                document.getElementById('prev-btn').style.display = this.currentQuestionIndex > 0 ? 'inline-block' : 'none';
+                document.getElementById('next-btn').textContent = this.currentQuestionIndex === this.questions.length - 1 ? 'Back to Results' : 'Next';
+
+                this.currentQuestionSpan.textContent = this.currentQuestionIndex + 1;
+                this.updateProgress();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new PythonHighSchoolQuiz();
+        });
+    </script>
+</body>
+</html>

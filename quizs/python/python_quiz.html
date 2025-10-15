@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Quiz Master</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <header class="quiz-header">
+            <h1>AI FOR ALL - Python Quiz Master</h1>
+            <div class="quiz-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <span class="question-counter">Question <span id="current-question">1</span> of <span id="total-questions">200</span></span>
+            </div>
+            <div class="score-display">
+                <span class="current-score">Score: <span id="score">0</span></span>
+            </div>
+        </header>
+
+        <main class="quiz-main">
+            <div id="start-screen" class="screen">
+                <h2>Welcome to Python Quiz Master!</h2>
+                <p>Test your Python knowledge with 200 carefully crafted questions covering:</p>
+                <ul>
+                    <li>🐍 Python Basics & Syntax</li>
+                    <li>⚙️ Intermediate Concepts</li>
+                    <li>📦 Common Python Packages</li>
+                    <li>🧠 AI & ML Foundations</li>
+                    <li>🧬 Deep Learning & Transformers</li>
+                </ul>
+                <button id="start-btn" class="btn-primary">Start Quiz</button>
+            </div>
+
+            <div id="question-screen" class="screen hidden">
+                <div class="question-section">
+                    <h3 id="question-section">🐍 Python Basics</h3>
+                </div>
+                <div class="question-content">
+                    <h2 id="question-text">What is Python?</h2>
+                    <div class="options">
+                        <div class="option" data-letter="a">
+                            <input type="radio" id="option-a" name="answer" value="a">
+                            <label for="option-a" id="option-a-text">Option A</label>
+                        </div>
+                        <div class="option" data-letter="b">
+                            <input type="radio" id="option-b" name="answer" value="b">
+                            <label for="option-b" id="option-b-text">Option B</label>
+                        </div>
+                        <div class="option" data-letter="c">
+                            <input type="radio" id="option-c" name="answer" value="c">
+                            <label for="option-c" id="option-c-text">Option C</label>
+                        </div>
+                        <div class="option" data-letter="d">
+                            <input type="radio" id="option-d" name="answer" value="d">
+                            <label for="option-d" id="option-d-text">Option D</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="question-navigation">
+                    <button id="prev-btn" class="btn-secondary">Previous</button>
+                    <button id="next-btn" class="btn-primary">Next</button>
+                </div>
+                <div class="feedback hidden" id="feedback"></div>
+            </div>
+
+            <div id="result-screen" class="screen hidden">
+                <h2>Quiz Complete! 🎉</h2>
+                <div class="result-stats">
+                    <div class="final-score">
+                        <h3>Final Score</h3>
+                        <p id="final-score">0/200</p>
+                        <p id="percentage">0%</p>
+                    </div>
+                    <div class="score-breakdown">
+                        <div class="score-item">
+                            <span class="score-label">Correct:</span>
+                            <span id="correct-count" class="score-value correct">0</span>
+                        </div>
+                        <div class="score-item">
+                            <span class="score-label">Incorrect:</span>
+                            <span id="incorrect-count" class="score-value incorrect">0</span>
+                        </div>
+                        <div class="score-item">
+                            <span class="score-label">Skipped:</span>
+                            <span id="skipped-count" class="score-value skipped">0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="performance-badge" id="performance-badge">
+                    <h4 id="badge-title">Badge Earned!</h4>
+                    <p id="badge-description">Complete the quiz to see your badge!</p>
+                </div>
+                <div class="result-actions">
+                    <button id="review-btn" class="btn-secondary">Review Answers</button>
+                    <button id="restart-btn" class="btn-primary">Take Quiz Again</button>
+                </div>
+            </div>
+        </main>
+
+        <footer class="quiz-footer">
+            <p>Created by <a href="https://www.linkedin.com/in/pusulurisrinivasa/" target="_blank">https://www.linkedin.com/in/pusulurisrinivasa/</a></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
