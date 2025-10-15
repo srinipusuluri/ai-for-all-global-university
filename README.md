@@ -63,7 +63,11 @@ A comprehensive, accessible AI education platform providing structured course ma
 
 <hr>
 
-### Level 1: Foundations
+<h2 align="left">
+  <span style="color:#FF6B6B;">
+    🔥 Level 1: Foundations
+  </span>
+</h2>
 - **High School AI** - Age-appropriate AI introduction for younger students
 - **AI Basics** - Introduction to Artificial Intelligence fundamentals
 - **Python Programming for AI** - Python essentials for AI development
@@ -71,23 +75,40 @@ A comprehensive, accessible AI education platform providing structured course ma
 - **AI Math Study Guide** - Comprehensive mathematical concepts for AI learners
 - **Python Tutor** - Interactive Python learning for AI beginners
 
-### Level 2: Intermediate
+<h2 align="left">
+  <span style="color:#4ECDC4;">
+    🌊
+    Level 2: Intermediate
+  </span>
+</h2>
 - **Advanced AI Concepts** - Deep dive into advanced AI technologies
 - **College-Level AI Programs** - University-level AI curriculum
 - **AI Datasets & Data Science** - Working with AI datasets and data preparation
 - **AI/ML/LLM Interactive Learning Platform** - Machine Learning, Deep Learning, and Large Language Models
 
-### Level 3: Specialized Topics
+<h2 align="left">
+  <span style="color:#45B7D1;">
+    🎯 Level 3: Specialized Topics
+  </span>
+</h2>
 - **Generative AI** - Modern generative AI techniques and applications
 - **Vision AI** - Computer vision and image processing with AI
 - **Voice Learning** - Speech recognition and natural language processing
 - **AI Agents** - Autonomous AI systems and agent development
 
-### Level 4: Advanced Concepts
+<h2 align="left">
+  <span style="color:#96CEB4;">
+    🚀 Level 4: Advanced Concepts
+  </span>
+</h2>
 - **Transformer Architecture** - Understanding transformer models (GPT, BERT, etc.)
 - **Autoencoders** - Neural network architectures for data compression and generation
 
-### Level 5: Assessment & Practice
+<h2 align="left">
+  <span style="color:#FECA57;">
+    📝 Level 5: Assessment & Practice
+  </span>
+</h2>
 - **AI Quizzes** - Test your knowledge with interactive quizzes covering all levels
   - [`Python High School Quiz`](quizs/python-highschool/PythonHighSchool.html)
   - [`Python Programming Quiz`](quizs/python/python_quiz.html)
@@ -95,9 +116,17 @@ A comprehensive, accessible AI education platform providing structured course ma
   - [`AI Advanced Quiz`](quizs/aiadvanced/AIAdvanced.html)
   - [`GenAI Interview Questions`](quizs/genai-interview/GenAI-Interview.html)
 
-## 📖 How to Access Courses
+<h2 align="left">
+  <span style="color:#6C5CE7;">
+    📖 How to Access Courses
+  </span>
+</h2>
 
-### 🚀 Quick Start
+<h3 align="left">
+  <span style="color:#A8E6CF;">
+    🚀 Quick Start
+  </span>
+</h3>
 
 <div align="center">
 
