@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vision • Audio • Multimodal Transformers — Knowledge Hub</title>
+  <style>
+    :root{
+      --bg:#0f1220;
+      --panel:#181c33;
+      --panel-2:#1f2546;
+      --text:#eef1ff;
+      --sub:#a8b0ff;
+      --accent:#6ea8fe;
+      --accent-2:#ffd166;
+      --ok:#80ed99;
+      --warn:#ff8fab;
+      --muted:#b7c0d8;
+      --code:#0b0f1a;
+      --chip:#2a2f57;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,system-ui,-apple-system,Roboto,Arial,sans-serif;line-height:1.55}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    header{
+      padding:28px 18px 10px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.06), transparent);
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      position:sticky;top:0;z-index:50;
+      backdrop-filter: blur(8px);
+    }
+    h1{margin:0 0 8px;font-size:clamp(20px, 2.8vw, 30px);letter-spacing:.4px}
+    .subtitle{color:var(--sub);font-size:14px}
+    .container{max-width:1200px;margin:0 auto;padding:0 18px}
+    .tabs{
+      display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 0;
+    }
+    .tab{
+      padding:10px 14px;border:1px solid rgba(255,255,255,.12);
+      border-radius:10px;background:var(--panel);cursor:pointer;
+      user-select:none;transition:.2s;
+      font-weight:600;font-size:14px;color:var(--muted)
+    }
+    .tab.active{background:var(--panel-2);color:var(--text);border-color:rgba(255,255,255,.18);box-shadow:0 0 0 2px rgba(110,168,254,.15) inset}
+    .views{margin:16px 0 40px}
+    .view{display:none;padding:18px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:var(--panel)}
+    .view.active{display:block}
+    h2{margin:6px 0 12px;font-size:22px}
+    h3{margin:20px 0 8px;font-size:18px}
+    p{margin:8px 0}
+    .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+    .card{background:var(--panel-2);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.08)}
+    .chip{display:inline-block;background:var(--chip);padding:4px 8px;border-radius:999px;font-size:12px;margin:2px 4px 2px 0}
+    code, pre{background:var(--code);padding:2px 6px;border-radius:6px}
+    pre{overflow:auto;padding:12px}
+    ul{margin:8px 0 8px 22px}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    @media (max-width:860px){.two-col{grid-template-columns:1fr}}
+    .kpi{display:flex;gap:12px;flex-wrap:wrap;margin:10px 0}
+    .kpi .pill{background:var(--chip);padding:8px 12px;border-radius:999px;font-weight:600;font-size:13px}
+    .note{border-left:3px solid var(--accent);padding:8px 12px;background:rgba(110,168,254,.08);border-radius:6px}
+    .table{width:100%;border-collapse:collapse;margin:8px 0;border:1px solid rgba(255,255,255,.06)}
+    .table th,.table td{border-bottom:1px solid rgba(255,255,255,.06);text-align:left;padding:8px 10px;font-size:14px;vertical-align:top}
+    .table th{background:rgba(255,255,255,.06)}
+    .searchbar{margin:14px 0;display:flex;gap:8px}
+    .searchbar input{flex:1;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:var(--panel-2);color:var(--text)}
+    .searchbar button{padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:var(--panel-2);color:var(--text);cursor:pointer}
+    footer{opacity:.75;font-size:12px;padding:18px;text-align:center}
+    .small{font-size:13px;color:var(--muted)}
+    .tagwrap{margin:6px 0 12px}
+    .split{display:grid;gap:18px;grid-template-columns:1.2fr .8fr}
+    @media (max-width:980px){.split{grid-template-columns:1fr}}
+    .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,"Liberation Mono","Courier New",monospace;font-size:12px;border:1px solid rgba(255,255,255,.18);padding:2px 6px;border-radius:6px;background:#0e132a}
+    .list-compact li{margin:4px 0}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Vision • Audio • Multimodal Transformers</h1>
+      <div class="subtitle">Algorithms, model families, datasets, GitHub repos, arXiv links, architectures, use cases — in one clean hub.</div>
+      <div class="tabs" id="tabs">
+        <div class="tab active" data-view="overview">Overview</div>
+        <div class="tab" data-view="algorithms">Algorithms</div>
+        <div class="tab" data-view="models">Models</div>
+        <div class="tab" data-view="use-cases">Use Cases</div>
+        <div class="tab" data-view="datasets">Datasets</div>
+        <div class="tab" data-view="links">GitHub & arXiv</div>
+        <div class="tab" data-view="architectures">Architectures</div>
+        <div class="tab" data-view="state">State & Challenges</div>
+      </div>
+      <div class="searchbar">
+        <input id="search" placeholder="Type to highlight: e.g., 'ViViT', 'Whisper', 'segmentation', 'AV-HuBERT'"/>
+        <button onclick="doSearch()">Highlight</button>
+        <div class="small">Tip: press <span class="kbd">Enter</span> to highlight matches in the current tab.</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="views">
+
+      <!-- OVERVIEW -->
+      <article class="view active" id="overview">
+        <div class="split">
+          <div>
+            <h2>Quick Overview</h2>
+            <p class="note">Transformers unify <b>sequence modeling</b> across modalities. Images become <i>patch sequences</i>; audio becomes <i>time–frequency frames</i>; video is <i>spatio-temporal tokens</i>. Cross-modal attention then lets models <b>see</b>, <b>hear</b>, and <b>reason</b> together.</p>
+            <div class="kpi">
+              <div class="pill">Vision: ViT, Swin, DETR, SAM</div>
+              <div class="pill">Audio: Whisper, Wav2Vec2, AST</div>
+              <div class="pill">Video: ViViT, TimeSformer, MViT</div>
+              <div class="pill">Multimodal: CLIP, AV-HuBERT, Flamingo</div>
+            </div>
+            <h3>Core Building Blocks</h3>
+            <ul class="list-compact">
+              <li><b>Tokenization:</b> image patches; spectrogram patches; spatio-temporal patches.</li>
+              <li><b>Positional encodings:</b> spatial (2D), temporal (1D), or joint (3D).</li>
+              <li><b>Self-attention:</b> global, windowed, or factorized (space vs. time).</li>
+              <li><b>Pooling:</b> [CLS] token (classification) / mask decoders (segmentation).</li>
+              <li><b>Fusion:</b> early, late, or cross-attention between modalities.</li>
+            </ul>
+          </div>
+          <div>
+            <h2>What’s Inside</h2>
+            <div class="card">
+              <ul>
+                <li><a href="#algorithms" onclick="openTab('algorithms')">Algorithms</a> — vision, audio, video, multimodal.</li>
+                <li><a href="#models" onclick="openTab('models')">Model zoo</a> — links to repos & papers.</li>
+                <li><a href="#datasets" onclick="openTab('datasets')">Datasets</a> — curated by modality.</li>
+                <li><a href="#use-cases" onclick="openTab('use-cases')">Use cases</a> — production patterns.</li>
+                <li><a href="#architectures" onclick="openTab('architectures')">Architectures</a> — reference layouts.</li>
+                <li><a href="#state" onclick="openTab('state')">Current state</a> — trends & open problems.</li>
+              </ul>
+            </div>
+            <div class="small">Created as a compact study/teaching aid — drop it onto any static server as <code>index.html</code>.</div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ALGORITHMS -->
+      <article class="view" id="algorithms">
+        <h2>Algorithms by Modality</h2>
+
+        <h3>Vision (Images)</h3>
+        <div class="grid">
+          <div class="card">
+            <b>ViT — Vision Transformer</b>
+            <p>Split image into <i>P×P</i> patches → linear projection → add positional encodings → encoder blocks → use <code>[CLS]</code> for classification.</p>
+            <div class="tagwrap">
+              <span class="chip">Global self-attention</span>
+              <span class="chip">Patch embeddings</span>
+            </div>
+          </div>
+          <div class="card">
+            <b>DeiT — Data-efficient ViT</b>
+            <p>Improves sample efficiency via <b>knowledge distillation</b> and strong regularization; trains well on ImageNet-1k.</p>
+            <span class="chip">Distillation token</span>
+          </div>
+          <div class="card">
+            <b>Swin Transformer</b>
+            <p>Hierarchical features with <b>shifted windows</b> for scalable local–global attention; strong backbone for detection/segmentation.</p>
+            <span class="chip">Windowed attention</span> <span class="chip">Pyramid</span>
+          </div>
+          <div class="card">
+            <b>DETR family</b>
+            <p>Detection as <b>set prediction</b> with transformer encoder–decoder; no anchors/NMS.</p>
+            <span class="chip">Hungarian matching</span>
+          </div>
+          <div class="card">
+            <b>Segmentation Transformers</b>
+            <p><b>Segmenter / SETR</b> use ViT encoders with linear/UNet-like decoders; <b>Mask2Former</b> uses <i>mask + class embeddings</i>; <b>SAM</b> uses promptable ViT with mask decoder.</p>
+            <span class="chip">Mask embeddings</span> <span class="chip">Promptable</span>
+          </div>
+        </div>
+
+        <h3>Audio (Speech & Sound)</h3>
+        <div class="grid">
+          <div class="card">
+            <b>AST — Audio Spectrogram Transformer</b>
+            <p>ViT applied to mel-spectrogram <i>patches</i>; strong for audio tagging and event classification.</p>
+            <span class="chip">Spectrogram patches</span>
+          </div>
+          <div class="card">
+            <b>Wav2Vec 2.0</b>
+            <p>Self-supervised on raw waveforms; contrastive objective over masked latent units; finetune for ASR.</p>
+            <span class="chip">SSL on raw audio</span>
+          </div>
+          <div class="card">
+            <b>HuBERT</b>
+            <p>Mask-and-predict <b>hidden units</b> from clustered MFCC/wav2vec features; robust for ASR & TTS.</p>
+            <span class="chip">Unit discovery</span>
+          </div>
+          <div class="card">
+            <b>Whisper</b>
+            <p>Large encoder–decoder for multilingual ASR + translation; robust to accents/noise.</p>
+            <span class="chip">Multilingual</span> <span class="chip">ASR+Translate</span>
+          </div>
+          <div class="card">
+            <b>SpeechT5 / Audio-MAE</b>
+            <p>Unified speech modeling (ASR↔TTS) and masked autoencoding for audio representation learning.</p>
+            <span class="chip">Unified</span>
+          </div>
+        </div>
+
+        <h3>Video (Spatio-Temporal)</h3>
+        <div class="grid">
+          <div class="card">
+            <b>ViViT</b>
+            <p>Variants for <b>factorized</b> vs. <b>joint</b> space–time attention; often: per-frame spatial attention → temporal attention.</p>
+            <span class="chip">Factorized attention</span>
+          </div>
+          <div class="card">
+            <b>TimeSformer</b>
+            <p><b>Divided space–time attention</b> within each block: spatial first, then temporal.</p>
+            <span class="chip">Efficient</span>
+          </div>
+          <div class="card">
+            <b>MViT / Video Swin</b>
+            <p>Hierarchical pyramids with patch merging and 3D shifted windows; strong for long videos and dense tasks.</p>
+            <span class="chip">Multiscale</span>
+          </div>
+          <div class="card">
+            <b>VideoMAE</b>
+            <p>Masked autoencoding across frames for self-supervised pretraining.</p>
+            <span class="chip">SSL</span>
+          </div>
+        </div>
+
+        <h3>Multimodal Fusion</h3>
+        <div class="grid">
+          <div class="card">
+            <b>Early Fusion</b>
+            <p>Concatenate audio/video tokens → shared transformer.</p>
+            <span class="chip">Simple</span>
+          </div>
+          <div class="card">
+            <b>Late Fusion</b>
+            <p>Independent encoders → combine logits/embeddings at the end.</p>
+            <span class="chip">Modular</span>
+          </div>
+          <div class="card">
+            <b>Cross-Attention</b>
+            <p>Audio attends to video (and vice versa) using <code>Q/K/V</code> from different modalities (e.g., <b>AV-HuBERT</b>, <b>Flamingo</b>).</p>
+            <span class="chip">Alignment</span>
+          </div>
+          <div class="card">
+            <b>Joint Embedding</b>
+            <p>Train to align modalities to a shared space (e.g., <b>CLIP</b>, <b>CLAP</b>, <b>ImageBind</b>).</p>
+            <span class="chip">Retrieval</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- MODELS -->
+      <article class="view" id="models">
+        <h2>Model Families</h2>
+        <table class="table">
+          <thead>
+            <tr><th>Area</th><th>Model</th><th>Highlights</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Vision</td><td><a href="https://arxiv.org/abs/2010.11929" target="_blank">ViT</a>, <a href="https://arxiv.org/abs/2012.12877" target="_blank">DeiT</a>, <a href="https://arxiv.org/abs/2103.14030" target="_blank">Swin</a>, <a href="https://arxiv.org/abs/2005.12872" target="_blank">DETR</a>, <a href="https://arxiv.org/abs/2105.05633" target="_blank">Segmenter</a>, <a href="https://arxiv.org/abs/2112.01527" target="_blank">Mask2Former</a>, <a href="https://arxiv.org/abs/2304.02643" target="_blank">SAM</a>, <a href="https://arxiv.org/abs/2104.14294" target="_blank">DINO</a>, <a href="https://arxiv.org/abs/2106.08254" target="_blank">BEiT</a></td><td>Patch tokens, shifted windows, promptable segmentation, self-supervised learning.</td></tr>
+            <tr><td>Audio</td><td><a href="https://arxiv.org/abs/2104.01778" target="_blank">AST</a>, <a href="https://arxiv.org/abs/2006.11477" target="_blank">Wav2Vec 2.0</a>, <a href="https://arxiv.org/abs/2106.07447" target="_blank">HuBERT</a>, <a href="https://arxiv.org/abs/2212.04356" target="_blank">Whisper</a>, <a href="https://arxiv.org/abs/2110.07205" target="_blank">SpeechT5</a>, <a href="https://arxiv.org/abs/2207.06405" target="_blank">Audio-MAE</a>, <a href="https://arxiv.org/abs/2211.06687" target="_blank">CLAP</a></td><td>Spectrogram patches, self-supervised units, multilingual ASR, unified speech.</td></tr>
+            <tr><td>Video</td><td><a href="https://arxiv.org/abs/2103.15691" target="_blank">ViViT</a>, <a href="https://arxiv.org/abs/2102.05095" target="_blank">TimeSformer</a>, <a href="https://arxiv.org/abs/2104.11227" target="_blank">MViT</a>, <a href="https://arxiv.org/abs/2106.13230" target="_blank">Video Swin</a>, <a href="https://arxiv.org/abs/2203.12602" target="_blank">VideoMAE</a></td><td>Factorized spatio-temporal attention, multiscale pyramids, masked pretraining.</td></tr>
+            <tr><td>Multimodal</td><td><a href="https://arxiv.org/abs/2103.00020" target="_blank">CLIP</a>, <a href="https://arxiv.org/abs/2201.02184" target="_blank">AV-HuBERT</a>, <a href="https://arxiv.org/abs/2204.14198" target="_blank">Flamingo</a>, <a href="https://arxiv.org/abs/2107.14795" target="_blank">Perceiver IO</a>, <a href="https://arxiv.org/abs/2305.05665" target="_blank">ImageBind</a>, <a href="https://arxiv.org/abs/2109.14084" target="_blank">VideoCLIP</a>, <a href="https://arxiv.org/abs/2106.11097" target="_blank">CLIP4Clip</a>, <a href="https://arxiv.org/abs/2208.02816" target="_blank">X-CLIP</a></td><td>Joint embedding, cross-attention fusion, retrieval & captioning.</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <!-- USE CASES -->
+      <article class="view" id="use-cases">
+        <h2>Use Cases</h2>
+        <div class="grid">
+          <div class="card">
+            <b>Image Classification</b>
+            <p>Global context via ViT <code>[CLS]</code>; distilled DeiT for efficiency.</p>
+          </div>
+          <div class="card">
+            <b>Object Detection</b>
+            <p>DETR and variants remove anchors/NMS; strong for COCO, LVIS.</p>
+          </div>
+          <div class="card">
+            <b>Semantic & Instance Segmentation</b>
+            <p>Segmenter, Mask2Former, SAM for promptable segmentation.</p>
+          </div>
+          <div class="card">
+            <b>Self-Supervised Pretraining</b>
+            <p>DINO/BEiT/MAE for images; VideoMAE for videos; HuBERT/Wav2Vec for audio.</p>
+          </div>
+          <div class="card">
+            <b>Video Understanding</b>
+            <p>Action recognition (ViViT/TimeSformer), temporal localization, tracking.</p>
+          </div>
+          <div class="card">
+            <b>Speech Recognition & Translation</b>
+            <p>Whisper → robust multilingual ASR + translation; SpeechT5 for TTS.</p>
+          </div>
+          <div class="card">
+            <b>Audio-Visual Fusion</b>
+            <p>AV-HuBERT for lip reading; CLIP/CLAP/ImageBind for retrieval.</p>
+          </div>
+          <div class="card">
+            <b>Summarization & Captioning</b>
+            <p>Flamingo/VideoCLIP pipelines fuse frames + audio + text for story understanding.</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- DATASETS -->
+      <article class="view" id="datasets">
+        <h2>Datasets</h2>
+        <div class="two-col">
+          <div>
+            <h3>Vision / Segmentation</h3>
+            <ul>
+              <li><a target="_blank" href="https://image-net.org/">ImageNet</a></li>
+              <li><a target="_blank" href="https://cocodataset.org/">MS COCO</a></li>
+              <li><a target="_blank" href="https://www.cityscapes-dataset.com/">Cityscapes</a></li>
+              <li><a target="_blank" href="https://groups.csail.mit.edu/vision/datasets/ADE20K/">ADE20K</a></li>
+              <li><a target="_blank" href="https://research.google.com/ava/">AVA</a></li>
+            </ul>
+            <h3>Video</h3>
+            <ul>
+              <li><a target="_blank" href="https://deepmind.com/research/open-source/kinetics">Kinetics-400/600/700</a></li>
+              <li><a target="_blank" href="http://www.robots.ox.ac.uk/~vgg/data/ucf101/">UCF101</a></li>
+              <li><a target="_blank" href="https://serre-lab.clps.brown.edu/resource/hmdb-a-large-human-motion-database/">HMDB51</a></li>
+              <li><a target="_blank" href="https://research.google.com/ava/">AVA (actions)</a></li>
+              <li><a target="_blank" href="https://20bn.com/datasets/something-something">Something-Something</a></li>
+              <li><a target="_blank" href="https://youcook2.eecs.umich.edu/">YouCook2</a></li>
+              <li><a target="_blank" href="https://www.microsoft.com/en-us/research/project/msr-vtt/">MSR-VTT</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Audio / Speech</h3>
+            <ul>
+              <li><a target="_blank" href="https://research.google.com/audioset/">AudioSet</a></li>
+              <li><a target="_blank" href="https://www.openslr.org/12">LibriSpeech</a></li>
+              <li><a target="_blank" href="https://www.robots.ox.ac.uk/~vgg/data/vggsound/">VGGSound</a></li>
+              <li><a target="_blank" href="http://www.robots.ox.ac.uk/~vgg/data/voxceleb/">VoxCeleb</a></li>
+              <li><a target="_blank" href="https://commonvoice.mozilla.org/en/datasets">Common Voice</a></li>
+            </ul>
+            <h3>Multimodal (A/V/Text)</h3>
+            <ul>
+              <li><a target="_blank" href="https://research.google.com/ava/">AVA (A/V actions)</a></li>
+              <li><a target="_blank" href="https://www.microsoft.com/en-us/research/project/msr-vtt/">MSR-VTT (video-text)</a></li>
+              <li><a target="_blank" href="https://www.cs.utexas.edu/users/ml/clamp/videoqa/">VideoQA/TVQA</a></li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- LINKS -->
+      <article class="view" id="links">
+        <h2>GitHub Repositories & arXiv Links</h2>
+        <div class="two-col">
+          <div>
+            <h3>GitHub (Official / Widely Used)</h3>
+            <ul>
+              <li>ViT — <a target="_blank" href="https://github.com/google-research/vision_transformer">google-research/vision_transformer</a></li>
+              <li>DeiT — <a target="_blank" href="https://github.com/facebookresearch/deit">facebookresearch/deit</a></li>
+              <li>Swin — <a target="_blank" href="https://github.com/microsoft/Swin-Transformer">microsoft/Swin-Transformer</a></li>
+              <li>DETR — <a target="_blank" href="https://github.com/facebookresearch/detr">facebookresearch/detr</a></li>
+              <li>Segmenter — <a target="_blank" href="https://github.com/rstrudel/segmenter">rstrudel/segmenter</a></li>
+              <li>Mask2Former — <a target="_blank" href="https://github.com/facebookresearch/Mask2Former">facebookresearch/Mask2Former</a></li>
+              <li>SAM — <a target="_blank" href="https://github.com/facebookresearch/segment-anything">facebookresearch/segment-anything</a></li>
+              <li>DINO — <a target="_blank" href="https://github.com/facebookresearch/dino">facebookresearch/dino</a></li>
+              <li>BEiT — <a target="_blank" href="https://github.com/microsoft/unilm/tree/master/beit">microsoft/unilm • beit</a></li>
+              <li>ViViT — <a target="_blank" href="https://github.com/google-research/scenic/tree/main/scenic/projects/vivit">google-research/scenic • vivit</a></li>
+              <li>TimeSformer — <a target="_blank" href="https://github.com/facebookresearch/TimeSformer">facebookresearch/TimeSformer</a></li>
+              <li>MViT — <a target="_blank" href="https://github.com/facebookresearch/SlowFast">facebookresearch/SlowFast (MViT)</a></li>
+              <li>Video Swin — <a target="_blank" href="https://github.com/SwinTransformer/Video-Swin-Transformer">SwinTransformer/Video-Swin-Transformer</a></li>
+              <li>VideoMAE — <a target="_blank" href="https://github.com/MCG-NJU/VideoMAE">MCG-NJU/VideoMAE</a></li>
+              <li>Wav2Vec2 — <a target="_blank" href="https://github.com/pytorch/fairseq/tree/main/examples/wav2vec">fairseq • wav2vec</a></li>
+              <li>HuBERT — <a target="_blank" href="https://github.com/pytorch/fairseq/tree/main/examples/hubert">fairseq • hubert</a></li>
+              <li>Whisper — <a target="_blank" href="https://github.com/openai/whisper">openai/whisper</a></li>
+              <li>AST — <a target="_blank" href="https://github.com/YuanGongND/ast">YuanGongND/ast</a></li>
+              <li>SpeechT5 — <a target="_blank" href="https://github.com/microsoft/SpeechT5">microsoft/SpeechT5</a></li>
+              <li>AV-HuBERT — <a target="_blank" href="https://github.com/facebookresearch/av_hubert">facebookresearch/av_hubert</a></li>
+              <li>CLAP — <a target="_blank" href="https://github.com/LAION-AI/CLAP">LAION-AI/CLAP</a></li>
+              <li>CLIP — <a target="_blank" href="https://github.com/openai/CLIP">openai/CLIP</a></li>
+              <li>Perceiver IO — <a target="_blank" href="https://github.com/deepmind/deepmind-research/tree/master/perceiver">deepmind-research/perceiver</a></li>
+              <li>ImageBind — <a target="_blank" href="https://github.com/facebookresearch/ImageBind">facebookresearch/ImageBind</a></li>
+              <li>VideoCLIP — <a target="_blank" href="https://github.com/microsoft/VideoCLIP">microsoft/VideoCLIP</a></li>
+              <li>CLIP4Clip — <a target="_blank" href="https://github.com/ArrowLuo/CLIP4Clip">ArrowLuo/CLIP4Clip</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3>arXiv Papers</h3>
+            <ul>
+              <li><a target="_blank" href="https://arxiv.org/abs/2010.11929">ViT</a>, <a target="_blank" href="https://arxiv.org/abs/2012.12877">DeiT</a>, <a target="_blank" href="https://arxiv.org/abs/2103.14030">Swin</a>, <a target="_blank" href="https://arxiv.org/abs/2005.12872">DETR</a></li>
+              <li><a target="_blank" href="https://arxiv.org/abs/2105.05633">Segmenter</a>, <a target="_blank" href="https://arxiv.org/abs/2112.01527">Mask2Former</a>, <a target="_blank" href="https://arxiv.org/abs/2304.02643">SAM</a>, <a target="_blank" href="https://arxiv.org/abs/2104.14294">DINO</a>, <a target="_blank" href="https://arxiv.org/abs/2106.08254">BEiT</a></li>
+              <li><a target="_blank" href="https://arxiv.org/abs/2103.15691">ViViT</a>, <a target="_blank" href="https://arxiv.org/abs/2102.05095">TimeSformer</a>, <a target="_blank" href="https://arxiv.org/abs/2104.11227">MViT</a>, <a target="_blank" href="https://arxiv.org/abs/2106.13230">Video Swin</a>, <a target="_blank" href="https://arxiv.org/abs/2203.12602">VideoMAE</a></li>
+              <li><a target="_blank" href="https://arxiv.org/abs/2104.01778">AST</a>, <a target="_blank" href="https://arxiv.org/abs/2006.11477">Wav2Vec 2.0</a>, <a target="_blank" href="https://arxiv.org/abs/2106.07447">HuBERT</a>, <a target="_blank" href="https://arxiv.org/abs/2212.04356">Whisper</a>, <a target="_blank" href="https://arxiv.org/abs/2110.07205">SpeechT5</a>, <a target="_blank" href="https://arxiv.org/abs/2207.06405">Audio-MAE</a></li>
+              <li><a target="_blank" href="https://arxiv.org/abs/2211.06687">CLAP</a>, <a target="_blank" href="https://arxiv.org/abs/2201.02184">AV-HuBERT</a>, <a target="_blank" href="https://arxiv.org/abs/2204.14198">Flamingo</a>, <a target="_blank" href="https://arxiv.org/abs/2107.14795">Perceiver IO</a>, <a target="_blank" href="https://arxiv.org/abs/2305.05665">ImageBind</a>, <a target="_blank" href="https://arxiv.org/abs/2109.14084">VideoCLIP</a>, <a target="_blank" href="https://arxiv.org/abs/2106.11097">CLIP4Clip</a>, <a target="_blank" href="https://arxiv.org/abs/2208.02816">X-CLIP</a></li>
+              <li><a target="_blank" href="https://arxiv.org/abs/2012.15840">SETR</a></li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- ARCHITECTURES -->
+      <article class="view" id="architectures">
+        <h2>Reference Architectures</h2>
+        <div class="grid">
+          <div class="card">
+            <b>Classification (ViT with [CLS])</b>
+            <pre>Image → Patchify → +PosEnc → Transformer × L → [CLS] → MLP → Class</pre>
+          </div>
+          <div class="card">
+            <b>Segmentation (ViT + Decoder)</b>
+            <pre>Image → Patchify → Transformer → Feature map
+→ (Linear / UNet-like) Decoder → Upsample → Pixel masks</pre>
+          </div>
+          <div class="card">
+            <b>Video (Factorized)</b>
+            <pre>Frames → Patchify
+→ Spatial Transformer (per frame)
+→ Temporal Transformer (across frames)
+→ [CLS] → Class / Caption</pre>
+          </div>
+          <div class="card">
+            <b>Audio (Spectrogram ViT)</b>
+            <pre>Waveform → Mel-Spectrogram → Patchify
+→ Transformer → Head (ASR / Tagging)</pre>
+          </div>
+          <div class="card">
+            <b>Audio–Video Cross-Attention</b>
+            <pre>Video tokens ─┐
+               cross-attend → Fusion blocks → Task head
+Audio tokens ─┘</pre>
+          </div>
+          <div class="card">
+            <b>Joint Embedding (Retrieval)</b>
+            <pre>Video/Audio Encoder → z_v
+Text/Audio Encoder → z_t
+Train: maximize sim(z_v, z_t)
+Use: retrieval / tagging / zero-shot</pre>
+          </div>
+        </div>
+      </article>
+
+      <!-- STATE & CHALLENGES -->
+      <article class="view" id="state">
+        <h2>Current State & Challenges</h2>
+        <h3>Where We Are</h3>
+        <ul>
+          <li><b>Foundation backbones:</b> ViT/Swin for images, VideoMAE/TimeSformer for video, Wav2Vec2/Whisper for audio.</li>
+          <li><b>Segmentation:</b> Mask2Former/SAM unify tasks; promptable segmentation popular.</li>
+          <li><b>Multimodal:</b> Cross-attention (Flamingo/AV-HuBERT) and joint-embedding (CLIP/CLAP/ImageBind) dominate.</li>
+          <li><b>Pretraining:</b> Masked autoencoding and contrastive objectives widely used.</li>
+        </ul>
+
+        <h3>Key Challenges</h3>
+        <ul>
+          <li><b>Compute & Data:</b> Training long sequences (e.g., minutes of video/audio) is expensive; need efficient attention (linear, windowed, or memory-based).</li>
+          <li><b>Temporal Reasoning:</b> Long-range dependencies and causal understanding remain hard (events, dialogues, multi-shot scenes).</li>
+          <li><b>Alignment:</b> Robust A/V alignment (asynchrony, dubbing, off-screen sounds) and grounding language to frames.</li>
+          <li><b>Robustness & Bias:</b> Accents, noise, domain shift, fairness in voice/vision data.</li>
+          <li><b>Evaluation:</b> Multimodal benchmarks that reflect real tasks (translation + summarization + QA) are still evolving.</li>
+          <li><b>Latency:</b> On-device/real-time inference for captioning/translation.</li>
+          <li><b>Copyright & Safety:</b> Responsible use of media (ownership, consent, harmful content).</li>
+        </ul>
+
+        <h3>Practical Tips</h3>
+        <ul>
+          <li>Start with pretrained backbones (ViT-B/Swin-T, Wav2Vec2-Base, VideoMAE-B).</li>
+          <li>Pick fusion per task: <i>cross-attention</i> for deep reasoning; <i>joint embedding</i> for retrieval; <i>late fusion</i> for modularity.</li>
+          <li>Use strong augmentations and curriculum for long sequences.</li>
+          <li>Profile memory; use gradient checkpointing, mixed precision, and token pruning/windowing.</li>
+        </ul>
+      </article>
+
+    </section>
+  </main>
+
+  <footer>
+    Built for fast reference. No external JS/CSS needed. — © 2025
+  </footer>
+
+  <script>
+    const tabs = document.querySelectorAll('.tab');
+    const views = document.querySelectorAll('.view');
+
+    function openTab(id){
+      tabs.forEach(t=>t.classList.toggle('active', t.dataset.view===id));
+      views.forEach(v=>v.classList.toggle('active', v.id===id));
+      document.getElementById(id).scrollIntoView({behavior:'smooth', block:'start'});
+    }
+    tabs.forEach(t=>t.addEventListener('click',()=>openTab(t.dataset.view)));
+
+    function doSearch(){
+      const q = (document.getElementById('search').value||'').trim().toLowerCase();
+      if(!q){return}
+      const active = document.querySelector('.view.active');
+      // remove previous highlights
+      active.querySelectorAll('mark.__hl').forEach(m=>{
+        const parent=m.parentNode; parent.replaceChild(document.createTextNode(m.textContent), m); parent.normalize();
+      });
+      // highlight
+      const walker = document.createTreeWalker(active, NodeFilter.SHOW_TEXT, null);
+      const nodes = [];
+      while(walker.nextNode()){ nodes.push(walker.currentNode) }
+      nodes.forEach(node=>{
+        const idx = node.nodeValue.toLowerCase().indexOf(q);
+        if(idx>=0){
+          const spanBefore = document.createTextNode(node.nodeValue.slice(0, idx));
+          const spanAfter = document.createTextNode(node.nodeValue.slice(idx+q.length));
+          const mark = document.createElement('mark');
+          mark.className='__hl';
+          mark.textContent=node.nodeValue.slice(idx, idx+q.length);
+          const frag = document.createDocumentFragment();
+          frag.appendChild(spanBefore); frag.appendChild(mark); frag.appendChild(spanAfter);
+          node.parentNode.replaceChild(frag, node);
+        }
+      });
+    }
+    document.getElementById('search').addEventListener('keydown', (e)=>{
+      if(e.key==='Enter'){ doSearch(); }
+    });
+  </script>
+</body>
+</html>

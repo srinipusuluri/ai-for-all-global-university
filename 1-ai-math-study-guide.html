@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Mathematics Study Guide & Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .navigation {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: #764ba2;
+        }
+
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 1.5rem;
+            font-size: 1.8em;
+        }
+
+        .subsection {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .subsection h3 {
+            color: #34495e;
+            margin-bottom: 1rem;
+            font-size: 1.4em;
+        }
+
+        .formula {
+            background: #e8f4f8;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            border-left: 4px solid #3498db;
+        }
+
+        .example {
+            background: #fff3cd;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            border-left: 4px solid #ffc107;
+        }
+
+        .quiz-container {
+            background: #d4edda;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
+
+        .quiz-question {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 5px;
+        }
+
+        .quiz-options {
+            margin-left: 1rem;
+        }
+
+        .quiz-options label {
+            display: block;
+            margin: 0.5rem 0;
+            cursor: pointer;
+        }
+
+        .quiz-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .quiz-result {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .correct {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .incorrect {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .code-example {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .navigation {
+                flex-direction: column;
+            }
+
+            .nav-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🧮 AI Mathematics Study Guide</h1>
+        <p>Comprehensive mathematics foundation for AI, ML, CNNs, and LLMs</p>
+    </div>
+
+    <div class="container">
+        <div class="navigation">
+            <button class="nav-btn active" onclick="showSection('linear-algebra')">Linear Algebra</button>
+            <button class="nav-btn" onclick="showSection('calculus')">Calculus</button>
+            <button class="nav-btn" onclick="showSection('probability')">Probability & Statistics</button>
+            <button class="nav-btn" onclick="showSection('cnn-math')">CNN Mathematics</button>
+            <button class="nav-btn" onclick="showSection('llm-math')">LLM Mathematics</button>
+            <button class="nav-btn" onclick="showSection('advanced-topics')">Advanced Topics</button>
+            <button class="nav-btn" onclick="showSection('practice-quiz')">Practice Quiz</button>
+            <button class="nav-btn" onclick="showSection('final-exam')">Final Exam</button>
+        </div>
+
+        <!-- Linear Algebra Section -->
+        <div id="linear-algebra" class="section active">
+            <h2>📐 Linear Algebra for AI</h2>
+
+            <div class="subsection">
+                <h3>Vectors and Vector Operations</h3>
+                <p>Vectors are fundamental to machine learning. They represent data points, features, and transformations.</p>
+
+                <div class="formula">
+                    <strong>Vector Definition:</strong><br>
+                    \(\vec{v} = \begin{bmatrix} v_1 \\ v_2 \\ \vdots \\ v_n \end{bmatrix}\)
+                </div>
+
+                <div class="example">
+                    <strong>Example:</strong> A house price prediction feature vector<br>
+                    \(\vec{x} = \begin{bmatrix} 3 \\ 1500 \\ 2 \\ 25 \end{bmatrix}\)
+                    represents: [bedrooms, square_feet, bathrooms, age]
+                </div>
+
+                <h4>Key Operations:</h4>
+                <ul>
+                    <li><strong>Dot Product:</strong> \(\vec{a} \cdot \vec{b} = \sum_{i=1}^n a_i b_i\)</li>
+                    <li><strong>Vector Norm:</strong> \(\|\vec{v}\| = \sqrt{\sum_{i=1}^n v_i^2}\)</li>
+                    <li><strong>Cosine Similarity:</strong> \(\cos\theta = \frac{\vec{a}\cdot\vec{b}}{\|\vec{a}\| \|\vec{b}\|}\)</li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>Matrices and Matrix Operations</h3>
+                <p>Matrices represent linear transformations and are crucial for neural networks.</p>
+
+                <div class="formula">
+                    <strong>Matrix Multiplication:</strong><br>
+                    \((AB)_{ij} = \sum_k A_{ik} B_{kj}\)
+                </div>
+
+                <div class="example">
+                    <strong>Neural Network Layer:</strong><br>
+                    \(\vec{y} = W\vec{x} + \vec{b}\)<br>
+                    Where W is the weight matrix and \(\vec{b}\) is the bias vector
+                </div>
+
+                <h4>Important Matrix Types:</h4>
+                <ul>
+                    <li><strong>Identity Matrix:</strong> \(I = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}\)</li>
+                    <li><strong>Transpose:</strong> \((A^T)_{ij} = A_{ji}\)</li>
+                    <li><strong>Inverse:</strong> \(AA^{-1} = I\) (when matrix is invertible)</li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>Eigenvalues and Eigenvectors</h3>
+                <p>Essential for understanding principal component analysis (PCA) and dimensionality reduction.</p>
+
+                <div class="formula">
+                    <strong>Eigenvalue Equation:</strong><br>
+                    \(A\vec{v} = \lambda\vec{v}\)
+                </div>
+
+                <p>Where \(\lambda\) is the eigenvalue and \(\vec{v}\) is the eigenvector.</p>
+
+                <div class="example">
+                    <strong>PCA Application:</strong> Finding principal components by computing eigenvectors of the covariance matrix
+                </div>
+
+                <h4>Computing Eigenvalues:</h4>
+                <div class="formula">
+                    <strong>Characteristic Equation:</strong><br>
+                    \(\det(A - \lambda I) = 0\)
+                </div>
+
+                <h4>Properties:</h4>
+                <ul>
+                    <li>Trace of matrix equals sum of eigenvalues</li>
+                    <li>Determinant equals product of eigenvalues</li>
+                    <li>Eigenvectors of symmetric matrices are orthogonal</li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>Matrix Decompositions</h3>
+                <p>Different ways to break down matrices into simpler components.</p>
+
+                <h4>Eigendecomposition:</h4>
+                <div class="formula">
+                    \(A = Q\Lambda Q^{-1}\)
+                </div>
+                <p>Q contains eigenvectors, Λ is diagonal matrix of eigenvalues</p>
+
+                <h4>Spectral Decomposition:</h4>
+                <div class="formula">
+                    \(A = \sum_{i=1}^k \lambda_i \vec{v}_i \vec{v}_i^T\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Vector Spaces and Basis</h3>
+                <p>Understanding the foundation of linear algebra.</p>
+
+                <h4>Basis Vectors:</h4>
+                <div class="formula">
+                    <strong>Linear Independence:</strong><br>
+                    \(\sum_{i=1}^k \alpha_i \vec{v}_i = 0 \implies \alpha_i = 0\)
+                </div>
+
+                <h4>Dimension and Rank:</h4>
+                <div class="formula">
+                    <strong>Rank:</strong> \(\text{rank}(A) = \dim(\text{col}(A))\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Inner Product Spaces</h3>
+                <p>Generalization of dot product to abstract vector spaces.</p>
+
+                <div class="formula">
+                    <strong>Inner Product:</strong><br>
+                    \(\langle \vec{u}, \vec{v} \rangle = \vec{u}^T \vec{v}\)
+                </div>
+
+                <h4>Orthogonality:</h4>
+                <div class="formula">
+                    \(\langle \vec{u}, \vec{v} \rangle = 0\)
+                </div>
+
+                <div class="example">
+                    <strong>Orthogonal Vectors:</strong> [1, 0] and [0, 1] are orthogonal
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Linear Transformations</h3>
+                <p>Functions that preserve vector space operations.</p>
+
+                <div class="formula">
+                    <strong>Linear Transformation:</strong><br>
+                    \(T(\alpha\vec{u} + \beta\vec{v}) = \alpha T(\vec{u}) + \beta T(\vec{v})\)
+                </div>
+
+                <h4>Matrix Representation:</h4>
+                <p>Every linear transformation can be represented by a matrix</p>
+
+                <div class="example">
+                    <strong>Rotation Matrix:</strong><br>
+                    \(R = \begin{bmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{bmatrix}\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Quadratic Forms</h3>
+                <p>Mathematical expressions that appear in optimization and loss functions.</p>
+
+                <div class="formula">
+                    <strong>Quadratic Form:</strong><br>
+                    \(f(\vec{x}) = \vec{x}^T A \vec{x}\)
+                </div>
+
+                <h4>Positive Definite Matrices:</h4>
+                <div class="formula">
+                    \(\vec{x}^T A \vec{x} > 0\) for all non-zero \(\vec{x}\)
+                </div>
+
+                <div class="example">
+                    <strong>Loss Function:</strong> Mean squared error can be written as quadratic form
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Matrix Norms and Conditioning</h3>
+                <p>Measuring matrix properties important for numerical stability.</p>
+
+                <h4>Frobenius Norm:</h4>
+                <div class="formula">
+                    \(\|A\|_F = \sqrt{\sum_{i,j} A_{ij}^2}\)
+                </div>
+
+                <h4>Spectral Norm:</h4>
+                <div class="formula">
+                    \(\|A\|_2 = \sqrt{\lambda_{max}(A^T A)}\)
+                </div>
+
+                <h4>Condition Number:</h4>
+                <div class="formula">
+                    \(\kappa(A) = \|A\| \|A^{-1}\|\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Applications in Machine Learning</h3>
+                <p>How linear algebra concepts are used in practice.</p>
+
+                <h4>Principal Component Analysis (PCA):</h4>
+                <div class="formula">
+                    <strong>Covariance Matrix:</strong><br>
+                    \(\Sigma = \frac{1}{n-1} X^T X\)
+                </div>
+
+                <h4>Support Vector Machines:</h4>
+                <p>Dual formulation involves kernel matrices</p>
+
+                <h4>Neural Networks:</h4>
+                <p>Forward pass: \(\vec{h} = W\vec{x} + \vec{b}\)</p>
+            </div>
+
+            <div class="quiz-container">
+                <h3>Linear Algebra Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the dot product of vectors [1, 2, 3] and [4, 5, 6]?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q1" value="a"> A) 32</label>
+                        <label><input type="radio" name="q1" value="b"> B) 15</label>
+                        <label><input type="radio" name="q1" value="c"> C) 6</label>
+                        <label><input type="radio" name="q1" value="d"> D) 14</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> In a neural network, what does the weight matrix W represent?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q2" value="a"> A) Input features</label>
+                        <label><input type="radio" name="q2" value="b"> B) Linear transformation</label>
+                        <label><input type="radio" name="q2" value="c"> C) Output predictions</label>
+                        <label><input type="radio" name="q2" value="d"> D) Loss function</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkAnswers('linear-algebra')">Check Answers</button>
+                <div class="quiz-result" id="linear-algebra-result"></div>
+            </div>
+        </div>
+
+        <!-- Calculus Section -->
+        <div id="calculus" class="section">
+            <h2>🧮 Calculus for AI</h2>
+
+            <div class="subsection">
+                <h3>Derivatives and Gradient Descent</h3>
+                <p>Derivatives measure how functions change and are fundamental to optimization in machine learning.</p>
+
+                <div class="formula">
+                    <strong>Derivative:</strong><br>
+                    \(f'(x) = \lim_{h\to 0} \frac{f(x+h) - f(x)}{h}\)
+                </div>
+
+                <div class="formula">
+                    <strong>Partial Derivative:</strong><br>
+                    \(\frac{\partial f}{\partial x_i} = \lim_{h\to 0} \frac{f(x_1, ..., x_i + h, ..., x_n) - f(x_1, ..., x_n)}{h}\)
+                </div>
+
+                <div class="example">
+                    <strong>Gradient Descent Update:</strong><br>
+                    \(\theta_{new} = \theta_{old} - \alpha \nabla_\theta J(\theta)\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Chain Rule and Backpropagation</h3>
+                <p>The chain rule allows us to compute gradients through complex computational graphs.</p>
+
+                <div class="formula">
+                    <strong>Chain Rule:</strong><br>
+                    \(\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx}\)
+                </div>
+
+                <div class="example">
+                    <strong>Backpropagation:</strong> Computing gradients layer by layer using the chain rule
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Integration and Area Under Curve</h3>
+                <p>Used in probability density functions and loss function interpretations.</p>
+
+                <div class="formula">
+                    <strong>Definite Integral:</strong><br>
+                    \(\int_a^b f(x) dx = F(b) - F(a)\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Higher-Order Derivatives</h3>
+                <p>Understanding second and higher-order derivatives for optimization.</p>
+
+                <div class="formula">
+                    <strong>Second Derivative:</strong><br>
+                    \(f''(x) = \frac{d^2 f}{dx^2}\)
+                </div>
+
+                <h4>Hessian Matrix:</h4>
+                <div class="formula">
+                    \(H_{ij} = \frac{\partial^2 f}{\partial x_i \partial x_j}\)
+                </div>
+
+                <div class="example">
+                    <strong>Concavity Test:</strong> If H is positive definite, function is convex
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Taylor Series Expansions</h3>
+                <p>Approximating functions with polynomial series.</p>
+
+                <div class="formula">
+                    <strong>Taylor Series:</strong><br>
+                    \(f(x) = \sum_{n=0}^\infty \frac{f^{(n)}(a)}{n!} (x - a)^n\)
+                </div>
+
+                <h4>Maclaurin Series:</h4>
+                <div class="formula">
+                    \(f(x) = \sum_{n=0}^\infty \frac{f^{(n)}(0)}{n!} x^n\)
+                </div>
+
+                <div class="example">
+                    <strong>e^x Approximation:</strong> \(e^x \approx 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!}\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Advanced Optimization Algorithms</h3>
+                <p>Beyond basic gradient descent.</p>
+
+                <h4>Momentum:</h4>
+                <div class="formula">
+                    \(v_t = \gamma v_{t-1} + \alpha \nabla_\theta J(\theta)\)<br>
+                    \(\theta = \theta - v_t\)
+                </div>
+
+                <h4>Adam Optimizer:</h4>
+                <div class="formula">
+                    \(m_t = \beta_1 m_{t-1} + (1 - \beta_1) g_t\)<br>
+                    \(v_t = \beta_2 v_{t-1} + (1 - \beta_2) g_t^2\)<br>
+                    \(\hat{m_t} = m_t / (1 - \beta_1^t)\)<br>
+                    \(\hat{v_t} = v_t / (1 - \beta_2^t)\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Automatic Differentiation</h3>
+                <p>Computational technique for evaluating derivatives.</p>
+
+                <h4>Forward Mode:</h4>
+                <p>Computing derivatives along with function evaluation</p>
+
+                <h4>Reverse Mode (Backpropagation):</h4>
+                <p>Efficient for functions with many inputs</p>
+
+                <div class="formula">
+                    <strong>Computational Graph:</strong><br>
+                    Chain rule application through computation graph
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Multivariate Calculus</h3>
+                <p>Calculus with multiple variables.</p>
+
+                <h4>Gradient:</h4>
+                <div class="formula">
+                    \(\nabla f = \left( \frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2}, ..., \frac{\partial f}{\partial x_n} \right)\)
+                </div>
+
+                <h4>Jacobian Matrix:</h4>
+                <div class="formula">
+                    \(J = \begin{bmatrix}
+                        \frac{\partial f_1}{\partial x_1} & \cdots & \frac{\partial f_1}{\partial x_n} \\
+                        \vdots & \ddots & \vdots \\
+                        \frac{\partial f_m}{\partial x_1} & \cdots & \frac{\partial f_m}{\partial x_n}
+                    \end{bmatrix}\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Convex Optimization Theory</h3>
+                <p>Mathematical foundation for guaranteed convergence.</p>
+
+                <h4>Convex Sets:</h4>
+                <div class="formula">
+                    \(\theta x + (1-\theta) y \in C\) for all x, y ∈ C, θ ∈ [0,1]
+                </div>
+
+                <h4>Jensen's Inequality:</h4>
+                <div class="formula">
+                    \(f(\mathbb{E}[X]) \leq \mathbb{E}[f(X)]\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Stochastic Calculus</h3>
+                <p>Calculus for stochastic processes.</p>
+
+                <h4>Ito's Lemma:</h4>
+                <div class="formula">
+                    \(df = f'(x) dx + \frac{1}{2} f''(x) (dx)^2\)
+                </div>
+
+                <h4>Stochastic Gradient Descent:</h4>
+                <div class="formula">
+                    \(\theta_{t+1} = \theta_t - \alpha \nabla_\theta J(\theta_t; x_i, y_i)\)
+                </div>
+            </div>
+
+            <div class="quiz-container">
+                <h3>Calculus Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the derivative of f(x) = 3x² + 2x + 1?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q3" value="a"> A) 6x + 2</label>
+                        <label><input type="radio" name="q3" value="b"> B) 3x + 1</label>
+                        <label><input type="radio" name="q3" value="c"> C) 6x</label>
+                        <label><input type="radio" name="q3" value="d"> D) 2x + 1</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> In gradient descent, what does the learning rate α control?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q4" value="a"> A) Direction of update</label>
+                        <label><input type="radio" name="q4" value="b"> B) Step size of each update</label>
+                        <label><input type="radio" name="q4" value="c"> C) Loss function value</label>
+                        <label><input type="radio" name="q4" value="d"> D) Number of iterations</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkAnswers('calculus')">Check Answers</button>
+                <div class="quiz-result" id="calculus-result"></div>
+            </div>
+        </div>
+
+        <!-- Probability & Statistics Section -->
+        <div id="probability" class="section">
+            <h2>📊 Probability & Statistics for AI</h2>
+
+            <div class="subsection">
+                <h3>Probability Distributions</h3>
+                <p>Understanding different probability distributions is crucial for modeling data and uncertainty.</p>
+
+                <h4>Discrete Distributions:</h4>
+                <ul>
+                    <li><strong>Bernoulli:</strong> Single trial (success/failure)</li>
+                    <li><strong>Binomial:</strong> Multiple independent trials</li>
+                    <li><strong>Poisson:</strong> Event occurrences over time/space</li>
+                </ul>
+
+                <h4>Continuous Distributions:</h4>
+                <ul>
+                    <li><strong>Normal (Gaussian):</strong> \(f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{1}{2}(\frac{x-\mu}{\sigma})^2}\)</li>
+                    <li><strong>Uniform:</strong> Equal probability over an interval</li>
+                    <li><strong>Exponential:</strong> Time between events</li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>Bayesian Inference</h3>
+                <p>Updating beliefs based on new evidence using Bayes' theorem.</p>
+
+                <div class="formula">
+                    <strong>Bayes' Theorem:</strong><br>
+                    \(P(A|B) = \frac{P(B|A) P(A)}{P(B)}\)
+                </div>
+
+                <div class="example">
+                    <strong>Naive Bayes Classifier:</strong><br>
+                    \(P(y|x_1, ..., x_n) \propto P(y) \prod_{i=1}^n P(x_i|y)\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Statistical Measures</h3>
+                <p>Key statistical concepts for data analysis and model evaluation.</p>
+
+                <div class="formula">
+                    <strong>Variance:</strong> \(\sigma^2 = \frac{1}{n} \sum_{i=1}^n (x_i - \mu)^2\)<br>
+                    <strong>Standard Deviation:</strong> \(\sigma = \sqrt{\sigma^2}\)<br>
+                    <strong>Covariance:</strong> \(\sigma_{xy} = \frac{1}{n} \sum_{i=1}^n (x_i - \mu_x)(y_i - \mu_y)\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Hypothesis Testing</h3>
+                <p>Statistical framework for making decisions about data.</p>
+
+                <h4>Null and Alternative Hypotheses:</h4>
+                <div class="formula">
+                    \(H_0\): Null hypothesis (no effect)<br>
+                    \(H_a\): Alternative hypothesis (there is an effect)
+                </div>
+
+                <h4>p-value:</h4>
+                <div class="formula">
+                    \(P(\text{data} | H_0 \text{ is true})\)
+                </div>
+
+                <div class="example">
+                    <strong>t-test:</strong> Comparing means of two groups
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Confidence Intervals</h3>
+                <p>Range of values likely to contain the true population parameter.</p>
+
+                <div class="formula">
+                    <strong>95% Confidence Interval:</strong><br>
+                    \(\bar{x} \pm 1.96 \frac{\sigma}{\sqrt{n}}\)
+                </div>
+
+                <h4>Margin of Error:</h4>
+                <div class="formula">
+                    \(E = z_{\alpha/2} \frac{\sigma}{\sqrt{n}}\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Maximum Likelihood Estimation</h3>
+                <p>Finding parameter values that maximize the likelihood of observing the data.</p>
+
+                <div class="formula">
+                    <strong>Log-Likelihood:</strong><br>
+                    \(\mathcal{L}(\theta) = \sum_{i=1}^n \log P(x_i | \theta)\)
+                </div>
+
+                <h4>Score Function:</h4>
+                <div class="formula">
+                    \(S(\theta) = \frac{\partial}{\partial \theta} \mathcal{L}(\theta)\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Markov Chains</h3>
+                <p>Stochastic processes with memoryless property.</p>
+
+                <div class="formula">
+                    <strong>Markov Property:</strong><br>
+                    \(P(X_{t+1} | X_t, X_{t-1}, ..., X_0) = P(X_{t+1} | X_t)\)
+                </div>
+
+                <h4>Transition Matrix:</h4>
+                <div class="formula">
+                    \(P = \begin{bmatrix}
+                        p_{11} & p_{12} & \cdots \\
+                        p_{21} & p_{22} & \cdots \\
+                        \vdots & \vdots & \ddots
+                    \end{bmatrix}\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Monte Carlo Methods</h3>
+                <p>Using random sampling to solve computational problems.</p>
+
+                <h4>Monte Carlo Integration:</h4>
+                <div class="formula">
+                    \(\int f(x) dx \approx \frac{1}{n} \sum_{i=1}^n f(x_i)\)
+                </div>
+
+                <h4>Importance Sampling:</h4>
+                <div class="formula">
+                    \(\mathbb{E}[f(X)] = \int f(x) p(x) dx \approx \frac{1}{n} \sum_{i=1}^n f(x_i) \frac{p(x_i)}{q(x_i)}\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Expectation-Maximization (EM)</h3>
+                <p>Iterative algorithm for finding maximum likelihood estimates in latent variable models.</p>
+
+                <h4>EM Algorithm:</h4>
+                <ol>
+                    <li><strong>E-step:</strong> Compute expected value of log-likelihood</li>
+                    <li><strong>M-step:</strong> Maximize the expected log-likelihood</li>
+                </ol>
+
+                <div class="example">
+                    <strong>Gaussian Mixture Models:</strong> Using EM to estimate mixture parameters
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Kernel Density Estimation</h3>
+                <p>Non-parametric way to estimate probability density functions.</p>
+
+                <div class="formula">
+                    <strong>KDE:</strong><br>
+                    \(\hat{f}(x) = \frac{1}{nh} \sum_{i=1}^n K\left(\frac{x - x_i}{h}\right)\)
+                </div>
+
+                <h4>Bandwidth Selection:</h4>
+                <p>Choosing optimal smoothing parameter h</p>
+            </div>
+
+            <div class="quiz-container">
+                <h3>Probability & Statistics Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the probability density function of a standard normal distribution at x = 0?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q5" value="a"> A) 0</label>
+                        <label><input type="radio" name="q5" value="b"> B) 1/√(2π)</label>
+                        <label><input type="radio" name="q5" value="c"> C) 1</label>
+                        <label><input type="radio" name="q5" value="d"> D) π</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> In Bayesian inference, what does the prior distribution represent?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q6" value="a"> A) New evidence</label>
+                        <label><input type="radio" name="q6" value="b"> B) Initial beliefs</label>
+                        <label><input type="radio" name="q6" value="c"> C) Final prediction</label>
+                        <label><input type="radio" name="q6" value="d"> D) Model accuracy</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkAnswers('probability')">Check Answers</button>
+                <div class="quiz-result" id="probability-result"></div>
+            </div>
+        </div>
+
+        <!-- CNN Mathematics Section -->
+        <div id="cnn-math" class="section">
+            <h2>🖼️ CNN Mathematics</h2>
+
+            <div class="subsection">
+                <h3>Convolution Operation</h3>
+                <p>The core operation of Convolutional Neural Networks.</p>
+
+                <div class="formula">
+                    <strong>2D Convolution:</strong><br>
+                    \((I * K)_{x,y} = \sum_i \sum_j I_{x+i, y+j} K_{i,j}\)
+                </div>
+
+                <div class="example">
+                    <strong>Edge Detection Kernel:</strong><br>
+                    \(K = \begin{bmatrix} -1 & -1 & -1 \\ -1 & 8 & -1 \\ -1 & -1 & -1 \end{bmatrix}\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Pooling Operations</h3>
+                <p>Reducing spatial dimensions while preserving important information.</p>
+
+                <h4>Max Pooling:</h4>
+                <div class="formula">
+                    \(\max_{i,j \in W} I_{x+i, y+j}\)
+                </div>
+
+                <h4>Average Pooling:</h4>
+                <div class="formula">
+                    \(\frac{1}{|W|} \sum_{i,j \in W} I_{x+i, y+j}\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Backpropagation in CNNs</h3>
+                <p>Computing gradients for convolutional and pooling layers.</p>
+
+                <div class="formula">
+                    <strong>Gradient w.r.t. Input:</strong><br>
+                    \(\frac{\partial L}{\partial I} = \frac{\partial L}{\partial O} * \rot{K}\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Convolutional Layer Mathematics</h3>
+                <p>Detailed mathematical operations in convolutional layers.</p>
+
+                <h4>Stride and Padding:</h4>
+                <div class="formula">
+                    <strong>Output Size:</strong><br>
+                    \(O = \frac{I - K + 2P}{S} + 1\)
+                </div>
+
+                <h4>Parameter Count:</h4>
+                <div class="formula">
+                    <strong>Total Parameters:</strong><br>
+                    \(K_h \times K_w \times C_{in} \times C_{out} + C_{out}\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Batch Normalization</h3>
+                <p>Normalizing layer inputs for stable training.</p>
+
+                <div class="formula">
+                    <strong>Batch Norm:</strong><br>
+                    \(\hat{x} = \frac{x - \mu_B}{\sqrt{\sigma_B^2 + \epsilon}}\)<br>
+                    \(y = \gamma \hat{x} + \beta\)
+                </div>
+
+                <h4>Training vs Inference:</h4>
+                <p>Different behavior during training and inference phases</p>
+            </div>
+
+            <div class="subsection">
+                <h3>Advanced Pooling Techniques</h3>
+                <p>Beyond basic max and average pooling.</p>
+
+                <h4>Global Average Pooling:</h4>
+                <div class="formula">
+                    \(GAP = \frac{1}{H \times W} \sum_{i=1}^H \sum_{j=1}^W x_{ij}\)
+                </div>
+
+                <h4>Spatial Pyramid Pooling:</h4>
+                <p>Multi-scale pooling for variable input sizes</p>
+            </div>
+
+            <div class="subsection">
+                <h3>Residual Networks Mathematics</h3>
+                <p>Skip connections and residual learning.</p>
+
+                <div class="formula">
+                    <strong>Residual Block:</strong><br>
+                    \(y = F(x, W) + x\)
+                </div>
+
+                <h4>Gradient Flow:</h4>
+                <p>Identity shortcut preserves gradient magnitude</p>
+            </div>
+
+            <div class="subsection">
+                <h3>Attention in CNNs</h3>
+                <p>Incorporating attention mechanisms into convolutional networks.</p>
+
+                <h4>Channel Attention:</h4>
+                <div class="formula">
+                    \(M_c(F) = \sigma(MLP(AvgPool(F)) + MLP(MaxPool(F)))\)
+                </div>
+
+                <h4>Spatial Attention:</h4>
+                <div class="formula">
+                    \(M_s(F) = \sigma(f^{7\times7}([AvgPool(F); MaxPool(F)]))\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Deformable Convolutions</h3>
+                <p>Learnable kernel offsets for adaptive receptive fields.</p>
+
+                <div class="formula">
+                    <strong>Deformable Conv:</strong><br>
+                    \(y(p) = \sum_{k=1}^K w_k \cdot x(p + p_k + \Delta p_k)\)
+                </div>
+
+                <h4>Offset Learning:</h4>
+                <p>Convolutional layer predicts deformation offsets</p>
+            </div>
+
+            <div class="subsection">
+                <h3>Network Architecture Mathematics</h3>
+                <p>Mathematical principles behind CNN architectures.</p>
+
+                <h4>Inception Module:</h4>
+                <div class="formula">
+                    <strong>Multi-branch:</strong><br>
+                    Multiple kernel sizes in parallel
+                </div>
+
+                <h4>DenseNet Connections:</h4>
+                <div class="formula">
+                    \(x_l = H_l([x_0, x_1, ..., x_{l-1}])\)
+                </div>
+            </div>
+
+            <div class="quiz-container">
+                <h3>CNN Mathematics Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the primary purpose of the convolution operation in CNNs?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q7" value="a"> A) Feature extraction</label>
+                        <label><input type="radio" name="q7" value="b"> B) Classification</label>
+                        <label><input type="radio" name="q7" value="c"> C) Data augmentation</label>
+                        <label><input type="radio" name="q7" value="d"> D) Loss calculation</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> What effect does a 2x2 max pooling operation have on a 4x4 feature map?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q8" value="a"> A) Reduces it to 2x2</label>
+                        <label><input type="radio" name="q8" value="b"> B) Reduces it to 8x8</label>
+                        <label><input type="radio" name="q8" value="c"> C) Keeps it 4x4</label>
+                        <label><input type="radio" name="q8" value="d"> D) Increases it to 8x8</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkAnswers('cnn-math')">Check Answers</button>
+                <div class="quiz-result" id="cnn-math-result"></div>
+            </div>
+        </div>
+
+        <!-- LLM Mathematics Section -->
+        <div id="llm-math" class="section">
+            <h2>🤖 LLM Mathematics</h2>
+
+            <div class="subsection">
+                <h3>Attention Mechanism</h3>
+                <p>The mathematical foundation of transformer-based language models.</p>
+
+                <div class="formula">
+                    <strong>Scaled Dot-Product Attention:</strong><br>
+                    \(\text{Attention}(Q, K, V) = \text{softmax}(\frac{QK^T}{\sqrt{d_k}})V\)
+                </div>
+
+                <div class="example">
+                    <strong>Self-Attention:</strong> Q = K = V = input embeddings
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Transformer Architecture</h3>
+                <p>Multi-head attention and feed-forward networks in transformers.</p>
+
+                <div class="formula">
+                    <strong>Multi-Head Attention:</strong><br>
+                    \(\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, ..., \text{head}_h)W^O\)<br>
+                    \(\text{where } \text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V)\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Positional Encoding</h3>
+                <p>Adding position information to token embeddings.</p>
+
+                <div class="formula">
+                    <strong>Sinusoidal Positional Encoding:</strong><br>
+                    \(PE_{(pos, 2i)} = \sin(pos / 10000^{2i/d_{model}})\)<br>
+                    \(PE_{(pos, 2i+1)} = \cos(pos / 10000^{2i/d_{model}})\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Tokenization Mathematics</h3>
+                <p>Converting text into numerical representations for language models.</p>
+
+                <h4>Byte Pair Encoding (BPE):</h4>
+                <div class="formula">
+                    <strong>Merge Operation:</strong><br>
+                    Most frequent pair of bytes → new token
+                </div>
+
+                <h4>WordPiece Tokenization:</h4>
+                <p>Likelihood-based token splitting</p>
+
+                <h4>SentencePiece:</h4>
+                <p>Unsupervised text tokenization</p>
+            </div>
+
+            <div class="subsection">
+                <h3>Embedding Layer Mathematics</h3>
+                <p>Converting tokens to dense vector representations.</p>
+
+                <div class="formula">
+                    <strong>Embedding Lookup:</strong><br>
+                    \(E \in \mathbb{R}^{V \times d}\) where V is vocabulary size
+                </div>
+
+                <h4>Contextual Embeddings:</h4>
+                <div class="formula">
+                    \(h_i = f_{emb}(x_i, context)\)
+                </div>
+
+                <h4>Positional Embeddings:</h4>
+                <div class="formula">
+                    \(h_i = E[x_i] + PE[i]\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Layer Normalization</h3>
+                <p>Normalizing activations within each layer.</p>
+
+                <div class="formula">
+                    <strong>Layer Norm:</strong><br>
+                    \(\mu = \frac{1}{d} \sum_{i=1}^d x_i\)<br>
+                    \(\sigma^2 = \frac{1}{d} \sum_{i=1}^d (x_i - \mu)^2\)<br>
+                    \(\hat{x}_i = \frac{x_i - \mu}{\sqrt{\sigma^2 + \epsilon}}\)<br>
+                    \(y_i = \gamma \hat{x}_i + \beta\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Feed-Forward Networks</h3>
+                <p>Position-wise fully connected layers in transformers.</p>
+
+                <div class="formula">
+                    <strong>Two-Layer MLP:</strong><br>
+                    \(FFN(x) = \max(0, xW_1 + b_1)W_2 + b_2\)
+                </div>
+
+                <h4>Expansion Factor:</h4>
+                <p>Typically 4x expansion in hidden dimension</p>
+            </div>
+
+            <div class="subsection">
+                <h3>Cross-Attention Mechanisms</h3>
+                <p>Attention between different sequences (encoder-decoder).</p>
+
+                <div class="formula">
+                    <strong>Cross-Attention:</strong><br>
+                    \(Q = X^{(l-1)}, K = V = Z\) (encoder outputs)
+                </div>
+
+                <h4>Encoder-Decoder Attention:</h4>
+                <p>Decoder attends to encoder representations</p>
+            </div>
+
+            <div class="subsection">
+                <h3>Mixture of Experts (MoE)</h3>
+                <p>Sparsely activated expert networks for scalability.</p>
+
+                <div class="formula">
+                    <strong>MoE Layer:</strong><br>
+                    \(y = \sum_{i=1}^n G(x)_i E_i(x)\)
+                </div>
+
+                <h4>Top-k Gating:</h4>
+                <div class="formula">
+                    \(G(x) = \softmax(\text{TopK}(\text{softmax}(xW_g)))\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Rotary Position Embedding (RoPE)</h3>
+                <p>Rotation-based positional encoding for better length extrapolation.</p>
+
+                <div class="formula">
+                    <strong>Rotary Embedding:</strong><br>
+                    \(f(q_m, k_n) = q_m^\top R_{\Theta, m-n}^T k_n\)
+                </div>
+
+                <h4>Rotation Matrix:</h4>
+                <div class="formula">
+                    \(R_{\Theta, m} = \begin{bmatrix} \cos m\theta & -\sin m\theta \\ \sin m\theta & \cos m\theta \end{bmatrix}\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Advanced Transformer Variants</h3>
+                <p>Mathematical innovations in transformer architectures.</p>
+
+                <h4>Perceiver:</h4>
+                <p>Latent-based transformer for handling large inputs</p>
+
+                <h4>Longformer:</h4>
+                <p>Linear attention with sliding window</p>
+
+                <h4>BigBird:</h4>
+                <p>Sparse attention patterns for efficiency</p>
+            </div>
+
+            <div class="quiz-container">
+                <h3>LLM Mathematics Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the purpose of the scaling factor √d_k in attention mechanism?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q9" value="a"> A) Prevent vanishing gradients</label>
+                        <label><input type="radio" name="q9" value="b"> B) Prevent attention scores from becoming too large</label>
+                        <label><input type="radio" name="q9" value="c"> C) Increase model capacity</label>
+                        <label><input type="radio" name="q9" value="d"> D) Reduce computational complexity</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> In transformer architecture, what does the residual connection help with?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q10" value="a"> A) Gradient flow</label>
+                        <label><input type="radio" name="q10" value="b"> B) Model size</label>
+                        <label><input type="radio" name="q10" value="c"> C) Training speed</label>
+                        <label><input type="radio" name="q10" value="d"> D) Vocabulary size</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkAnswers('llm-math')">Check Answers</button>
+                <div class="quiz-result" id="llm-math-result"></div>
+            </div>
+        </div>
+
+        <!-- Advanced Topics Section -->
+        <div id="advanced-topics" class="section">
+            <h2>🚀 Advanced Mathematical Topics</h2>
+
+            <div class="subsection">
+                <h3>Singular Value Decomposition (SVD)</h3>
+                <p>SVD is a factorization technique that generalizes eigendecomposition to non-square matrices.</p>
+
+                <div class="formula">
+                    <strong>SVD:</strong><br>
+                    \(A = U\Sigma V^T\)
+                </div>
+
+                <p>Where:</p>
+                <ul>
+                    <li>U: Left singular vectors (m × m orthogonal matrix)</li>
+                    <li>Σ: Diagonal matrix of singular values (m × n)</li>
+                    <li>V^T: Right singular vectors (n × n orthogonal matrix)</li>
+                </ul>
+
+                <div class="example">
+                    <strong>Image Compression:</strong> Using SVD to reduce dimensionality while preserving important features
+                </div>
+
+                <h4>Applications in AI:</h4>
+                <ul>
+                    <li>Principal Component Analysis (PCA)</li>
+                    <li>Latent Semantic Analysis (LSA)</li>
+                    <li>Recommender Systems</li>
+                    <li>Image Compression</li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>Matrix Factorization Techniques</h3>
+                <p>Different ways to decompose matrices for various AI applications.</p>
+
+                <h4>LU Decomposition:</h4>
+                <div class="formula">
+                    \(A = LU\)
+                </div>
+                <p>L (lower triangular) × U (upper triangular) = A</p>
+
+                <h4>QR Decomposition:</h4>
+                <div class="formula">
+                    \(A = QR\)
+                </div>
+                <p>Q (orthogonal) × R (upper triangular) = A</p>
+
+                <h4>Cholesky Decomposition:</h4>
+                <div class="formula">
+                    \(A = LL^T\)
+                </div>
+                <p>Efficient decomposition for positive definite matrices</p>
+            </div>
+
+            <div class="subsection">
+                <h3>Vector Spaces and Linear Transformations</h3>
+                <p>Understanding abstract vector spaces and linear mappings.</p>
+
+                <div class="formula">
+                    <strong>Linear Transformation:</strong><br>
+                    \(T(\alpha\vec{u} + \beta\vec{v}) = \alpha T(\vec{u}) + \beta T(\vec{v})\)
+                </div>
+
+                <h4>Important Vector Spaces in AI:</h4>
+                <ul>
+                    <li><strong>Feature Space:</strong> Where input data lives</li>
+                    <li><strong>Hypothesis Space:</strong> Set of all possible models</li>
+                    <li><strong>Kernel Space:</strong> Higher-dimensional space for non-linear classification</li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>Information Theory</h3>
+                <p>Mathematical foundation for measuring information and uncertainty.</p>
+
+                <div class="formula">
+                    <strong>Entropy:</strong><br>
+                    \(H(X) = -\sum_{x} P(x) \log_2 P(x)\)
+                </div>
+
+                <div class="formula">
+                    <strong>Cross-Entropy:</strong><br>
+                    \(H(P,Q) = -\sum_{x} P(x) \log_2 Q(x)\)
+                </div>
+
+                <div class="formula">
+                    <strong>KL Divergence:</strong><br>
+                    \(D_{KL}(P\|Q) = \sum_{x} P(x) \log_2 \frac{P(x)}{Q(x)}\)
+                </div>
+
+                <div class="example">
+                    <strong>Cross-Entropy Loss:</strong> Commonly used loss function in classification tasks
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Convex Optimization</h3>
+                <p>Mathematical framework for optimization problems in machine learning.</p>
+
+                <div class="formula">
+                    <strong>Convex Function:</strong><br>
+                    \(f(\theta x + (1-\theta) y) \leq \theta f(x) + (1-\theta) f(y)\)
+                </div>
+
+                <h4>Common Optimization Algorithms:</h4>
+                <ul>
+                    <li><strong>Adam:</strong> Adaptive Moment Estimation</li>
+                    <li><strong>RMSprop:</strong> Root Mean Square Propagation</li>
+                    <li><strong>Adagrad:</strong> Adaptive Gradient Algorithm</li>
+                    <li><strong>L-BFGS:</strong> Limited-memory Broyden–Fletcher–Goldfarb–Shanno</li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>Graph Theory in AI</h3>
+                <p>Mathematical foundation for graph neural networks and relational data.</p>
+
+                <div class="formula">
+                    <strong>Adjacency Matrix:</strong><br>
+                    \(A_{ij} = \begin{cases} 1 & \text{if edge between i and j} \\ 0 & \text{otherwise} \end{cases}\)
+                </div>
+
+                <h4>Graph Concepts:</h4>
+                <ul>
+                    <li><strong>Node Degree:</strong> Number of connections</li>
+                    <li><strong>Graph Laplacian:</strong> L = D - A (degree minus adjacency)</li>
+                    <li><strong>Shortest Path:</strong> Minimal distance between nodes</li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>Advanced CNN Architectures</h3>
+                <p>Mathematical principles behind modern convolutional networks.</p>
+
+                <h4>Dilated Convolutions:</h4>
+                <div class="formula">
+                    <strong>Dilation Rate:</strong><br>
+                    \((I * K)_{x,y} = \sum_i \sum_j I_{x + r\cdot i, y + r\cdot j} K_{i,j}\)
+                </div>
+
+                <h4>Depthwise Separable Convolutions:</h4>
+                <div class="formula">
+                    <strong>Depthwise:</strong> \(K_d \in \mathbb{R}^{k \times k \times C_{in}}\)<br>
+                    <strong>Pointwise:</strong> \(K_p \in \mathbb{R}^{1 \times 1 \times C_{in} \times C_{out}}\)
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>Advanced Attention Mechanisms</h3>
+                <p>Beyond basic attention in transformer models.</p>
+
+                <h4>Multi-Query Attention:</h4>
+                <div class="formula">
+                    \(\text{Attention}(Q, K, V) = \text{softmax}(\frac{QK^T}{\sqrt{d_k}})V\)
+                </div>
+                <p>Shared keys and values across multiple query heads</p>
+
+                <h4>Longformer Attention:</h4>
+                <p>Combination of sliding window and global attention for long sequences</p>
+            </div>
+
+            <div class="quiz-container">
+                <h3>Advanced Topics Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the main purpose of SVD in machine learning?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="adv1" value="a"> A) Matrix inversion</label>
+                        <label><input type="radio" name="adv1" value="b"> B) Dimensionality reduction</label>
+                        <label><input type="radio" name="adv1" value="c"> C) Feature scaling</label>
+                        <label><input type="radio" name="adv1" value="d"> D) Loss calculation</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> What does cross-entropy measure?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="adv2" value="a"> A) Model complexity</label>
+                        <label><input type="radio" name="adv2" value="b"> B) Difference between distributions</label>
+                        <label><input type="radio" name="adv2" value="c"> C) Training speed</label>
+                        <label><input type="radio" name="adv2" value="d"> D) Memory usage</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q3:</strong> In graph neural networks, what does the adjacency matrix represent?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="adv3" value="a"> A) Node features</label>
+                        <label><input type="radio" name="adv3" value="b"> B) Edge connections</label>
+                        <label><input type="radio" name="adv3" value="c"> C) Node degrees</label>
+                        <label><input type="radio" name="adv3" value="d"> D) Graph diameter</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkAnswers('advanced-topics')">Check Answers</button>
+                <div class="quiz-result" id="advanced-topics-result"></div>
+            </div>
+        </div>
+
+        <!-- Final Exam Section -->
+        <div id="final-exam" class="section">
+            <h2>🎓 Final Comprehensive Exam</h2>
+            <p>Ultimate test of your AI mathematics knowledge across all topics.</p>
+
+            <div class="quiz-container">
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> If A is a 3×4 matrix and B is a 4×2 matrix, what are the dimensions of AB?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="fe1" value="a"> A) 3×2</label>
+                        <label><input type="radio" name="fe1" value="b"> B) 4×3</label>
+                        <label><input type="radio" name="fe1" value="c"> C) 3×4</label>
+                        <label><input type="radio" name="fe1" value="d"> D) 4×2</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> What is the second derivative of f(x) = x³?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="fe2" value="a"> A) 3x²</label>
+                        <label><input type="radio" name="fe2" value="b"> B) 6x</label>
+                        <label><input type="radio" name="fe2" value="c"> C) 3x</label>
+                        <label><input type="radio" name="fe2" value="d"> D) x²</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q3:</strong> In probability, what does the law of total probability state?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="fe3" value="a"> A) P(A∪B) = P(A) + P(B)</label>
+                        <label><input type="radio" name="fe3" value="b"> B) P(A|B) = P(B|A)P(A)/P(B)</label>
+                        <label><input type="radio" name="fe3" value="c"> C) P(B) = ΣP(B|A_i)P(A_i)</label>
+                        <label><input type="radio" name="fe3" value="d"> D) P(A∩B) = P(A)P(B|A)</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q4:</strong> What is the purpose of batch normalization in CNNs?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="fe4" value="a"> A) Reduce overfitting</label>
+                        <label><input type="radio" name="fe4" value="b"> B) Stabilize learning</label>
+                        <label><input type="radio" name="fe4" value="c"> C) Increase model size</label>
+                        <label><input type="radio" name="fe4" value="d"> D) Speed up inference</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q5:</strong> In transformers, what is the role of the feed-forward network?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="fe5" value="a"> A) Process token embeddings</label>
+                        <label><input type="radio" name="fe5" value="b"> B) Compute attention scores</label>
+                        <label><input type="radio" name="fe5" value="c"> C) Generate output tokens</label>
+                        <label><input type="radio" name="fe5" value="d"> D) Handle positional encoding</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q6:</strong> What does the determinant of a matrix represent?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="fe6" value="a"> A) Matrix rank</label>
+                        <label><input type="radio" name="fe6" value="b"> B) Scaling factor in linear transformations</label>
+                        <label><input type="radio" name="fe6" value="c"> C) Number of zero eigenvalues</label>
+                        <label><input type="radio" name="fe6" value="d"> D) Matrix condition number</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q7:</strong> In calculus, what is the gradient of a function?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="fe7" value="a"> A) Vector of partial derivatives</label>
+                        <label><input type="radio" name="fe7" value="b"> B) Second derivative</label>
+                        <label><input type="radio" name="fe7" value="c"> C) Integral of the function</label>
+                        <label><input type="radio" name="fe7" value="d"> D) Function minimum</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q8:</strong> What is the purpose of the softmax function in attention?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="fe8" value="a"> A) Normalize attention weights</label>
+                        <label><input type="radio" name="fe8" value="b"> B) Compute dot products</label>
+                        <label><input type="radio" name="fe8" value="c"> C) Scale the values</label>
+                        <label><input type="radio" name="fe8" value="d"> D) Generate embeddings</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q9:</strong> In information theory, what does higher entropy indicate?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="fe9" value="a"> A) More predictable system</label>
+                        <label><input type="radio" name="fe9" value="b"> B) Less uncertainty</label>
+                        <label><input type="radio" name="fe9" value="c"> C) More uncertainty</label>
+                        <label><input type="radio" name="fe9" value="d"> D) Perfect information</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q10:</strong> What is the main advantage of dilated convolutions?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="fe10" value="a"> A) Larger receptive field</label>
+                        <label><input type="radio" name="fe10" value="b"> B) Fewer parameters</label>
+                        <label><input type="radio" name="fe10" value="c"> C) Faster computation</label>
+                        <label><input type="radio" name="fe10" value="d"> D) Better accuracy</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkAnswers('final-exam')">Check Final Exam</button>
+                <div class="quiz-result" id="final-exam-result"></div>
+            </div>
+        </div>
+
+        <!-- Practice Quiz Section -->
+        <div id="practice-quiz" class="section">
+            <h2>🎯 Comprehensive Practice Quiz</h2>
+            <p>Test your understanding of all mathematical concepts covered in this guide.</p>
+
+            <div class="quiz-container">
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the rank of a matrix?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="pq1" value="a"> A) Number of rows</label>
+                        <label><input type="radio" name="pq1" value="b"> B) Number of columns</label>
+                        <label><input type="radio" name="pq1" value="c"> C) Maximum number of linearly independent rows</label>
+                        <label><input type="radio" name="pq1" value="d"> D) Sum of dimensions</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> In gradient descent, what happens if the learning rate is too high?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="pq2" value="a"> A) Slow convergence</label>
+                        <label><input type="radio" name="pq2" value="b"> B) Overshooting the minimum</label>
+                        <label><input type="radio" name="pq2" value="c"> C) Underfitting</label>
+                        <label><input type="radio" name="pq2" value="d"> D) Perfect convergence</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q3:</strong> What is the covariance between two variables?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="pq3" value="a"> A) Product of standard deviations</label>
+                        <label><input type="radio" name="pq3" value="b"> B) Sum of variances</label>
+                        <label><input type="radio" name="pq3" value="c"> C) Measure of linear relationship</label>
+                        <label><input type="radio" name="pq3" value="d"> D) Square root of correlation</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q4:</strong> In CNNs, what is the purpose of padding in convolution?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="pq4" value="a"> A) Increase filter size</label>
+                        <label><input type="radio" name="pq4" value="b"> B) Preserve spatial dimensions</label>
+                        <label><input type="radio" name="pq4" value="c"> C) Add more channels</label>
+                        <label><input type="radio" name="pq4" value="d"> D) Reduce parameters</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q5:</strong> What is the main advantage of the transformer attention mechanism?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="pq5" value="a"> A) Parallel processing</label>
+                        <label><input type="radio" name="pq5" value="b"> B) Memory efficiency</label>
+                        <label><input type="radio" name="pq5" value="c"> C) Fewer parameters</label>
+                        <label><input type="radio" name="pq5" value="d"> D) Faster training</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkAnswers('practice-quiz')">Check Answers</button>
+                <div class="quiz-result" id="practice-quiz-result"></div>
+            </div>
+        </div>
+    </div>
+
+    <button class="back-to-top" onclick="scrollToTop()">↑</button>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active class from all nav buttons
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        function checkAnswers(section) {
+            const resultDiv = document.getElementById(section + '-result');
+            let correct = 0;
+            let total = 0;
+
+            // Define correct answers for each section
+            const answers = {
+                'linear-algebra': ['a', 'b'],
+                'calculus': ['a', 'b'],
+                'probability': ['b', 'b'],
+                'cnn-math': ['a', 'a'],
+                'llm-math': ['b', 'a'],
+                'advanced-topics': ['b', 'b', 'b'],
+                'practice-quiz': ['c', 'b', 'c', 'b', 'a'],
+                'final-exam': ['a', 'b', 'c', 'b', 'a', 'b', 'a', 'a', 'c', 'a']
+            };
+
+            const sectionAnswers = answers[section];
+            const questions = document.querySelectorAll(`input[name^="${section === 'practice-quiz' ? 'pq' : 'q'}"]`);
+
+            questions.forEach((question, index) => {
+                if (question.checked) {
+                    total++;
+                    if (question.value === sectionAnswers[index]) {
+                        correct++;
+                    }
+                }
+            });
+
+            resultDiv.style.display = 'block';
+            if (correct === sectionAnswers.length) {
+                resultDiv.className = 'quiz-result correct';
+                resultDiv.innerHTML = `🎉 Perfect! You got all ${correct} questions correct!`;
+            } else {
+                resultDiv.className = 'quiz-result incorrect';
+                resultDiv.innerHTML = `You got ${correct} out of ${sectionAnswers.length} questions correct. Keep studying!`;
+            }
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Show back to top button when scrolling
+        window.addEventListener('scroll', function() {
+            const btn = document.querySelector('.back-to-top');
+            if (window.pageYOffset > 300) {
+                btn.style.display = 'block';
+            } else {
+                btn.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vision Transformer Learning Interactive Guide</title>
+    <meta name="description" content="A comprehensive interactive guide to learning Vision Transformers and essential computer vision tools including VLLM, CV2, YOLO, Roboflow, CLIP, and more.">
+    <link rel="icon" href="https://icons.duckduckgo.com/ip3/pytorch.org.ico">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #009688;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        details {
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        details summary {
+            background-color: #f1f1f1;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            list-style: none;
+            font-weight: bold;
+        }
+        details summary:hover {
+            background-color: #e1e1e1;
+            transform: translateY(-2px);
+        }
+        details[open] summary {
+            color: #009688;
+        }
+        details ul {
+            margin: 10px 0 10px 20px;
+            padding-left: 20px;
+        }
+        details li {
+            margin-bottom: 5px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+            transform: scale(1.05);
+        }
+
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            flex: 1 1 300px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .card .icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .card h4 {
+            margin: 10px 0;
+            color: #009688;
+        }
+
+        .card p {
+            margin: 10px 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .card button {
+            background-color: #009688;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .card button:hover {
+            background-color: #00796b;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            color: #009688;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #009688, #4db6ac);
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+            margin-bottom: 40px;
+        }
+
+        .hero h1 {
+            font-size: 2.5em;
+            margin: 0 0 20px 0;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            margin: 0 0 30px 0;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero button {
+            background-color: white;
+            color: #009688;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .hero button:hover {
+            background-color: #f0f0f0;
+        }
+
+        #roadmap {
+            margin-bottom: 40px;
+        }
+
+        #roadmap h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #009688;
+        }
+
+        .timeline {
+            position: relative;
+            margin: 0 auto;
+            max-width: 1000px;
+            padding-left: 50px;
+        }
+
+        .timeline:before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #009688;
+        }
+
+        .roadmap-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            position: relative;
+            margin-left: -30px;
+            padding-left: 40px;
+        }
+
+        .roadmap-card:before {
+            content: '';
+            position: absolute;
+            left: -45px;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            background: #009688;
+            border-radius: 50%;
+        }
+
+        .roadmap-card .icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .roadmap-card h4 {
+            margin: 10px 0;
+            color: #009688;
+        }
+
+        .roadmap-card p {
+            margin: 10px 0;
+            color: #555;
+        }
+
+        .roadmap-card .goal {
+            font-weight: bold;
+            color: #009688;
+        }
+
+        .journey-map {
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .journey-map img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .share-section {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .share-section button, .share-section a {
+            background-color: #009688;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .share-section button:hover, .share-section a:hover {
+            background-color: #00796b;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2em;
+            }
+            .roadmap-card {
+                margin-left: -20px;
+                padding-left: 30px;
+            }
+            .timeline:before {
+                left: 10px;
+            }
+            .roadmap-card:before {
+                left: -35px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Vision Transformer Learning Interactive Guide</h1>
+        <div class="hero">
+            <h1>Vision Transformers: Chart Your Learning Path</h1>
+            <p>A comprehensive guide to mastering Vision Transformers (ViT) and essential computer vision tools — from foundational concepts to advanced implementations.</p>
+            <button onclick="document.getElementById('roadmap').scrollIntoView({behavior: 'smooth'});">Start Exploring</button>
+        </div>
+        <div id="roadmap" class="section">
+            <h2>Your Vision Transformer Learning Pathway</h2>
+            <div class="timeline">
+                <div class="roadmap-card">
+                    <span class="icon">🌟</span>
+                    <h4>Step 1 – Grasping Fundamentals</h4>
+                    <p>Learn basics of computer vision, neural networks, and transformers. <span class="goal">Goal: Understand ViT's foundation.</span></p>
+                </div>
+                <div class="roadmap-card">
+                    <span class="icon">🔍</span>
+                    <h4>Step 2 – Explore ViT Architecture</h4>
+                    <p>Dive into how Vision Transformers work, including patches and attention. <span class="goal">Goal: Comprehend ViT mechanics.</span></p>
+                </div>
+                <div class="roadmap-card">
+                    <span class="icon">🛠️</span>
+                    <h4>Step 3 – Master Essential Tools</h4>
+                    <p>Build proficiency in tools like CV2, YOLO, Roboflow, and CLIP. <span class="goal">Goal: Gain practical skills.</span></p>
+                </div>
+                <div class="roadmap-card">
+                    <span class="icon">🚀</span>
+                    <h4>Step 4 – Implement VLLM & Multimodal</h4>
+                    <p>Explore Vision-Language models and multimodal applications. <span class="goal">Goal: Apply ViT in real projects.</span></p>
+                </div>
+                <div class="roadmap-card">
+                    <span class="icon">⚡</span>
+                    <h4>Step 5 – Optimize & Deploy</h4>
+                    <p>Learn optimization techniques and deployment strategies. <span class="goal">Goal: Create efficient ViT models.</span></p>
+                </div>
+                <div class="roadmap-card">
+                    <span class="icon">🎯</span>
+                    <h4>Step 6 – Innovate with ViT</h4>
+                    <p>Push boundaries with research, custom architectures, and new applications. <span class="goal">Goal: Become a ViT expert.</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="journey-map">
+            <h3>Your ViT Learning Journey Map</h3>
+            <svg width="800" height="400" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                <!-- Step 1 -->
+                <circle cx="100" cy="50" r="30" fill="#009688" stroke="#fff" stroke-width="2"/>
+                <text x="100" y="56" text-anchor="middle" fill="#fff" font-size="12">Step 1</text>
+                <text x="100" y="75" text-anchor="middle" fill="#009688" font-size="10">Basics</text><text x="100" y="87" text-anchor="middle" fill="#009688" font-size="10">of CV</text>
+
+                <!-- Arrow to Step 2 -->
+                <line x1="130" y1="50" x2="170" y2="50" stroke="#009688" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                <!-- Step 2 -->
+                <circle cx="200" cy="50" r="30" fill="#009688" stroke="#fff" stroke-width="2"/>
+                <text x="200" y="56" text-anchor="middle" fill="#fff" font-size="12">Step 2</text>
+                <text x="200" y="75" text-anchor="middle" fill="#009688" font-size="10">ViT</text><text x="200" y="87" text-anchor="middle" fill="#009688" font-size="10">Arch</text>
+
+                <!-- Arrow to Step 3 -->
+                <line x1="230" y1="50" x2="270" y2="50" stroke="#009688" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                <!-- Step 3 -->
+                <circle cx="300" cy="50" r="30" fill="#009688" stroke="#fff" stroke-width="2"/>
+                <text x="300" y="56" text-anchor="middle" fill="#fff" font-size="12">Step 3</text>
+                <text x="300" y="75" text-anchor="middle" fill="#009688" font-size="10">Tools</text><text x="300" y="87" text-anchor="middle" fill="#009688" font-size="10">(CV2,YOLO)</text>
+
+                <!-- Arrow to Step 4 (curve down) -->
+                <path d="M 330 50 Q 400 50 400 120" stroke="#009688" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+                <!-- Step 4 -->
+                <circle cx="400" cy="150" r="30" fill="#009688" stroke="#fff" stroke-width="2"/>
+                <text x="400" y="156" text-anchor="middle" fill="#fff" font-size="12">Step 4</text>
+                <text x="400" y="175" text-anchor="middle" fill="#009688" font-size="10">VLLM &</text><text x="400" y="187" text-anchor="middle" fill="#009688" font-size="10">Multimodal</text>
+
+                <!-- Arrow to Step 5 -->
+                <line x1="430" y1="150" x2="470" y2="150" stroke="#009688" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                <!-- Step 5 -->
+                <circle cx="500" cy="150" r="30" fill="#009688" stroke="#fff" stroke-width="2"/>
+                <text x="500" y="156" text-anchor="middle" fill="#fff" font-size="12">Step 5</text>
+                <text x="500" y="175" text-anchor="middle" fill="#009688" font-size="10">Optimize &</text><text x="500" y="187" text-anchor="middle" fill="#009688" font-size="10">Deploy</text>
+
+                <!-- Arrow to Step 6 (curve down) -->
+                <path d="M 530 150 Q 600 150 600 220" stroke="#009688" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+                <!-- Step 6 -->
+                <circle cx="600" cy="250" r="30" fill="#ff7f0e" stroke="#fff" stroke-width="2"/>
+                <text x="600" y="256" text-anchor="middle" fill="#fff" font-size="12">Step 6</text>
+                <text x="600" y="275" text-anchor="middle" fill="#ff7f0e" font-size="10">Innovate with</text><text x="600" y="287" text-anchor="middle" fill="#ff7f0e" font-size="10">ViT</text>
+
+                <!-- Arrowhead Definition -->
+                <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="#009688"/>
+                    </marker>
+                </defs>
+
+            </svg>
+        </div>
+        <div class="share-section">
+            <button onclick="if(window.external.AddFavorite){window.external.AddFavorite(window.location.href, document.title);}else{alert('Bookmark this URL: ' + window.location.href);}">Bookmark this guide</button>
+            <button onclick="window.open('https://twitter.com/intent/tweet?url='+encodeURIComponent(window.location.href)+'&text='+encodeURIComponent('Check out Vision Transformer Learning Interactive Guide'));">Share with friends</button>
+        </div>
+        <div class="section">
+            <h2>1. Fundamentals of Vision Transformers</h2>
+            <p>Understanding the core principles of Vision Transformers, their architecture, and how they differ from convolution models. ViT treats images as sequences of patches, enabling scalable and efficient vision models.</p>
+            <input type="text" id="searchFundamentals" placeholder="Search for ViT fundamentals..." onkeyup="filterLibs('Fundamentals')">
+            <details class="architecture">
+                <summary><h4>Architecture of ViT: Patch Embeddings, Positional Encodings, Self-Attention</h4></summary>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/2010.11929" target="_blank">ViT Paper: An Image is Worth 16x16 Words - Original ViT architecture</a></li>
+                    <li><a href="https://medium.com/@omerhatipklok/image-classification-using-vision-transformer-3e6b9b9ba846" target="_blank">ViT Patch Embedding Explained</a></li>
+                    <li><a href="https://huggingface.co/docs/transformers/model_doc/vit" target="_blank">Hugging Face ViT Documentation</a></li>
+                    <li><a href="https://towardsdatascience.com/explaining-vision-transformer-vit-85fed471fe7e" target="_blank">Self-Attention in ViT</a></li>
+                </ul>
+            </details>
+            <details class="differences">
+                <summary><h4>Differences vs CNNs: Receptive Field, Scalability, Inductive Biases</h4></summary>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/2103.11958" target="_blank">Is ViT What CNNs Really Need?</a></li>
+                    <li><a href="https://proceedings.neurips.cc/paper/2021/file/20588bb936a2e5f811cb00925c5721aab-Paper.pdf" target="_blank">Early Convolutions help Transformers See Better</a></li>
+                    <li><a href="https://ai.googleblog.com/2020/12/transformers-for-image-recognition-at.html" target="_blank">Google Blog on ViT vs CNNs</a></li>
+                    <li><a href="https://distill.pub/2020/understanding-transformers/" target="_blank">Understanding Transformers vs CNNs</a></li>
+                </ul>
+            </details>
+            <details class="variants">
+                <summary><h4>ViT Variants: DeiT, Swin Transformer, Twins, CvT</h4></summary>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/2012.12877" target="_blank">DeiT: Training ViT from Scratch</a></li>
+                    <li><a href="https://arxiv.org/abs/2103.14030" target="_blank">Swin Transformer: Hierarchical ViT</a></li>
+                    <li><a href="https://arxiv.org/abs/2104.10388" target="_blank">Twins: Revisiting Spatial Attention</a></li>
+                    <li><a href="https://arxiv.org/abs/2103.15808" target="_blank">CvT: Fully-Convolutional ViT</a></li>
+                </ul>
+            </details>
+            <details class="tokenization">
+                <summary><h4>Tokenization in Images: Splitting into Patches</h4></summary>
+                <ul>
+                    <li><a href="https://github.com/microsoft/DPNET" target="_blank">DP-Net ViT Training</a></li>
+                    <li><a href="https://medium.com/@mrmaheshpillai/implementing-vision-transformer-vit-from-scratch-using-pytorch-e8b2b0062fc7" target="_blank">ViT Patchifying Code</a></li>
+                    <li><a href="https://arxiv.org/abs/2001.08013" target="_blank">Patch-Based Image Classification</a></li>
+                    <li><a href="https://huggingface.co/blog/vit" target="_blank">ViT Patch Processing Guide</a></li>
+                </ul>
+            </details>
+            <details class="attention">
+                <summary><h4>Attention Visualization for Image Understanding</h4></summary>
+                <ul>
+                    <li><a href="https://towardsdatascience.com/attention-visualization-in-transformers-1c4b0b11e5b" target="_blank">Visualizing Attention Maps</a></li>
+                    <li><a href="https://arxiv.org/abs/2105.01932" target="_blank">What Does the Transformer Attend To?</a></li>
+                    <li><a href="https://open.spotify.com/episode/4AxoBHAKiI0B4gYFqEq2Rt" target="_blank">Podcast on ViT Attention</a></li>
+                    <li><a href="https://github.com/jacobgil/pytorch-grad-cam" target="_blank">PyTorch Grad-CAM for Attention</a></li>
+                </ul>
+            </details>
+        </div>
+        <div class="section">
+            <h2>2. Data Preparation & Augmentation</h2>
+            <p>Techniques for preparing image datasets, including normalization, resizing, and data augmentation using tools like Roboflow for machine learning-ready data.</p>
+            <input type="text" id="searchDataPreparation" placeholder="Search for data preparation..." onkeyup="filterLibs('DataPreparation')">
+            <details class="normalization">
+                <summary><h4>Image Normalization, Resizing, and Patch Extraction</h4></summary>
+                <ul>
+                    <li><a href="https://docs.opencv.org/4.5.1/da/d6e/tutorial_py_geometric_transformations.html" target="_blank">OpenCV Image Transformations</a></li>
+                    <li><a href="https://roboflow.com/transforms" target="_blank">Roboflow Data Preprocessing</a></li>
+                    <li><a href="https://pytorch.org/vision/stable/transforms.html" target="_blank">PyTorch Image Transforms</a></li>
+                    <li><a href="https://albumentations.ai/" target="_blank">Albumentations for Augmentation</a></li>
+                </ul>
+            </details>
+            <details class="augmentation">
+                <summary><h4>Data Augmentation: Rotation, Flipping, Color Jitter</h4></summary>
+                <ul>
+                    <li><a href="https://opencv.org/learning-opencv/images/transforms.png" target="_blank">OpenCV Augmentation Examples</a></li>
+                    <li><a href="https://roboflow.com/dataset-augmentation" target="_blank">Roboflow Online Augmentation</a></li>
+                    <li><a href="https://towardsdatascience.com/data-augmentation-techniques-for-computer-vision-8c4ac4b0a3d5" target="_blank">Augmentation Techniques for CV</a></li>
+                    <li><a href="https://github.com/albumentations-team/albumentations" target="_blank">Albumentations Library Guide</a></li>
+                </ul>
+            </details>
+            <details class="roboflow-management">
+                <summary><h4>Using Roboflow for Dataset Management & Augmentation Pipelines</h4></summary>
+                <ul>
+                    <li><a href="https://roboflow.com/" target="_blank">Roboflow Platform Overview</a></li>
+                    <li><a href="https://roboflow.com/docs" target="_blank">Roboflow API & SDK Documentation</a></li>
+                    <li><a href="https://roboflow.com/models" target="_blank">Roboflow Model Training Tools</a></li>
+                    <li><a href="https://roboflow.com/blog" target="_blank">Roboflow Tutorial Blog</a></li>
+                </ul>
+            </details>
+            <details class="yolo-conversion">
+                <summary><h4>Converting Datasets to YOLO Format for Object Detection</h4></summary>
+                <ul>
+                    <li><a href="https://roboflow.com/format/yolo-darknet" target="_blank">Roboflow YOLO Conversion Tool</a></li>
+                    <li><a href="https://github.com/ultralytics/yolov5/wiki/Training-Custom-Data" target="_blank">YOLO v5 Data Format Guide</a></li>
+                    <li><a href="https://s3-us-west-1.amazonaws.com/udacity-selfdrivingcar/advanced-deep-learning/yolo-converter.py" target="_blank">YOLO Format Converter Script</a></li>
+                    <li><a href="https://www.analyticsvidhya.com/blog/2021/05/bounding-box-characteristic-yolov3/" target="_blank">Understanding YOLO Bounding Boxes</a></li>
+                </ul>
+            </details>
+        </div>
+        <div class="section">
+            <h2>3. Object Detection & Tracking</h2>
+            <p>Implementing real-time object detection with YOLO, integrating with CV2 for live feeds, and applying multi-object tracking algorithms.</p>
+            <input type="text" id="searchObjectDetection" placeholder="Search for object detection..." onkeyup="filterLibs('ObjectDetection')">
+            <details class="yolo-workflow">
+                <summary><h4>YOLO (v5, v8) Workflow: Training, Inference, Metrics</h4></summary>
+                <ul>
+                    <li><a href="https://github.com/ultralytics/yolov5" target="_blank">YOLOv5 GitHub Repository</a></li>
+                    <li><a href="https://github.com/ultralytics/yolov8" target="_blank">YOLOv8 Documentation</a></li>
+                    <li><a href="https://docs.ultralytics.com/yolov5/" target="_blank">YOLOv5 Training Guide</a></li>
+                    <li><a href="https://github.com/ultralytics/yolov5/wiki/Tutorials" target="_blank">YOLO Tutorials for Inference</a></li>
+                </ul>
+            </details>
+            <details class="cv2-integration">
+                <summary><h4>Integrating CV2 for Live Camera Feed and Detection Overlay</h4></summary>
+                <ul>
+                    <li><a href="https://docs.opencv.org/4.5.1/dd/d43/tutorial_py_video_display.html" target="_blank">OpenCV Video Capture Guide</a></li>
+                    <li><a href="https://docs.opencv.org/master/df/d4a/tutorial_py_tracking.html" target="_blank">OpenCV Object Tracking</a></li>
+                    <li><a href="https://google.github.io/mediapipe/" target="_blank">MediaPipe for CV Integration</a></li>
+                    <li><a href="https://towardsdatascience.com/real-time-object-detection-with-yolov3-and-opencv-d3cce46e02b8" target="_blank">YOLO OpenCV Real-Time Detection</a></li>
+                </ul>
+            </details>
+            <details class="multi-tracking">
+                <summary><h4>Multi-Object Tracking (SORT, DeepSORT)</h4></summary>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/1602.00763" target="_blank">SORT: Simple Online and Realtime Tracking</a></li>
+                    <li><a href="https://arxiv.org/abs/1703.07402" target="_blank">DeepSORT: Deep Appearance Features</a></li>
+                    <li><a href="https://github.com/abewley/sort" target="_blank">SORT Implementation</a></li>
+                    <li><a href="https://github.com/nwojke/deep_sort" target="_blank">DeepSORT Repository</a></li>
+                </ul>
+            </details>
+            <details class="performance-optimization">
+                <summary><h4>Performance Optimization for Real-Time Detection</h4></summary>
+                <ul>
+                    <li><a href="https://github.com/ultralytics/yolov5/releases/tag/v5.0" target="_blank">YOLOv5 Performance Benchmarks</a></li>
+                    <li><a href="https://docs.ultralytics.com/yolov5/" target="_blank">Optimal Settings for FPS</a></li>
+                    <li><a href="https://openvinotoolkit.org/" target="_blank">Intel OpenVINO for Acceleration</a></li>
+                    <li><a href="https://developer.nvidia.com/tensorrt" target="_blank">NVIDIA TensorRT Optimized Inference</a></li>
+                </ul>
+            </details>
+        </div>
+        <div class="section">
+            <h2>ViT Implementation and Optimization</h2>
+            <p>Hands-on guides for building, training, and deploying ViT models.</p>
+            <p>Focus on practical implementation, including data preparation, model training, and performance optimization.</p>
+            <input type="text" id="searchImplementation" placeholder="Search for implementation topics..." onkeyup="filterLibs('Implementation')">
+            <details class="setup">
+                <summary><h4>Setting Up ViT Projects</h4></summary>
+                <ul>
+                    <li><a href="https://github.com/google/vit" target="_blank">Google ViT Repository</a></li>
+                    <li><a href="https://pypi.org/project/vit-pytorch/" target="_blank">ViT-PyTorch Package</a></li>
+                    <li><a href="https://huggingface.co/blog/vit" target="_blank">Hugging Face ViT Blog</a></li>
+                    <li><a href="https://colab.research.google.com/github/huggingface/notebooks/blob/main/examples/vision_transformer.ipynb" target="_blank">ViT Google Colab</a></li>
+                </ul>
+            </details>
+            <details class="training">
+                <summary><h4>Training ViT Models</h4></summary>
+                <ul>
+                    <li><a href="https://pytorch.org/tutorials/beginner/basics/quickstart_tutorial.html" target="_blank">PyTorch Training Basics</a></li>
+                    <li><a href="https://wandb.ai/site" target="_blank">Weights & Biases for Experiment Tracking</a></li>
+                    <li><a href="https://github.com/facebookresearch/fairscale" target="_blank">FairScale for Distributed Training</a></li>
+                    <li><a href="https://arxiv.org/abs/2106.10270" target="_blank">EfficientViT Variations</a></li>
+                </ul>
+            </details>
+            <details class="deployment">
+                <summary><h4>Deploying ViT Models</h4></summary>
+                <ul>
+                    <li><a href="https://onnx.ai/" target="_blank">ONNX for Model Conversion</a></li>
+                    <li><a href="https://aws.amazon.com/sagemaker/" target="_blank">AWS SageMaker for Deployment</a></li>
+                    <li><a href="https://bentoml.com/" target="_blank">BentoML for Serving</a></li>
+                    <li><a href="https://hailo.ai/" target="_blank">Hailo for Edge AI</a></li>
+                </ul>
+            </details>
+        </div>
+        <div class="section">
+            <h2>Advanced ViT Research and Trends</h2>
+            <p>Cutting-edge research, benchmarks, and future directions in ViT.</p>
+            <p>Stay updated with the latest developments and contribute to advancing computer vision.</p>
+            <input type="text" id="searchResearch" placeholder="Search for research topics..." onkeyup="filterLibs('Research')">
+            <details class="papers">
+                <summary><h4>Key ViT Research Papers</h4></summary>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/2205.01580" target="_blank">Swin Transformer: Hierarchical Vision Transformer</a></li>
+                    <li><a href="https://arxiv.org/abs/2112.13492" target="_blank">CaiT: Going Deeper with Image Transformers</a></li>
+                    <li><a href="https://arxiv.org/abs/2103.14030" target="_blank">LeViT: A Vision Transformer in ConvNet's Clothing</a></li>
+                    <li><a href="https://arxiv.org/abs/2204.07143" target="_blank">MaxViT: Multi-Axis Vision Transformer</a></li>
+                </ul>
+            </details>
+            <details class="benchmarks">
+                <summary><h4>Benchmarks and Competitions</h4></summary>
+                <ul>
+                    <li><a href="https://paperswithcode.com/sota/image-classification-on-imagenet" target="_blank">ImageNet Leaderboards</a></li>
+                    <li><a href="https://eval.ai/web/challenges/challenge-page/689/overview" target="_blank">AI City Challenge</a></li>
+                    <li><a href="https://cvpr2023.thecvf.com/" target="_blank">CVPR Conferences</a></li>
+                    <li><a href="https://neurips.cc/" target="_blank">NeurIPS ViT Workshops</a></li>
+                </ul>
+            </details>
+            <details class="trends">
+                <summary><h4>Future Trends</h4></summary>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/2212.14025" target="_blank">Video ViT (ViViT)</a></li>
+                    <li><a href="https://github.com/apple/ml-ferret" target="_blank">FERRET: Multimodal Referring and Grounding</a></li>
+                    <li><a href="https://openai.com/research/gpt-4v" target="_blank">GPT-4V and Advanced Multimodal</a></li>
+                    <li><a href="https://huggingface.co/spaces" target="_blank">Hugging Face Spaces for Demos</a></li>
+                </ul>
+            </details>
+        </div>
+    <script>
+        function filterLibs(section = 'Introduction') {
+            const searchId = `search${section}`;
+            const query = document.getElementById(searchId).value.toLowerCase();
+            const sectionDiv = document.getElementById(searchId).closest('.section');
+            const details = sectionDiv ? sectionDiv.querySelectorAll('details') : [];
+            details.forEach(detail => {
+                const h4 = detail.querySelector('h4').textContent.toLowerCase();
+                const ulText = detail.querySelector('ul') ? detail.querySelector('ul').textContent.toLowerCase() : '';
+                const matches = h4.includes(query) || ulText.includes(query);
+                detail.style.display = matches ? '' : 'none';
+            });
+        }
+        // Add favicons to external links
+        document.querySelectorAll('a[target="_blank"]').forEach(a => {
+            try {
+                const url = new URL(a.href);
+                const img = document.createElement('img');
+                img.src = `https://icons.duckduckgo.com/ip3/${url.hostname}.ico`;
+                img.style.width = '16px';
+                img.style.height = '16px';
+                img.style.marginRight = '5px';
+                img.onerror = () => img.style.display = 'none'; // Hide if favicon fails
+                a.insertBefore(img, a.firstChild);
+            } catch (e) {
+                // Skip malformed URLs
+            }
+        });
+    </script>
+</body>
+</html>

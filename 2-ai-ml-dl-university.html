@@ -1,0 +1,4786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎓 AI FOR ALL University - AI/ML/LLM Interactive Learning Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 3em;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(102, 126, 234, 0.5); }
+            to { text-shadow: 0 0 30px rgba(118, 75, 162, 0.8); }
+        }
+
+        .header .subtitle {
+            font-size: 1.3em;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        .practice-hint {
+            background: rgba(46, 204, 113, 0.1);
+            border: 1px solid #2ecc71;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .practice-hint a {
+            color: #2ecc71;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .practice-hint a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            background: rgba(52, 73, 94, 0.9);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-radius: 15px;
+        }
+
+        .footer a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .ai-importance {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .ai-importance h2 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.8em;
+        }
+
+        .ai-importance p {
+            line-height: 1.8;
+            color: #34495e;
+            margin-bottom: 1rem;
+        }
+
+        .navigation {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .nav-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .nav-card h3 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 1.3em;
+        }
+
+        .nav-card p {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .nav-card.completed {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        .nav-card.completed h3,
+        .nav-card.completed p {
+            color: white;
+        }
+
+        .content-area {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .content-area.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .content-area h2 {
+            color: #2c3e50;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .topic-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .theory-section {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .code-section {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 1.5rem;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .code-header {
+            background: #34495e;
+            padding: 0.5rem 1rem;
+            margin: -1.5rem -1.5rem 1rem -1.5rem;
+            border-radius: 10px 10px 0 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+
+        .run-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .output-area {
+            background: #34495e;
+            color: #2ecc71;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            font-family: 'Courier New', monospace;
+            display: none;
+        }
+
+        .quiz-section {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+
+        .quiz-question {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .quiz-options label {
+            background: #f8f9fa;
+            padding: 0.75rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .quiz-options label:hover {
+            background: #e3f2fd;
+            border-color: #2196f3;
+        }
+
+        .quiz-options input[type="radio"] {
+            margin-right: 0.5rem;
+        }
+
+        .quiz-btn {
+            background: linear-gradient(135deg, #2196f3, #21cbf3);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+        }
+
+        .quiz-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+        }
+
+        .quiz-result {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 10px;
+            display: none;
+            text-align: center;
+        }
+
+        .quiz-result.correct {
+            background: linear-gradient(135deg, #4caf50, #66bb6a);
+            color: white;
+        }
+
+        .quiz-result.incorrect {
+            background: linear-gradient(135deg, #f44336, #ef5350);
+            color: white;
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            border-radius: 25px;
+            height: 10px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #4caf50, #66bb6a);
+            height: 100%;
+            border-radius: 25px;
+            transition: width 0.5s ease;
+        }
+
+        .certification {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .certification h2 {
+            color: #8b4513;
+            font-size: 2.5em;
+            margin-bottom: 1rem;
+        }
+
+        .certification-content {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 1rem 0;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .navigation {
+                grid-template-columns: 1fr;
+            }
+
+            .topic-content {
+                grid-template-columns: 1fr;
+            }
+
+            .quiz-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 AI FOR ALL University</h1>
+            <div class="subtitle">AI/ML/LLM Interactive Learning Platform</div>
+
+            <div class="practice-hint">
+                <p>💻 <strong>Practice Your Skills:</strong> Want to practice Python coding? Try these free online compilers:
+                <a href="https://www.google.com/search?q=free+python+online+compiler" target="_blank">🔍 Search for Free Python Online Compilers</a></p>
+            </div>
+
+            <div class="ai-importance">
+                <h2>🚀 Why AI/ML/LLM in the Modern World?</h2>
+                <p><strong>Artificial Intelligence, Machine Learning, and Large Language Models</strong> represent the most transformative technologies of our time, revolutionizing every industry and aspect of human life.</p>
+
+                <p><strong>💡 Problem-Solving Power:</strong> AI/ML systems can analyze massive datasets, recognize patterns, and make predictions that would be impossible for humans to achieve manually. From medical diagnosis to financial forecasting, AI is augmenting human capabilities.</p>
+
+                <p><strong>🏭 Industrial Revolution 4.0:</strong> Manufacturing, logistics, and supply chain management are being transformed by predictive maintenance, quality control, and optimization algorithms that reduce costs and improve efficiency.</p>
+
+                <p><strong>💬 Natural Language Understanding:</strong> Large Language Models like GPT, BERT, and their successors are breaking down language barriers, enabling machines to understand, generate, and translate human language with unprecedented accuracy.</p>
+
+                <p><strong>👁️ Computer Vision Revolution:</strong> From autonomous vehicles to medical imaging, computer vision powered by deep learning is enabling machines to see and interpret the world like never before.</p>
+
+                <p><strong>🎯 Personalization at Scale:</strong> Recommendation systems, personalized medicine, and adaptive learning platforms are creating customized experiences for billions of users simultaneously.</p>
+
+                <p><strong>🔬 Scientific Discovery:</strong> AI is accelerating drug discovery, materials science, and climate modeling, helping solve some of humanity's greatest challenges.</p>
+
+                <p><strong>⚡ The Future is AI:</strong> As we stand at the dawn of the AI age, understanding and mastering these technologies isn't just an advantage—it's essential for participating in shaping the future of humanity.</p>
+            </div>
+        </div>
+
+        <div class="navigation" id="navigation">
+            <div class="nav-card" onclick="showChapter('ml-intro')">
+                <h3>🤖 Chapter 1</h3>
+                <p>Introduction to Machine Learning</p>
+            </div>
+            <div class="nav-card" onclick="showChapter('linear-regression')">
+                <h3>📈 Chapter 2</h3>
+                <p>Linear Regression & Polynomial Regression</p>
+            </div>
+            <div class="nav-card" onclick="showChapter('logistic-classification')">
+                <h3>🎯 Chapter 3</h3>
+                <p>Logistic Regression & Classification</p>
+            </div>
+            <div class="nav-card" onclick="showChapter('svm')">
+                <h3>⚔️ Chapter 4</h3>
+                <p>Support Vector Machines</p>
+            </div>
+            <div class="nav-card" onclick="showChapter('decision-trees')">
+                <h3>🌳 Chapter 5</h3>
+                <p>Decision Trees & Random Forest</p>
+            </div>
+            <div class="nav-card" onclick="showChapter('ensemble')">
+                <h3>🔗 Chapter 6</h3>
+                <p>Ensemble Methods & Boosting</p>
+            </div>
+            <div class="nav-card" onclick="showChapter('unsupervised')">
+                <h3>🔍 Chapter 7</h3>
+                <p>Unsupervised Learning & Clustering</p>
+            </div>
+            <div class="nav-card" onclick="showChapter('neural-networks')">
+                <h3>🧠 Chapter 8</h3>
+                <p>Neural Networks Fundamentals</p>
+            </div>
+            <div class="nav-card" onclick="showChapter('cnn')">
+                <h3>👁️ Chapter 9</h3>
+                <p>Convolutional Neural Networks</p>
+            </div>
+            <div class="nav-card" onclick="showChapter('rnn-lstm')">
+                <h3>🔄 Chapter 10</h3>
+                <p>Recurrent Neural Networks & LSTM</p>
+            </div>
+            <div class="nav-card" onclick="showChapter('transformers')">
+                <h3>⚡ Chapter 11</h3>
+                <p>Transformer Architecture</p>
+            </div>
+            <div class="nav-card" onclick="showChapter('attention')">
+                <h3>🎯 Chapter 12</h3>
+                <p>Attention Mechanisms</p>
+            </div>
+            <div class="nav-card" onclick="showChapter('bert-gpt')">
+                <h3>💬 Chapter 13</h3>
+                <p>BERT, GPT & Modern LLMs</p>
+            </div>
+            <div class="nav-card" onclick="showChapter('advanced-llm')">
+                <h3>🚀 Chapter 14</h3>
+                <p>Advanced LLM Architectures</p>
+            </div>
+            <div class="nav-card" onclick="showChapter('deployment-ml')">
+                <h3>🌐 Chapter 15</h3>
+                <p>ML Model Deployment</p>
+            </div>
+            <div class="nav-card" onclick="showChapter('ai-ethics')">
+                <h3>⚖️ Chapter 16</h3>
+                <p>AI Ethics & Responsible AI</p>
+            </div>
+            <div class="nav-card" onclick="showChapter('future-ai')">
+                <h3>🔮 Chapter 17</h3>
+                <p>Future of AI & Emerging Trends</p>
+            </div>
+            <div class="nav-card" onclick="showChapter('capstone-ai')">
+                <h3>🎯 Chapter 18</h3>
+                <p>AI Capstone Projects</p>
+            </div>
+            <div class="nav-card" onclick="showChapter('certification-ai')">
+                <h3>🏆 Chapter 19</h3>
+                <p>AI Mastery Certification</p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+
+        <!-- Chapter 1: ML Introduction -->
+        <div id="ml-intro" class="content-area">
+            <h2>🤖 Chapter 1: Introduction to Machine Learning</h2>
+
+            <div class="topic-content">
+                <div class="theory-section">
+                    <h3>What is Machine Learning?</h3>
+                    <p>Machine Learning is a subset of Artificial Intelligence that enables computers to learn and make decisions from data without being explicitly programmed. Instead of following pre-written instructions, ML algorithms build mathematical models based on training data.</p>
+
+                    <h3>Three Types of Machine Learning:</h3>
+                    <h4>1. Supervised Learning</h4>
+                    <p>Learning from labeled data where we have input-output pairs. The algorithm learns to map inputs to correct outputs.</p>
+
+                    <h4>2. Unsupervised Learning</h4>
+                    <p>Finding hidden patterns in data without labeled examples. Used for clustering, dimensionality reduction, and anomaly detection.</p>
+
+                    <h4>3. Reinforcement Learning</h4>
+                    <p>Learning through interaction with an environment using rewards and penalties. Used in robotics, game playing, and autonomous systems.</p>
+
+                    <h3>Why Machine Learning Matters:</h3>
+                    <ul>
+                        <li><strong>Pattern Recognition:</strong> Identifies complex patterns in massive datasets</li>
+                        <li><strong>Predictive Power:</strong> Makes accurate predictions about future events</li>
+                        <li><strong>Automation:</strong> Automates decision-making processes</li>
+                        <li><strong>Scalability:</strong> Handles problems too complex for traditional programming</li>
+                    </ul>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-header"># Machine Learning vs Traditional Programming</div>
+                    <pre id="ml-intro-code"># Traditional Programming
+def traditional_programming(money, distance):
+    if money > 10 and distance < 5:
+        return "Take taxi"
+    elif money > 5:
+        return "Take bus"
+    else:
+        return "Walk"
+
+# Machine Learning Approach
+import numpy as np
+from sklearn.tree import DecisionTreeClassifier
+
+# Training data: [money, distance] -> decision
+X = np.array([
+    [15, 2], [8, 3], [12, 1], [3, 4],  # Taxi
+    [7, 2], [6, 4], [9, 3], [4, 1],    # Bus
+    [2, 1], [1, 2], [3, 3], [2, 4]     # Walk
+])
+
+y = np.array([0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2])  # 0=taxi, 1=bus, 2=walk
+
+# Train ML model
+ml_model = DecisionTreeClassifier(random_state=42)
+ml_model.fit(X, y)
+
+# Make prediction
+def ml_transport_decision(money, distance):
+    prediction = ml_model.predict([[money, distance]])
+    decisions = ["taxi", "bus", "walk"]
+    return decisions[prediction[0]]
+
+# Test both approaches
+test_cases = [(15, 2), (6, 3), (2, 1)]
+
+print("Comparison:")
+for money, distance in test_cases:
+    traditional = traditional_programming(money, distance)
+    ml = ml_transport_decision(money, distance)
+    print(f"Money: ${money}, Distance: {distance}km")
+    print(f"Traditional: {traditional}")
+    print(f"ML Model: {ml}")
+    print("---")</pre>
+                    <button class="copy-btn" onclick="copyCode('ml-intro-code')">Copy</button>
+                    <button class="run-btn" onclick="runCode('ml-intro-code', 'ml-intro-output')">Run Code</button>
+                    <div class="output-area" id="ml-intro-output"></div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Chapter 1 Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the main difference between traditional programming and machine learning?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q1_1" value="a"> A) ML is faster</label>
+                        <label><input type="radio" name="q1_1" value="b"> B) ML learns from data, traditional follows explicit rules</label>
+                        <label><input type="radio" name="q1_1" value="c"> C) Traditional programming is more accurate</label>
+                        <label><input type="radio" name="q1_1" value="d"> D) ML requires less data</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> Which type of ML requires labeled data?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q1_2" value="a"> A) Unsupervised Learning</label>
+                        <label><input type="radio" name="q1_2" value="b"> B) Supervised Learning</label>
+                        <label><input type="radio" name="q1_2" value="c"> C) Reinforcement Learning</label>
+                        <label><input type="radio" name="q1_2" value="d"> D) All of the above</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkQuiz('ml-intro', ['b', 'b'])">Submit Quiz</button>
+                <div class="quiz-result" id="ml-intro-result"></div>
+            </div>
+        </div>
+
+        <!-- Chapter 2: Linear Regression -->
+        <div id="linear-regression" class="content-area">
+            <h2>📈 Chapter 2: Linear Regression & Polynomial Regression</h2>
+
+            <div class="topic-content">
+                <div class="theory-section">
+                    <h3>Linear Regression Fundamentals</h3>
+                    <p>Linear Regression is one of the simplest and most widely used machine learning algorithms. It models the relationship between a dependent variable and one or more independent variables using a linear equation.</p>
+
+                    <h3>Simple Linear Regression:</h3>
+                    <div class="formula">
+                        <strong>Equation:</strong><br>
+                        \(y = \beta_0 + \beta_1 x + \epsilon\)
+                    </div>
+
+                    <p>Where:</p>
+                    <ul>
+                        <li>y: Dependent variable (target)</li>
+                        <li>x: Independent variable (feature)</li>
+                        <li>β₀: Intercept (y when x=0)</li>
+                        <li>β₁: Slope (relationship strength)</li>
+                        <li>ε: Error term</li>
+                    </ul>
+
+                    <h3>Multiple Linear Regression:</h3>
+                    <div class="formula">
+                        <strong>Equation:</strong><br>
+                        \(y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ... + \beta_n x_n + \epsilon\)
+                    </div>
+
+                    <h3>Cost Function (MSE):</h3>
+                    <div class="formula">
+                        <strong>Mean Squared Error:</strong><br>
+                        \(J(\beta) = \frac{1}{m} \sum_{i=1}^m (y_i - \hat{y}_i)^2\)
+                    </div>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-header"># Linear Regression Implementation</div>
+                    <pre id="linear-regression-code">import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Generate sample data
+np.random.seed(42)
+X = np.linspace(0, 10, 50).reshape(-1, 1)
+# Linear relationship with some noise
+y = 2 * X.ravel() + 3 + np.random.randn(50) * 2
+
+print("Dataset shape:", X.shape, y.shape)
+print("First 5 data points:")
+for i in range(5):
+    print(f"X: {X[i][0]:.1f}, y: {y[i]:.1f}")
+
+# Simple Linear Regression
+linear_model = LinearRegression()
+linear_model.fit(X, y)
+
+# Get model parameters
+print("
+Linear Regression Results:")
+print(f"Intercept (β₀): {linear_model.intercept_:.2f}")
+print(f"Slope (β₁): {linear_model.coef_[0]:.2f}")
+print(f"Equation: y = {linear_model.intercept_:.2f} + {linear_model.coef_[0]:.2f}x")
+
+# Predictions
+y_pred_linear = linear_model.predict(X)
+
+# Model evaluation
+mse_linear = mean_squared_error(y, y_pred_linear)
+r2_linear = r2_score(y, y_pred_linear)
+print(f"MSE: {mse_linear:.2f}")
+print(f"R² Score: {r2_linear:.3f}")
+
+# Polynomial Regression (degree 2)
+poly_features = PolynomialFeatures(degree=2)
+X_poly = poly_features.fit_transform(X)
+
+poly_model = LinearRegression()
+poly_model.fit(X_poly, y)
+
+print("
+Polynomial Regression (degree 2) Results:")
+print(f"Intercept: {poly_model.intercept_:.2f}")
+print(f"Coefficients: {poly_model.coef_}")
+print(f"Equation: y = {poly_model.intercept_:.2f} + {poly_model.coef_[1]:.2f}x + {poly_model.coef_[2]:.2f}x²")
+
+# Predictions
+y_pred_poly = poly_model.predict(X_poly)
+
+# Model evaluation
+mse_poly = mean_squared_error(y, y_pred_poly)
+r2_poly = r2_score(y, y_pred_poly)
+print(f"MSE: {mse_poly:.2f}")
+print(f"R² Score: {r2_poly:.3f}")
+
+# Comparison
+print("
+Model Comparison:")
+print(f"Linear Regression - MSE: {mse_linear:.2f}, R²: {r2_linear:.3f}")
+print(f"Polynomial Regression - MSE: {mse_poly:.2f}, R²: {r2_poly:.3f}")
+
+# Predict new values
+new_X = np.array([[6], [8], [12]])
+linear_predictions = linear_model.predict(new_X)
+poly_predictions = poly_model.predict(poly_features.transform(new_X))
+
+print("
+Predictions for new data:")
+for i, x_val in enumerate([6, 8, 12]):
+    print(f"X = {x_val}: Linear = {linear_predictions[i]:.1f}, Polynomial = {poly_predictions[i]:.1f}")</pre>
+                    <button class="copy-btn" onclick="copyCode('linear-regression-code')">Copy</button>
+                    <button class="run-btn" onclick="runCode('linear-regression-code', 'linear-regression-output')">Run Code</button>
+                    <div class="output-area" id="linear-regression-output"></div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Chapter 2 Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What does the slope coefficient (β₁) represent in linear regression?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q2_1" value="a"> A) The y-intercept</label>
+                        <label><input type="radio" name="q2_1" value="b"> B) The change in y for a unit change in x</label>
+                        <label><input type="radio" name="q2_1" value="c"> C) The error term</label>
+                        <label><input type="radio" name="q2_1" value="d"> D) The correlation coefficient</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> When would you use polynomial regression over linear regression?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q2_2" value="a"> A) When the relationship is linear</label>
+                        <label><input type="radio" name="q2_2" value="b"> B) When the relationship is non-linear</label>
+                        <label><input type="radio" name="q2_2" value="c"> C) When you have fewer data points</label>
+                        <label><input type="radio" name="q2_2" value="d"> D) When computation is more important than accuracy</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkQuiz('linear-regression', ['b', 'b'])">Submit Quiz</button>
+                <div class="quiz-result" id="linear-regression-result"></div>
+            </div>
+        </div>
+
+        <!-- Chapter 3: Logistic Regression -->
+        <div id="logistic-classification" class="content-area">
+            <h2>🎯 Chapter 3: Logistic Regression & Classification</h2>
+
+            <div class="topic-content">
+                <div class="theory-section">
+                    <h3>Logistic Regression for Classification</h3>
+                    <p>Logistic Regression is a fundamental classification algorithm that predicts the probability of a binary outcome. Despite its name, it's used for classification, not regression.</p>
+
+                    <h3>Sigmoid Function:</h3>
+                    <div class="formula">
+                        <strong>Sigmoid:</strong><br>
+                        \(\sigma(z) = \frac{1}{1 + e^{-z}}\)
+                    </div>
+
+                    <h3>Logistic Regression Equation:</h3>
+                    <div class="formula">
+                        <strong>Probability:</strong><br>
+                        \(P(y=1|x) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 x_1 + ... + \beta_n x_n)}}\)
+                    </div>
+
+                    <h3>Log Odds (Logit):</h3>
+                    <div class="formula">
+                        <strong>Logit:</strong><br>
+                        \(\log\left(\frac{P(y=1|x)}{P(y=0|x)}\right) = \beta_0 + \beta_1 x_1 + ... + \beta_n x_n\)
+                    </div>
+
+                    <h3>Cost Function:</h3>
+                    <div class="formula">
+                        <strong>Log Loss:</strong><br>
+                        \(J(\beta) = -\frac{1}{m} \sum_{i=1}^m [y_i \log(\hat{y}_i) + (1-y_i) \log(1-\hat{y}_i)]\)
+                    </div>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-header"># Logistic Regression for Classification</div>
+                    <pre id="logistic-code">import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+from sklearn.datasets import make_classification
+
+# Generate synthetic dataset
+X, y = make_classification(
+    n_samples=1000,
+    n_features=2,
+    n_informative=2,
+    n_redundant=0,
+    n_clusters_per_class=1,
+    random_state=42
+)
+
+print("Dataset shape:", X.shape)
+print("Class distribution:", np.bincount(y))
+
+# Split the data
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42
+)
+
+# Train logistic regression model
+logistic_model = LogisticRegression(random_state=42)
+logistic_model.fit(X_train, y_train)
+
+# Make predictions
+y_pred = logistic_model.predict(X_test)
+y_pred_proba = logistic_model.predict_proba(X_test)
+
+# Model evaluation
+accuracy = accuracy_score(y_test, y_pred)
+conf_matrix = confusion_matrix(y_test, y_pred)
+
+print("
+Model Performance:")
+print(f"Accuracy: {accuracy:.3f}")
+print("Confusion Matrix:")
+print(conf_matrix)
+print("
+Classification Report:")
+print(classification_report(y_test, y_pred))
+
+# Model coefficients
+print("
+Model Coefficients:")
+print(f"Intercept: {logistic_model.intercept_[0]:.3f}")
+print(f"Coefficients: {logistic_model.coef_[0]}")
+
+# Decision boundary visualization
+def plot_decision_boundary(X, y, model):
+    """Plot decision boundary for 2D features"""
+    x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
+    y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.1),
+                         np.arange(y_min, y_max, 0.1))
+
+    Z = model.predict(np.c_[xx.ravel(), yy.ravel()])
+    Z = Z.reshape(xx.shape)
+
+    plt.figure(figsize=(10, 6))
+    plt.contourf(xx, yy, Z, alpha=0.4, cmap='RdYlBu')
+    plt.scatter(X[:, 0], X[:, 1], c=y, cmap='RdYlBu', edgecolors='black')
+    plt.xlabel('Feature 1')
+    plt.ylabel('Feature 2')
+    plt.title('Logistic Regression Decision Boundary')
+    plt.colorbar()
+    plt.show()
+
+print("
+Decision boundary visualization would be shown here")
+print("The model separates the two classes with a linear boundary")
+
+# Predict probabilities for new data
+new_data = np.array([[0, 0], [1, 1], [-1, -1]])
+probabilities = logistic_model.predict_proba(new_data)
+
+print("
+Predictions for new data:")
+for i, (data_point, probs) in enumerate(zip(new_data, probabilities)):
+    predicted_class = logistic_model.predict([data_point])[0]
+    print(f"Data point {data_point}: Class {predicted_class}, Probabilities {probs}")</pre>
+                    <button class="copy-btn" onclick="copyCode('logistic-code')">Copy</button>
+                    <button class="run-btn" onclick="runCode('logistic-code', 'logistic-output')">Run Code</button>
+                    <div class="output-area" id="logistic-output"></div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Chapter 3 Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the range of the sigmoid function?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q3_1" value="a"> A) 0 to 1</label>
+                        <label><input type="radio" name="q3_1" value="b"> B) -1 to 1</label>
+                        <label><input type="radio" name="q3_1" value="c"> C) 0 to infinity</label>
+                        <label><input type="radio" name="q3_1" value="d"> D) -infinity to infinity</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> Why is logistic regression called 'regression' when it's used for classification?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q3_2" value="a"> A) It predicts continuous values</label>
+                        <label><input type="radio" name="q3_2" value="b"> B) It uses linear regression internally</label>
+                        <label><input type="radio" name="q3_2" value="c"> C) It minimizes squared errors</label>
+                        <label><input type="radio" name="q3_2" value="d"> D) It was originally developed for regression</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkQuiz('logistic-classification', ['a', 'b'])">Submit Quiz</button>
+                <div class="quiz-result" id="logistic-classification-result"></div>
+            </div>
+        </div>
+
+        <!-- Chapter 4: SVM -->
+        <div id="svm" class="content-area">
+            <h2>⚔️ Chapter 4: Support Vector Machines</h2>
+
+            <div class="topic-content">
+                <div class="theory-section">
+                    <h3>Support Vector Machines (SVM)</h3>
+                    <p>SVM is a powerful supervised learning algorithm used for both classification and regression. It's particularly effective for high-dimensional data and when there's a clear margin of separation between classes.</p>
+
+                    <h3>Core Concept - Maximum Margin:</h3>
+                    <p>SVM finds the hyperplane that maximizes the margin between classes. The margin is the distance between the hyperplane and the closest data points (support vectors).</p>
+
+                    <h3>Mathematical Foundation:</h3>
+                    <div class="formula">
+                        <strong>Hyperplane:</strong><br>
+                        \(\vec{w} \cdot \vec{x} + b = 0\)
+                    </div>
+
+                    <div class="formula">
+                        <strong>Decision Function:</strong><br>
+                        \(f(\vec{x}) = \sign(\vec{w} \cdot \vec{x} + b)\)
+                    </div>
+
+                    <h3>Kernel Trick:</h3>
+                    <p>SVM can handle non-linearly separable data by transforming it to higher dimensions using kernel functions.</p>
+
+                    <h4>Common Kernels:</h4>
+                    <ul>
+                        <li><strong>Linear:</strong> \(K(\vec{x}_i, \vec{x}_j) = \vec{x}_i \cdot \vec{x}_j\)</li>
+                        <li><strong>Polynomial:</strong> \(K(\vec{x}_i, \vec{x}_j) = (\gamma \vec{x}_i \cdot \vec{x}_j + r)^d\)</li>
+                        <li><strong>RBF (Gaussian):</strong> \(K(\vec{x}_i, \vec{x}_j) = e^{-\gamma \|\vec{x}_i - \vec{x}_j\|^2}\)</li>
+                    </ul>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-header"># Support Vector Machines Implementation</div>
+                    <pre id="svm-code">import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.svm import SVC
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, classification_report
+from sklearn.preprocessing import StandardScaler
+from sklearn.datasets import make_classification, make_circles
+
+# Linear SVM with linearly separable data
+print("=== Linear SVM Example ===")
+X_linear, y_linear = make_classification(
+    n_samples=200, n_features=2, n_informative=2,
+    n_redundant=0, n_clusters_per_class=1,
+    class_sep=2, random_state=42
+)
+
+# Split data
+X_train_linear, X_test_linear, y_train_linear, y_test_linear = train_test_split(
+    X_linear, y_linear, test_size=0.3, random_state=42
+)
+
+# Scale features
+scaler = StandardScaler()
+X_train_linear_scaled = scaler.fit_transform(X_train_linear)
+X_test_linear_scaled = scaler.transform(X_test_linear)
+
+# Train linear SVM
+linear_svm = SVC(kernel='linear', C=1.0, random_state=42)
+linear_svm.fit(X_train_linear_scaled, y_train_linear)
+
+# Predictions and evaluation
+y_pred_linear = linear_svm.predict(X_test_linear_scaled)
+accuracy_linear = accuracy_score(y_test_linear, y_pred_linear)
+
+print(f"Linear SVM Accuracy: {accuracy_linear:.3f}")
+print("Linear SVM Classification Report:")
+print(classification_report(y_test_linear, y_pred_linear))
+
+# Non-linear SVM with RBF kernel
+print("\n=== Non-linear SVM with RBF Kernel ===")
+X_circles, y_circles = make_circles(
+    n_samples=200, factor=0.3, noise=0.1, random_state=42
+)
+
+X_train_circles, X_test_circles, y_train_circles, y_test_circles = train_test_split(
+    X_circles, y_circles, test_size=0.3, random_state=42
+)
+
+# Train RBF SVM
+rbf_svm = SVC(kernel='rbf', gamma='scale', C=1.0, random_state=42)
+rbf_svm.fit(X_train_circles, y_train_circles)
+
+y_pred_circles = rbf_svm.predict(X_test_circles)
+accuracy_circles = accuracy_score(y_test_circles, y_pred_circles)
+
+print(f"RBF SVM Accuracy: {accuracy_circles:.3f}")
+print("RBF SVM Classification Report:")
+print(classification_report(y_test_circles, y_pred_circles))
+
+# Support vectors
+print("
+Support Vector Analysis:")
+print(f"Linear SVM - Number of support vectors: {linear_svm.n_support_}")
+print(f"RBF SVM - Number of support vectors: {rbf_svm.n_support_}")
+
+# Predict with new data
+new_data = np.array([[-1, -1], [1, 1], [0, 0], [2, -1]])
+linear_predictions = linear_svm.predict(scaler.transform(new_data))
+rbf_predictions = rbf_svm.predict(new_data)
+
+print("
+Predictions for new data:")
+print("Data Point | Linear SVM | RBF SVM")
+print("-----------|------------|--------")
+for i, point in enumerate(new_data):
+    print(f"{point}    |     {linear_predictions[i]}      |   {rbf_predictions[i]}")
+
+# Different C values effect
+print("
+=== Effect of C parameter ===")
+C_values = [0.1, 1, 10, 100]
+for C in C_values:
+    svm = SVC(kernel='linear', C=C, random_state=42)
+    svm.fit(X_train_linear_scaled, y_train_linear)
+    train_accuracy = accuracy_score(y_train_linear, svm.predict(X_train_linear_scaled))
+    test_accuracy = accuracy_score(y_test_linear, svm.predict(X_test_linear_scaled))
+    print(f"C={C}: Train Acc={train_accuracy:.3f}, Test Acc={test_accuracy:.3f}")</pre>
+                    <button class="copy-btn" onclick="copyCode('svm-code')">Copy</button>
+                    <button class="run-btn" onclick="runCode('svm-code', 'svm-output')">Run Code</button>
+                    <div class="output-area" id="svm-output"></div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Chapter 4 Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the primary goal of SVM?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q4_1" value="a"> A) Minimize training error</label>
+                        <label><input type="radio" name="q4_1" value="b"> B) Maximize the margin between classes</label>
+                        <label><input type="radio" name="q4_1" value="c"> C) Minimize model complexity</label>
+                        <label><input type="radio" name="q4_1" value="d"> D) Maximize number of features</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> What does the C parameter control in SVM?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q4_2" value="a"> A) Kernel type</label>
+                        <label><input type="radio" name="q4_2" value="b"> B) Trade-off between margin and training error</label>
+                        <label><input type="radio" name="q4_2" value="c"> C) Number of support vectors</label>
+                        <label><input type="radio" name="q4_2" value="d"> D) Learning rate</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkQuiz('svm', ['b', 'b'])">Submit Quiz</button>
+                <div class="quiz-result" id="svm-result"></div>
+            </div>
+        </div>
+
+        <!-- Chapter 5: Decision Trees -->
+        <div id="decision-trees" class="content-area">
+            <h2>🌳 Chapter 5: Decision Trees & Random Forest</h2>
+
+            <div class="topic-content">
+                <div class="theory-section">
+                    <h3>Decision Trees</h3>
+                    <p>Decision Trees are versatile algorithms that learn simple decision rules from data features. They're interpretable, handle both numerical and categorical data, and form the basis for ensemble methods.</p>
+
+                    <h3>How Decision Trees Work:</h3>
+                    <ol>
+                        <li><strong>Root Node:</strong> Starting point with all training data</li>
+                        <li><strong>Splitting:</strong> Find best feature and threshold to split data</li>
+                        <li><strong>Recursive Partitioning:</strong> Repeat process for each subset</li>
+                        <li><strong>Leaf Nodes:</strong> Final predictions (majority class or average)</li>
+                    </ol>
+
+                    <h3>Splitting Criteria:</h3>
+                    <h4>Gini Impurity:</h4>
+                    <div class="formula">
+                        <strong>Gini:</strong><br>
+                        \(G = 1 - \sum_{i=1}^c p_i^2\)
+                    </div>
+
+                    <h4>Information Gain (Entropy):</h4>
+                    <div class="formula">
+                        <strong>Entropy:</strong><br>
+                        \(H = -\sum_{i=1}^c p_i \log_2 p_i\)
+                    </div>
+
+                    <h4>Mean Squared Error (Regression):</h4>
+                    <div class="formula">
+                        <strong>MSE:</strong><br>
+                        \(MSE = \frac{1}{n} \sum_{i=1}^n (y_i - \bar{y})^2\)
+                    </div>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-header"># Decision Trees and Random Forest</div>
+                    <pre id="dt-code">import numpy as np
+import pandas as pd
+from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, mean_squared_error
+from sklearn.tree import plot_tree
+import matplotlib.pyplot as plt
+
+# Classification example
+print("=== Decision Tree Classification ===")
+from sklearn.datasets import make_classification
+
+X_clf, y_clf = make_classification(
+    n_samples=300, n_features=4, n_informative=3,
+    n_redundant=1, random_state=42
+)
+
+X_train_clf, X_test_clf, y_train_clf, y_test_clf = train_test_split(
+    X_clf, y_clf, test_size=0.3, random_state=42
+)
+
+# Decision Tree
+dt_classifier = DecisionTreeClassifier(
+    max_depth=3,
+    min_samples_split=10,
+    random_state=42
+)
+dt_classifier.fit(X_train_clf, y_train_clf)
+
+# Predictions
+y_pred_dt = dt_classifier.predict(X_test_clf)
+accuracy_dt = accuracy_score(y_test_clf, y_pred_dt)
+print(f"Decision Tree Accuracy: {accuracy_dt:.3f}")
+
+# Random Forest
+rf_classifier = RandomForestClassifier(
+    n_estimators=100,
+    max_depth=10,
+    random_state=42
+)
+rf_classifier.fit(X_train_clf, y_train_clf)
+
+y_pred_rf = rf_classifier.predict(X_test_clf)
+accuracy_rf = accuracy_score(y_test_clf, y_pred_rf)
+print(f"Random Forest Accuracy: {accuracy_rf:.3f}")
+
+# Feature importance
+print("
+Feature Importance (Random Forest):")
+feature_names = [f'Feature_{i}' for i in range(X_clf.shape[1])]
+for name, importance in zip(feature_names, rf_classifier.feature_importances_):
+    print(f"{name}: {importance:.3f}")
+
+# Regression example
+print("
+=== Decision Tree Regression ===")
+np.random.seed(42)
+X_reg = np.random.randn(200, 2)
+y_reg = X_reg[:, 0]**2 + X_reg[:, 1]**2 + np.random.randn(200) * 0.1
+
+X_train_reg, X_test_reg, y_train_reg, y_test_reg = train_test_split(
+    X_reg, y_reg, test_size=0.3, random_state=42
+)
+
+# Decision Tree Regressor
+dt_regressor = DecisionTreeRegressor(
+    max_depth=5,
+    min_samples_split=10,
+    random_state=42
+)
+dt_regressor.fit(X_train_reg, y_train_reg)
+
+# Random Forest Regressor
+rf_regressor = RandomForestRegressor(
+    n_estimators=100,
+    max_depth=8,
+    random_state=42
+)
+rf_regressor.fit(X_train_reg, y_train_reg)
+
+# Predictions
+y_pred_dt_reg = dt_regressor.predict(X_test_reg)
+y_pred_rf_reg = rf_regressor.predict(X_test_reg)
+
+mse_dt = mean_squared_error(y_test_reg, y_pred_dt_reg)
+mse_rf = mean_squared_error(y_test_reg, y_pred_rf_reg)
+
+print(f"Decision Tree Regression MSE: {mse_dt:.3f}")
+print(f"Random Forest Regression MSE: {mse_rf:.3f}")
+
+# Tree structure analysis
+print("
+Decision Tree Structure:")
+print(f"Tree depth: {dt_classifier.get_depth()}")
+print(f"Number of leaves: {dt_classifier.get_n_leaves()}")
+print(f"Number of nodes: {dt_classifier.tree_.node_count}")
+
+# Compare model performance
+print("
+=== Model Comparison ===")
+print("Classification:")
+print(f"Decision Tree: {accuracy_dt:.3f}")
+print(f"Random Forest: {accuracy_rf:.3f}")
+print("Regression:")
+print(f"Decision Tree: {mse_dt:.3f}")
+print(f"Random Forest: {mse_rf:.3f}")
+
+# Hyperparameter tuning effect
+print("
+=== Hyperparameter Effects ===")
+depths = [3, 5, 10, None]
+for depth in depths:
+    dt = DecisionTreeClassifier(max_depth=depth, random_state=42)
+    dt.fit(X_train_clf, y_train_clf)
+    train_acc = accuracy_score(y_train_clf, dt.predict(X_train_clf))
+    test_acc = accuracy_score(y_test_clf, dt.predict(X_test_clf))
+    print(f"Max Depth {depth}: Train Acc={train_acc:.3f}, Test Acc={test_acc:.3f}")</pre>
+                    <button class="copy-btn" onclick="copyCode('dt-code')">Copy</button>
+                    <button class="run-btn" onclick="runCode('dt-code', 'dt-output')">Run Code</button>
+                    <div class="output-area" id="dt-output"></div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Chapter 5 Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the main advantage of Random Forest over single Decision Trees?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q5_1" value="a"> A) Faster training</label>
+                        <label><input type="radio" name="q5_1" value="b"> B) Better generalization and reduced overfitting</label>
+                        <label><input type="radio" name="q5_1" value="c"> C) Simpler interpretation</label>
+                        <label><input type="radio" name="q5_1" value="d"> D) Fewer parameters</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> What happens when a Decision Tree is allowed to grow without constraints?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q5_2" value="a"> A) Better generalization</label>
+                        <label><input type="radio" name="q5_2" value="b"> B) Overfitting to training data</label>
+                        <label><input type="radio" name="q5_2" value="c"> C) Faster prediction</label>
+                        <label><input type="radio" name="q5_2" value="d"> D) Lower accuracy</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkQuiz('decision-trees', ['b', 'b'])">Submit Quiz</button>
+                <div class="quiz-result" id="decision-trees-result"></div>
+            </div>
+        </div>
+
+        <!-- Chapter 6: Ensemble Methods -->
+        <div id="ensemble" class="content-area">
+            <h2>🔗 Chapter 6: Ensemble Methods & Boosting</h2>
+
+            <div class="topic-content">
+                <div class="theory-section">
+                    <h3>Ensemble Learning</h3>
+                    <p>Ensemble methods combine multiple models to create a stronger, more robust predictor. The idea is that a group of weak learners can form a strong learner.</p>
+
+                    <h3>Types of Ensemble Methods:</h3>
+                    <h4>1. Bagging (Bootstrap Aggregating)</h4>
+                    <p>Trains multiple models on different bootstrap samples and averages their predictions.</p>
+
+                    <h4>2. Boosting</h4>
+                    <p>Trains models sequentially, with each model focusing on the mistakes of the previous ones.</p>
+
+                    <h4>3. Stacking</h4>
+                    <p>Uses predictions from multiple models as input to a meta-model.</p>
+
+                    <h3>AdaBoost Algorithm:</h3>
+                    <ol>
+                        <li>Initialize equal weights for all training samples</li>
+                        <li>Train a weak learner on weighted data</li>
+                        <li>Increase weights of misclassified samples</li>
+                        <li>Repeat until convergence or max iterations</li>
+                        <li>Final prediction is weighted combination of all learners</li>
+                    </ol>
+
+                    <h3>Gradient Boosting:</h3>
+                    <p>Uses gradient descent to minimize the loss function by adding trees that predict the residuals of previous trees.</p>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-header"># Ensemble Methods: AdaBoost and Gradient Boosting</div>
+                    <pre id="ensemble-code">import numpy as np
+from sklearn.ensemble import AdaBoostClassifier, GradientBoostingClassifier
+from sklearn.ensemble import AdaBoostRegressor, GradientBoostingRegressor
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, mean_squared_error
+from sklearn.datasets import make_classification, make_regression
+from sklearn.tree import DecisionTreeClassifier
+
+# Classification with AdaBoost
+print("=== AdaBoost Classification ===")
+X_clf, y_clf = make_classification(
+    n_samples=500, n_features=10, n_informative=8,
+    n_redundant=2, random_state=42
+)
+
+X_train_clf, X_test_clf, y_train_clf, y_test_clf = train_test_split(
+    X_clf, y_clf, test_size=0.3, random_state=42
+)
+
+# AdaBoost with different base estimators
+ada_default = AdaBoostClassifier(n_estimators=50, random_state=42)
+ada_tree = AdaBoostClassifier(
+    DecisionTreeClassifier(max_depth=1),
+    n_estimators=50,
+    random_state=42
+)
+
+ada_default.fit(X_train_clf, y_train_clf)
+ada_tree.fit(X_train_clf, y_train_clf)
+
+y_pred_ada_default = ada_default.predict(X_test_clf)
+y_pred_ada_tree = ada_tree.predict(X_test_clf)
+
+acc_ada_default = accuracy_score(y_test_clf, y_pred_ada_default)
+acc_ada_tree = accuracy_score(y_test_clf, y_pred_ada_tree)
+
+print(f"AdaBoost (default): {acc_ada_default:.3f}")
+print(f"AdaBoost (tree): {acc_ada_tree:.3f}")
+
+# Gradient Boosting Classification
+gb_classifier = GradientBoostingClassifier(
+    n_estimators=100,
+    learning_rate=0.1,
+    max_depth=3,
+    random_state=42
+)
+gb_classifier.fit(X_train_clf, y_train_clf)
+
+y_pred_gb = gb_classifier.predict(X_test_clf)
+acc_gb = accuracy_score(y_test_clf, y_pred_gb)
+print(f"Gradient Boosting: {acc_gb:.3f}")
+
+# Regression with Gradient Boosting
+print("
+=== Gradient Boosting Regression ===")
+X_reg, y_reg = make_regression(
+    n_samples=500, n_features=5, noise=0.1, random_state=42
+)
+
+X_train_reg, X_test_reg, y_train_reg, y_test_reg = train_test_split(
+    X_reg, y_reg, test_size=0.3, random_state=42
+)
+
+gb_regressor = GradientBoostingRegressor(
+    n_estimators=100,
+    learning_rate=0.1,
+    max_depth=3,
+    random_state=42
+)
+gb_regressor.fit(X_train_reg, y_train_reg)
+
+y_pred_gb_reg = gb_regressor.predict(X_test_reg)
+mse_gb_reg = mean_squared_error(y_test_reg, y_pred_gb_reg)
+print(f"Gradient Boosting Regression MSE: {mse_gb_reg:.3f}")
+
+# Feature importance comparison
+print("
+=== Feature Importance Comparison ===")
+print("Gradient Boosting Feature Importance:")
+feature_names = [f'Feature_{i}' for i in range(X_clf.shape[1])]
+for name, importance in zip(feature_names, gb_classifier.feature_importances_):
+    print(f"{name}: {importance:.3f}")
+
+# AdaBoost vs Gradient Boosting comparison
+print("
+=== Model Comparison ===")
+models = ['AdaBoost', 'Gradient Boosting']
+accuracies = [acc_ada_tree, acc_gb]
+
+for model, acc in zip(models, accuracies):
+    print(f"{model}: {acc:.3f}")
+
+# Effect of learning rate in Gradient Boosting
+print("
+=== Learning Rate Effect ===")
+learning_rates = [0.01, 0.1, 0.5, 1.0]
+for lr in learning_rates:
+    gb = GradientBoostingClassifier(
+        n_estimators=50, learning_rate=lr, random_state=42
+    )
+    gb.fit(X_train_clf, y_train_clf)
+    train_acc = accuracy_score(y_train_clf, gb.predict(X_train_clf))
+    test_acc = accuracy_score(y_test_clf, gb.predict(X_test_clf))
+    print(f"LR={lr}: Train={train_acc:.3f}, Test={test_acc:.3f}")
+
+# Stacking example (simple version)
+print("
+=== Simple Stacking Concept ===")
+from sklearn.linear_model import LogisticRegression
+
+# Train base models
+base_models = [ada_tree, gb_classifier]
+base_predictions = []
+
+for model in base_models:
+    model.fit(X_train_clf, y_train_clf)
+    pred = model.predict(X_test_clf)
+    base_predictions.append(pred)
+
+# Stack predictions
+stacked_X = np.column_stack(base_predictions)
+
+# Meta model
+meta_model = LogisticRegression(random_state=42)
+meta_model.fit(stacked_X, y_test_clf)
+
+stacked_predictions = meta_model.predict(stacked_X)
+stacked_accuracy = accuracy_score(y_test_clf, stacked_predictions)
+print(f"Stacked Model Accuracy: {stacked_accuracy:.3f}")</pre>
+                    <button class="copy-btn" onclick="copyCode('ensemble-code')">Copy</button>
+                    <button class="run-btn" onclick="runCode('ensemble-code', 'ensemble-output')">Run Code</button>
+                    <div class="output-area" id="ensemble-output"></div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Chapter 6 Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the main difference between bagging and boosting?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q6_1" value="a"> A) Bagging trains models in parallel, boosting in sequence</label>
+                        <label><input type="radio" name="q6_1" value="b"> B) Boosting is faster than bagging</label>
+                        <label><input type="radio" name="q6_1" value="c"> C) Bagging focuses on easy examples, boosting on hard ones</label>
+                        <label><input type="radio" name="q6_1" value="d"> D) Boosting uses bootstrap sampling</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> What does the learning rate control in Gradient Boosting?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q6_2" value="a"> A) Number of trees</label>
+                        <label><input type="radio" name="q6_2" value="b"> B) Step size for each tree's contribution</label>
+                        <label><input type="radio" name="q6_2" value="c"> C) Tree depth</label>
+                        <label><input type="radio" name="q6_2" value="d"> D) Feature selection</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkQuiz('ensemble', ['a', 'b'])">Submit Quiz</button>
+                <div class="quiz-result" id="ensemble-result"></div>
+            </div>
+        </div>
+
+        <!-- Chapter 7: Unsupervised Learning -->
+        <div id="unsupervised" class="content-area">
+            <h2>🔍 Chapter 7: Unsupervised Learning & Clustering</h2>
+
+            <div class="topic-content">
+                <div class="theory-section">
+                    <h3>Unsupervised Learning</h3>
+                    <p>Unsupervised learning finds hidden patterns in data without labeled examples. It's used for clustering, dimensionality reduction, and anomaly detection.</p>
+
+                    <h3>K-Means Clustering:</h3>
+                    <p>K-Means is a popular clustering algorithm that partitions data into K clusters by minimizing within-cluster variance.</p>
+
+                    <h4>Algorithm Steps:</h4>
+                    <ol>
+                        <li>Initialize K cluster centroids randomly</li>
+                        <li>Assign each point to the nearest centroid</li>
+                        <li>Update centroids as mean of assigned points</li>
+                        <li>Repeat until convergence</li>
+                    </ol>
+
+                    <h3>Clustering Evaluation:</h3>
+                    <h4>Silhouette Score:</h4>
+                    <div class="formula">
+                        <strong>Silhouette:</strong><br>
+                        \(s = \frac{b - a}{\max(a, b)}\)
+                    </div>
+
+                    <h4>Elbow Method:</h4>
+                    <p>Plot sum of squared distances vs number of clusters to find optimal K.</p>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-header"># Unsupervised Learning: K-Means and Hierarchical Clustering</div>
+                    <pre id="unsupervised-code">import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans, AgglomerativeClustering
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import silhouette_score
+from sklearn.datasets import make_blobs
+from scipy.cluster.hierarchy import dendrogram, linkage
+
+# Generate sample data with clear clusters
+X, y_true = make_blobs(
+    n_samples=300,
+    centers=4,
+    cluster_std=1.5,
+    random_state=42
+)
+
+print("Dataset shape:", X.shape)
+print("True number of clusters:", len(np.unique(y_true)))
+
+# Standardize features
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# K-Means clustering
+print("
+=== K-Means Clustering ===")
+kmeans = KMeans(n_clusters=4, random_state=42, n_init=10)
+kmeans_labels = kmeans.fit_predict(X_scaled)
+
+# Evaluate K-Means
+silhouette_kmeans = silhouette_score(X_scaled, kmeans_labels)
+print(f"K-Means Silhouette Score: {silhouette_kmeans:.3f}")
+print(f"K-Means Inertia (SSE): {kmeans.inertia_:.2f}")
+
+# Find optimal number of clusters using elbow method
+inertias = []
+silhouettes = []
+K_range = range(2, 10)
+
+for k in K_range:
+    kmeans_temp = KMeans(n_clusters=k, random_state=42, n_init=10)
+    kmeans_temp.fit(X_scaled)
+    inertias.append(kmeans_temp.inertia_)
+    silhouettes.append(silhouette_score(X_scaled, kmeans_temp.labels_))
+
+print("
+Elbow Method Results:")
+for k, inertia, sil in zip(K_range, inertias, silhouettes):
+    print(f"K={k}: Inertia={inertia:.2f}, Silhouette={sil:.3f}")
+
+# Hierarchical clustering
+print("
+=== Hierarchical Clustering ===")
+hierarchical = AgglomerativeClustering(n_clusters=4)
+hierarchical_labels = hierarchical.fit_predict(X_scaled)
+
+# Evaluate hierarchical clustering
+silhouette_hierarchical = silhouette_score(X_scaled, hierarchical_labels)
+print(f"Hierarchical Silhouette Score: {silhouette_hierarchical:.3f}")
+
+# Create linkage matrix for dendrogram
+Z = linkage(X_scaled, method='ward')
+
+# Compare clustering results
+print("
+=== Clustering Comparison ===")
+print(f"K-Means labels distribution: {np.bincount(kmeans_labels)}")
+print(f"Hierarchical labels distribution: {np.bincount(hierarchical_labels)}")
+print(f"True labels distribution: {np.bincount(y_true)}")
+
+# Clustering with different distance metrics
+print("
+=== Distance Metrics Comparison ===")
+from sklearn.cluster import DBSCAN
+
+# DBSCAN for density-based clustering
+dbscan = DBSCAN(eps=0.5, min_samples=5)
+dbscan_labels = dbscan.fit_predict(X_scaled)
+
+if len(np.unique(dbscan_labels)) > 1:
+    silhouette_dbscan = silhouette_score(X_scaled, dbscan_labels)
+    print(f"DBSCAN Silhouette Score: {silhouette_dbscan:.3f}")
+    print(f"DBSCAN Number of clusters: {len(np.unique(dbscan_labels)) - (1 if -1 in dbscan_labels else 0)}")
+    print(f"DBSCAN Noise points: {np.sum(dbscan_labels == -1)}")
+else:
+    print("DBSCAN found only one cluster or noise")
+
+# Visualization data (would create plots in real implementation)
+print("
+=== Visualization Summary ===")
+print("K-Means: 4 clusters with clear separation")
+print("Hierarchical: 4 clusters with similar structure to K-Means")
+print("DBSCAN: Density-based clustering with noise detection")
+
+# Real-world application example
+print("
+=== Customer Segmentation Example ===")
+# Simulate customer data
+np.random.seed(42)
+customers = np.random.randn(200, 3)  # Age, Income, Spending Score
+
+# Scale the data
+customers_scaled = scaler.fit_transform(customers)
+
+# Segment customers into 3 groups
+customer_kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
+customer_segments = customer_kmeans.fit_predict(customers_scaled)
+
+print(f"Customer segments distribution: {np.bincount(customer_segments)}")
+print("Segment 0: High-income, high-spending customers")
+print("Segment 1: Average-income, moderate-spending customers")
+print("Segment 2: Low-income, low-spending customers")</pre>
+                    <button class="copy-btn" onclick="copyCode('unsupervised-code')">Copy</button>
+                    <button class="run-btn" onclick="runCode('unsupervised-code', 'unsupervised-output')">Run Code</button>
+                    <div class="output-area" id="unsupervised-output"></div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Chapter 7 Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the main goal of unsupervised learning?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q7_1" value="a"> A) Predict labels for new data</label>
+                        <label><input type="radio" name="q7_1" value="b"> B) Find hidden patterns in unlabeled data</label>
+                        <label><input type="radio" name="q7_1" value="c"> C) Minimize prediction error</label>
+                        <label><input type="radio" name="q7_1" value="d"> D) Classify data into known categories</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> What does the elbow method help determine?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q7_2" value="a"> A) Optimal learning rate</label>
+                        <label><input type="radio" name="q7_2" value="b"> B) Optimal number of clusters</label>
+                        <label><input type="radio" name="q7_2" value="c"> C) Optimal number of features</label>
+                        <label><input type="radio" name="q7_2" value="d"> D) Optimal model complexity</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkQuiz('unsupervised', ['b', 'b'])">Submit Quiz</button>
+                <div class="quiz-result" id="unsupervised-result"></div>
+            </div>
+        </div>
+
+        <!-- Chapter 8: Neural Networks -->
+        <div id="neural-networks" class="content-area">
+            <h2>🧠 Chapter 8: Neural Networks Fundamentals</h2>
+
+            <div class="topic-content">
+                <div class="theory-section">
+                    <h3>Artificial Neural Networks</h3>
+                    <p>Neural Networks are computing systems inspired by biological neural networks. They consist of layers of interconnected nodes (neurons) that process and transform data.</p>
+
+                    <h3>Neuron Structure:</h3>
+                    <div class="formula">
+                        <strong>Neuron Output:</strong><br>
+                        \(z = \sum_{i=1}^n w_i x_i + b\)<br>
+                        \(a = f(z)\)
+                    </div>
+
+                    <h3>Network Architecture:</h3>
+                    <ul>
+                        <li><strong>Input Layer:</strong> Receives the input features</li>
+                        <li><strong>Hidden Layers:</strong> Process and transform the data</li>
+                        <li><strong>Output Layer:</strong> Produces the final prediction</li>
+                    </ul>
+
+                    <h3>Activation Functions:</h3>
+                    <h4>ReLU:</h4>
+                    <div class="formula">
+                        \(f(x) = \max(0, x)\)
+                    </div>
+
+                    <h4>Sigmoid:</h4>
+                    <div class="formula">
+                        \(f(x) = \frac{1}{1 + e^{-x}}\)
+                    </div>
+
+                    <h4>Tanh:</h4>
+                    <div class="formula">
+                        \(f(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}\)
+                    </div>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-header"># Neural Network from Scratch</div>
+                    <pre id="nn-code">import numpy as np
+
+# Activation functions
+def relu(x):
+    return np.maximum(0, x)
+
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+def tanh(x):
+    return np.tanh(x)
+
+# Derivatives for backpropagation
+def relu_derivative(x):
+    return np.where(x > 0, 1, 0)
+
+def sigmoid_derivative(x):
+    return sigmoid(x) * (1 - sigmoid(x))
+
+def tanh_derivative(x):
+    return 1 - np.tanh(x)**2
+
+class SimpleNeuralNetwork:
+    def __init__(self, input_size, hidden_size, output_size):
+        """Initialize neural network with random weights"""
+        self.input_size = input_size
+        self.hidden_size = hidden_size
+        self.output_size = output_size
+
+        # Initialize weights and biases
+        self.W1 = np.random.randn(hidden_size, input_size) * 0.01
+        self.b1 = np.zeros((hidden_size, 1))
+        self.W2 = np.random.randn(output_size, hidden_size) * 0.01
+        self.b2 = np.zeros((output_size, 1))
+
+    def forward(self, X):
+        """Forward pass through the network"""
+        # Input to hidden layer
+        Z1 = np.dot(self.W1, X) + self.b1
+        A1 = relu(Z1)
+
+        # Hidden to output layer
+        Z2 = np.dot(self.W2, A1) + self.b2
+        A2 = sigmoid(Z2)  # For binary classification
+
+        cache = (Z1, A1, Z2, A2)
+        return A2, cache
+
+    def compute_loss(self, Y_pred, Y_true):
+        """Compute binary cross-entropy loss"""
+        m = Y_true.shape[1]
+        loss = -1/m * np.sum(
+            Y_true * np.log(Y_pred) + (1 - Y_true) * np.log(1 - Y_pred)
+        )
+        return loss
+
+    def backward(self, X, Y_true, cache, learning_rate=0.01):
+        """Backward pass (gradient descent)"""
+        m = X.shape[1]
+        Z1, A1, Z2, A2 = cache
+
+        # Output layer gradients
+        dZ2 = A2 - Y_true
+        dW2 = 1/m * np.dot(dZ2, A1.T)
+        db2 = 1/m * np.sum(dZ2, axis=1, keepdims=True)
+
+        # Hidden layer gradients
+        dZ1 = np.dot(self.W2.T, dZ2) * relu_derivative(Z1)
+        dW1 = 1/m * np.dot(dZ1, X.T)
+        db1 = 1/m * np.sum(dZ1, axis=1, keepdims=True)
+
+        # Update weights
+        self.W2 -= learning_rate * dW2
+        self.b2 -= learning_rate * db2
+        self.W1 -= learning_rate * dW1
+        self.b1 -= learning_rate * db1
+
+    def train(self, X, Y, epochs=1000, learning_rate=0.01):
+        """Train the neural network"""
+        losses = []
+
+        for epoch in range(epochs):
+            # Forward pass
+            Y_pred, cache = self.forward(X)
+
+            # Compute loss
+            loss = self.compute_loss(Y_pred, Y)
+            losses.append(loss)
+
+            # Backward pass
+            self.backward(X, Y, cache, learning_rate)
+
+            if epoch % 100 == 0:
+                print(f"Epoch {epoch}: Loss = {loss:.4f}")
+
+        return losses
+
+    def predict(self, X):
+        """Make predictions"""
+        Y_pred, _ = self.forward(X)
+        return (Y_pred > 0.5).astype(int)
+
+# Generate sample data
+np.random.seed(42)
+X = np.random.randn(2, 100)  # 2 features, 100 samples
+Y = ((X[0] + X[1] + np.random.randn(100) * 0.5) > 0).astype(int).reshape(1, -1)
+
+print("Neural Network Training Example:")
+print(f"Input shape: {X.shape}")
+print(f"Output shape: {Y.shape}")
+print(f"Class distribution: {np.sum(Y)} positive, {Y.shape[1] - np.sum(Y)} negative")
+
+# Create and train network
+nn = SimpleNeuralNetwork(input_size=2, hidden_size=4, output_size=1)
+losses = nn.train(X, Y, epochs=1000, learning_rate=0.1)
+
+# Make predictions
+predictions = nn.predict(X)
+accuracy = np.mean(predictions == Y)
+print(f"\nTraining completed! Final accuracy: {accuracy:.3f}")
+
+# Test with new data
+test_X = np.array([[1, 1], [-1, -1], [1, -1], [-1, 1]])
+test_predictions = nn.predict(test_X)
+
+print("
+Test Predictions:")
+for i, (point, pred) in enumerate(zip(test_X, test_predictions[0])):
+    print(f"Point {point}: Predicted class {pred}")
+
+print("
+Neural network training completed successfully!")
+print("This demonstrates the core concepts of:")
+print("- Forward propagation")
+print("- Backward propagation")
+print("- Gradient descent optimization")
+print("- Activation functions")
+print("- Loss computation")</pre>
+                    <button class="copy-btn" onclick="copyCode('nn-code')">Copy</button>
+                    <button class="run-btn" onclick="runCode('nn-code', 'nn-output')">Run Code</button>
+                    <div class="output-area" id="nn-output"></div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Chapter 8 Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the purpose of activation functions in neural networks?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q8_1" value="a"> A) Initialize weights</label>
+                        <label><input type="radio" name="q8_1" value="b"> B) Introduce non-linearity</label>
+                        <label><input type="radio" name="q8_1" value="c"> C) Normalize inputs</label>
+                        <label><input type="radio" name="q8_1" value="d"> D) Compute loss</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> Why is ReLU preferred over sigmoid in hidden layers?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q8_2" value="a"> A) ReLU is linear</label>
+                        <label><input type="radio" name="q8_2" value="b"> B) ReLU avoids vanishing gradients</label>
+                        <label><input type="radio" name="q8_2" value="c"> C) ReLU is slower to compute</label>
+                        <label><input type="radio" name="q8_2" value="d"> D) ReLU has bounded output</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkQuiz('neural-networks', ['b', 'b'])">Submit Quiz</button>
+                <div class="quiz-result" id="neural-networks-result"></div>
+            </div>
+        </div>
+
+        <!-- Chapter 9: CNN -->
+        <div id="cnn" class="content-area">
+            <h2>👁️ Chapter 9: Convolutional Neural Networks</h2>
+
+            <div class="topic-content">
+                <div class="theory-section">
+                    <h3>Convolutional Neural Networks (CNNs)</h3>
+                    <p>CNNs are specialized neural networks for processing grid-like data such as images. They use convolutional layers to automatically learn spatial hierarchies of features.</p>
+
+                    <h3>Key Components:</h3>
+                    <h4>1. Convolutional Layers</h4>
+                    <p>Apply learnable filters to detect features like edges, textures, and patterns.</p>
+
+                    <h4>2. Pooling Layers</h4>
+                    <p>Reduce spatial dimensions while preserving important information.</p>
+
+                    <h4>3. Fully Connected Layers</h4>
+                    <p>Make final predictions based on learned features.</p>
+
+                    <h3>Convolution Operation:</h3>
+                    <div class="formula">
+                        <strong>2D Convolution:</strong><br>
+                        \((I * K)_{x,y} = \sum_i \sum_j I_{x+i, y+j} K_{i,j}\)
+                    </div>
+
+                    <h3>Pooling Operations:</h3>
+                    <h4>Max Pooling:</h4>
+                    <div class="formula">
+                        \(\max_{i,j \in W} I_{x+i, y+j}\)
+                    </div>
+
+                    <h4>Average Pooling:</h4>
+                    <div class="formula">
+                        \(\frac{1}{|W|} \sum_{i,j \in W} I_{x+i, y+j}\)
+                    </div>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-header"># CNN for Image Classification</div>
+                    <pre id="cnn-code">import numpy as np
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report
+
+# Load and prepare MNIST dataset
+(X_train_full, y_train_full), (X_test, y_test) = keras.datasets.mnist.load_data()
+
+# Normalize and reshape data
+X_train_full = X_train_full.astype('float32') / 255.0
+X_test = X_test.astype('float32') / 255.0
+
+# Add channel dimension for CNN
+X_train_full = X_train_full.reshape(-1, 28, 28, 1)
+X_test = X_test.reshape(-1, 28, 28, 1)
+
+# Split training data
+X_train, X_valid, y_train, y_valid = train_test_split(
+    X_train_full, y_train_full, test_size=0.2, random_state=42
+)
+
+print("Dataset shapes:")
+print(f"Training: {X_train.shape}, {y_train.shape}")
+print(f"Validation: {X_valid.shape}, {y_valid.shape}")
+print(f"Test: {X_test.shape}, {y_test.shape}")
+
+# Build CNN model
+def create_cnn_model():
+    model = keras.Sequential([
+        # First convolutional block
+        layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
+        layers.BatchNormalization(),
+        layers.MaxPooling2D((2, 2)),
+
+        # Second convolutional block
+        layers.Conv2D(64, (3, 3), activation='relu'),
+        layers.BatchNormalization(),
+        layers.MaxPooling2D((2, 2)),
+
+        # Third convolutional block
+        layers.Conv2D(128, (3, 3), activation='relu'),
+        layers.BatchNormalization(),
+
+        # Flatten and dense layers
+        layers.Flatten(),
+        layers.Dense(128, activation='relu'),
+        layers.Dropout(0.5),
+        layers.Dense(10, activation='softmax')
+    ])
+
+    return model
+
+# Create and compile model
+cnn_model = create_cnn_model()
+cnn_model.compile(
+    optimizer='adam',
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
+)
+
+# Model summary
+print("
+CNN Model Summary:")
+cnn_model.summary()
+
+# Train the model
+print("
+Training CNN...")
+history = cnn_model.fit(
+    X_train, y_train,
+    epochs=10,
+    batch_size=64,
+    validation_data=(X_valid, y_valid),
+    verbose=1
+)
+
+# Evaluate the model
+print("
+Evaluating model...")
+test_loss, test_accuracy = cnn_model.evaluate(X_test, y_test, verbose=0)
+print(f"Test accuracy: {test_accuracy:.4f}")
+print(f"Test loss: {test_loss:.4f}")
+
+# Make predictions
+y_pred = cnn_model.predict(X_test)
+y_pred_classes = np.argmax(y_pred, axis=1)
+
+# Classification report
+print("
+Classification Report:")
+print(classification_report(y_test, y_pred_classes))
+
+# Feature map visualization (concept)
+print("
+CNN Architecture Analysis:")
+print("- Input: 28x28x1 grayscale images")
+print("- Conv2D(32): Detects 32 different features (edges, textures)")
+print("- MaxPooling: Reduces spatial dimensions by 2x")
+print("- Conv2D(64): Detects more complex patterns")
+print("- Conv2D(128): Detects high-level features")
+print("- Dense layers: Make final classification")
+
+# Compare with simple neural network
+def create_simple_nn():
+    model = keras.Sequential([
+        layers.Flatten(input_shape=(28, 28, 1)),
+        layers.Dense(128, activation='relu'),
+        layers.Dense(64, activation='relu'),
+        layers.Dense(10, activation='softmax')
+    ])
+    return model
+
+simple_nn = create_simple_nn()
+simple_nn.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+simple_nn.fit(X_train, y_train, epochs=5, batch_size=64, verbose=0)
+_, simple_accuracy = simple_nn.evaluate(X_test, y_test, verbose=0)
+
+print("
+Model Comparison:")
+print(f"CNN Accuracy: {test_accuracy:.4f}")
+print(f"Simple NN Accuracy: {simple_accuracy:.4f}")
+print(f"Improvement: {test_accuracy - simple_accuracy:.4f}")
+
+# Save model
+cnn_model.save('mnist_cnn_model.h5')
+print("
+CNN model saved as 'mnist_cnn_model.h5'")
+
+print("
+CNN Training Summary:")
+print("- Convolutional layers automatically learn image features")
+print("- Pooling layers reduce computational complexity")
+print("- Batch normalization improves training stability")
+print("- Dropout prevents overfitting")
+print("- CNNs significantly outperform simple neural networks on image data")</pre>
+                    <button class="copy-btn" onclick="copyCode('cnn-code')">Copy</button>
+                    <button class="run-btn" onclick="runCode('cnn-code', 'cnn-output')">Run Code</button>
+                    <div class="output-area" id="cnn-output"></div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Chapter 9 Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the main advantage of CNNs over traditional neural networks for image data?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q9_1" value="a"> A) Fewer parameters</label>
+                        <label><input type="radio" name="q9_1" value="b"> B) Automatic feature extraction</label>
+                        <label><input type="radio" name="q9_1" value="c"> C) Faster training</label>
+                        <label><input type="radio" name="q9_1" value="d"> D) Simpler architecture</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> What is the purpose of pooling layers in CNNs?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q9_2" value="a"> A) Increase model parameters</label>
+                        <label><input type="radio" name="q9_2" value="b"> B) Reduce spatial dimensions</label>
+                        <label><input type="radio" name="q9_2" value="c"> C) Apply convolution filters</label>
+                        <label><input type="radio" name="q9_2" value="d"> D) Normalize pixel values</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkQuiz('cnn', ['b', 'b'])">Submit Quiz</button>
+                <div class="quiz-result" id="cnn-result"></div>
+            </div>
+        </div>
+
+        <!-- Chapter 10: RNN & LSTM -->
+        <div id="rnn-lstm" class="content-area">
+            <h2>🔄 Chapter 10: Recurrent Neural Networks & LSTM</h2>
+
+            <div class="topic-content">
+                <div class="theory-section">
+                    <h3>Recurrent Neural Networks (RNNs)</h3>
+                    <p>RNNs are designed for sequential data where the order matters. They maintain hidden state that captures information from previous time steps.</p>
+
+                    <h3>RNN Architecture:</h3>
+                    <div class="formula">
+                        <strong>Hidden State:</strong><br>
+                        \(h_t = f(W_{hh} h_{t-1} + W_{xh} x_t + b)\)
+                    </div>
+
+                    <h3>Problems with Basic RNNs:</h3>
+                    <ul>
+                        <li><strong>Vanishing Gradients:</strong> Gradients become very small during backpropagation</li>
+                        <li><strong>Exploding Gradients:</strong> Gradients become very large</li>
+                        <li><strong>Short-term Memory:</strong> Difficulty remembering long sequences</li>
+                    </ul>
+
+                    <h3>Long Short-Term Memory (LSTM):</h3>
+                    <p>LSTM networks solve the vanishing gradient problem using gates that control information flow.</p>
+
+                    <h4>LSTM Gates:</h4>
+                    <ul>
+                        <li><strong>Forget Gate:</strong> Decides what to forget</li>
+                        <li><strong>Input Gate:</strong> Decides what to store</li>
+                        <li><strong>Output Gate:</strong> Decides what to output</li>
+                    </ul>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-header"># RNN and LSTM for Sequential Data</div>
+                    <pre id="rnn-code">import numpy as np
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Generate sequential data
+def generate_sequences(n_samples=1000, seq_length=10, n_features=5):
+    """Generate synthetic sequential data"""
+    np.random.seed(42)
+
+    X = []
+    y = []
+
+    for _ in range(n_samples):
+        # Create a sequence with some pattern
+        sequence = np.random.randn(seq_length, n_features)
+
+        # Add some autocorrelation
+        for i in range(1, seq_length):
+            sequence[i] += 0.3 * sequence[i-1]
+
+        X.append(sequence)
+
+        # Binary classification based on sequence pattern
+        # If the sum of the last 3 time steps is positive, class 1
+        target = 1 if np.sum(sequence[-3:, 0]) > 0 else 0
+        y.append(target)
+
+    return np.array(X), np.array(y)
+
+# Generate dataset
+X, y = generate_sequences(1000, 10, 5)
+print("Dataset shape:", X.shape, y.shape)
+print("Class distribution:", np.bincount(y))
+
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Build Simple RNN model
+def create_rnn_model(model_type='simple_rnn'):
+    model = keras.Sequential([
+        layers.Input(shape=(10, 5)),  # sequence_length, n_features
+
+        # RNN layer
+        layers.SimpleRNN(32, return_sequences=True) if model_type == 'simple_rnn'
+        else layers.LSTM(32, return_sequences=True),
+
+        layers.SimpleRNN(16) if model_type == 'simple_rnn'
+        else layers.LSTM(16),
+
+        # Output layer
+        layers.Dense(1, activation='sigmoid')
+    ])
+
+    model.compile(
+        optimizer='adam',
+        loss='binary_crossentropy',
+        metrics=['accuracy']
+    )
+
+    return model
+
+# Train Simple RNN
+print("
+=== Training Simple RNN ===")
+simple_rnn = create_rnn_model('simple_rnn')
+history_rnn = simple_rnn.fit(
+    X_train, y_train,
+    epochs=20,
+    batch_size=32,
+    validation_split=0.2,
+    verbose=1
+)
+
+# Evaluate Simple RNN
+rnn_loss, rnn_accuracy = simple_rnn.evaluate(X_test, y_test, verbose=0)
+print(f"Simple RNN - Test Accuracy: {rnn_accuracy:.4f}, Loss: {rnn_loss:.4f}")
+
+# Train LSTM
+print("
+=== Training LSTM ===")
+lstm_model = create_rnn_model('lstm')
+history_lstm = lstm_model.fit(
+    X_train, y_train,
+    epochs=20,
+    batch_size=32,
+    validation_split=0.2,
+    verbose=1
+)
+
+# Evaluate LSTM
+lstm_loss, lstm_accuracy = lstm_model.evaluate(X_test, y_test, verbose=0)
+print(f"LSTM - Test Accuracy: {lstm_accuracy:.4f}, Loss: {lstm_loss:.4f}")
+
+# Compare models
+print("
+=== Model Comparison ===")
+print(f"Simple RNN: {rnn_accuracy:.4f} accuracy")
+print(f"LSTM: {lstm_accuracy:.4f} accuracy")
+print(f"Difference: {lstm_accuracy - rnn_accuracy:.4f}")
+
+# Make predictions
+sample_sequences = X_test[:5]
+rnn_predictions = simple_rnn.predict(sample_sequences)
+lstm_predictions = lstm_model.predict(sample_sequences)
+
+print("
+Sample Predictions:")
+print("Sequence | True | RNN Pred | LSTM Pred")
+print("---------|------|----------|-----------")
+for i, (seq, true_label) in enumerate(zip(sample_sequences, y_test[:5])):
+    rnn_pred = 1 if rnn_predictions[i] > 0.5 else 0
+    lstm_pred = 1 if lstm_predictions[i] > 0.5 else 0
+    print(f"Seq {i+1}   |  {true_label}   |    {rnn_pred}     |     {lstm_pred}")
+
+# Advanced LSTM with multiple layers
+print("
+=== Advanced LSTM Architecture ===")
+advanced_lstm = keras.Sequential([
+    layers.Input(shape=(10, 5)),
+    layers.LSTM(64, return_sequences=True),
+    layers.LSTM(32, return_sequences=True),
+    layers.LSTM(16),
+    layers.Dense(8, activation='relu'),
+    layers.Dense(1, activation='sigmoid')
+])
+
+advanced_lstm.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+advanced_lstm.fit(X_train, y_train, epochs=10, batch_size=32, verbose=0)
+
+advanced_loss, advanced_accuracy = advanced_lstm.evaluate(X_test, y_test, verbose=0)
+print(f"Advanced LSTM - Test Accuracy: {advanced_accuracy:.4f}")
+
+print("
+RNN/LSTM Summary:")
+print("- RNNs process sequential data with memory")
+print("- Basic RNNs suffer from vanishing gradients")
+print("- LSTMs solve this with gating mechanisms")
+print("- Multiple LSTM layers can capture complex patterns")
+print("- Essential for time series, text, and sequence data")</pre>
+                    <button class="copy-btn" onclick="copyCode('rnn-code')">Copy</button>
+                    <button class="run-btn" onclick="runCode('rnn-code', 'rnn-output')">Run Code</button>
+                    <div class="output-area" id="rnn-output"></div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Chapter 10 Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the main problem that LSTM networks solve?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q10_1" value="a"> A) Exploding gradients</label>
+                        <label><input type="radio" name="q10_1" value="b"> B) Vanishing gradients</label>
+                        <label><input type="radio" name="q10_1" value="c"> C) Overfitting</label>
+                        <label><input type="radio" name="q10_1" value="d"> D) Underfitting</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> Which type of data is RNN/LSTM most suitable for?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q10_2" value="a"> A) Static images</label>
+                        <label><input type="radio" name="q10_2" value="b"> B) Sequential/time series data</label>
+                        <label><input type="radio" name="q10_2" value="c"> C) Tabular data</label>
+                        <label><input type="radio" name="q10_2" value="d"> D) Categorical data</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkQuiz('rnn-lstm', ['b', 'b'])">Submit Quiz</button>
+                <div class="quiz-result" id="rnn-lstm-result"></div>
+            </div>
+        </div>
+
+        <!-- Chapter 11: Transformers -->
+        <div id="transformers" class="content-area">
+            <h2>⚡ Chapter 11: Transformer Architecture</h2>
+
+            <div class="topic-content">
+                <div class="theory-section">
+                    <h3>Transformer Architecture</h3>
+                    <p>Transformers revolutionized NLP and are now used across many domains. They use attention mechanisms to process sequential data in parallel, making them much faster than RNNs.</p>
+
+                    <h3>Key Components:</h3>
+                    <h4>1. Self-Attention Mechanism</h4>
+                    <p>Allows each position to attend to all other positions in the sequence.</p>
+
+                    <h4>2. Multi-Head Attention</h4>
+                    <p>Multiple attention heads that learn different aspects of the data.</p>
+
+                    <h4>3. Position-wise Feed-Forward Networks</h4>
+                    <p>Process each position independently with the same network.</p>
+
+                    <h4>4. Positional Encoding</h4>
+                    <p>Adds position information since transformers don't have recurrence.</p>
+
+                    <h3>Self-Attention:</h3>
+                    <div class="formula">
+                        <strong>Scaled Dot-Product Attention:</strong><br>
+                        \(\text{Attention}(Q, K, V) = \softmax\left(\frac{QK^T}{\sqrt{d_k}}\right)V\)
+                    </div>
+
+                    <h3>Multi-Head Attention:</h3>
+                    <div class="formula">
+                        <strong>Multi-Head:</strong><br>
+                        \(\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \dots, \text{head}_h)W^O\)
+                    </div>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-header"># Transformer Architecture Implementation</div>
+                    <pre id="transformer-code">import numpy as np
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+import matplotlib.pyplot as plt
+
+# Positional Encoding
+def positional_encoding(max_len, d_model):
+    """Create sinusoidal positional encoding"""
+    pos = np.arange(max_len)[:, np.newaxis]
+    i = np.arange(d_model)[np.newaxis, :]
+
+    angles = pos / np.power(10000, (2 * (i // 2)) / np.float32(d_model))
+
+    # Apply sin to even indices, cos to odd indices
+    pos_encoding = np.zeros((max_len, d_model))
+    pos_encoding[:, 0::2] = np.sin(angles[:, 0::2])
+    pos_encoding[:, 1::2] = np.cos(angles[:, 1::2])
+
+    return tf.cast(pos_encoding, dtype=tf.float32)
+
+# Multi-Head Attention from scratch
+class MultiHeadAttention(keras.layers.Layer):
+    def __init__(self, d_model, num_heads):
+        super(MultiHeadAttention, self).__init__()
+        self.num_heads = num_heads
+        self.d_model = d_model
+
+        assert d_model % num_heads == 0
+
+        self.depth = d_model // num_heads
+
+        self.wq = layers.Dense(d_model)
+        self.wk = layers.Dense(d_model)
+        self.wv = layers.Dense(d_model)
+        self.dense = layers.Dense(d_model)
+
+    def split_heads(self, x, batch_size):
+        """Split the last dimension into (num_heads, depth)"""
+        x = tf.reshape(x, (batch_size, -1, self.num_heads, self.depth))
+        return tf.transpose(x, perm=[0, 2, 1, 3])
+
+    def call(self, v, k, q):
+        batch_size = tf.shape(q)[0]
+
+        q = self.wq(q)  # (batch_size, seq_len, d_model)
+        k = self.wk(k)  # (batch_size, seq_len, d_model)
+        v = self.wv(v)  # (batch_size, seq_len, d_model)
+
+        q = self.split_heads(q, batch_size)  # (batch_size, num_heads, seq_len, depth)
+        k = self.split_heads(k, batch_size)  # (batch_size, num_heads, seq_len, depth)
+        v = self.split_heads(v, batch_size)  # (batch_size, num_heads, seq_len, depth)
+
+        # Scaled dot-product attention
+        matmul_qk = tf.matmul(q, k, transpose_b=True)  # (batch_size, num_heads, seq_len, seq_len)
+        dk = tf.cast(tf.shape(k)[-1], tf.float32)
+        scaled_attention_logits = matmul_qk / tf.math.sqrt(dk)
+
+        attention_weights = tf.nn.softmax(scaled_attention_logits, axis=-1)
+
+        output = tf.matmul(attention_weights, v)  # (batch_size, num_heads, seq_len, depth)
+
+        output = tf.transpose(output, perm=[0, 2, 1, 3])  # (batch_size, seq_len, num_heads, depth)
+        output = tf.reshape(output, (batch_size, -1, self.d_model))  # (batch_size, seq_len, d_model)
+
+        return self.dense(output)
+
+# Transformer Encoder Layer
+class TransformerEncoderLayer(keras.layers.Layer):
+    def __init__(self, d_model, num_heads, dff, rate=0.1):
+        super(TransformerEncoderLayer, self).__init__()
+
+        self.mha = MultiHeadAttention(d_model, num_heads)
+        self.ffn = keras.Sequential([
+            layers.Dense(dff, activation='relu'),
+            layers.Dense(d_model)
+        ])
+
+        self.layernorm1 = layers.LayerNormalization(epsilon=1e-6)
+        self.layernorm2 = layers.LayerNormalization(epsilon=1e-6)
+
+        self.dropout1 = layers.Dropout(rate)
+        self.dropout2 = layers.Dropout(rate)
+
+    def call(self, x, training):
+        # Multi-head attention
+        attn_output = self.mha(x, x, x)
+        attn_output = self.dropout1(attn_output, training=training)
+        out1 = self.layernorm1(x + attn_output)
+
+        # Feed-forward network
+        ffn_output = self.ffn(out1)
+        ffn_output = self.dropout2(ffn_output, training=training)
+        out2 = self.layernorm2(out1 + ffn_output)
+
+        return out2
+
+# Create sample sequential data
+def create_sample_data(seq_length=20, n_features=10, n_samples=1000):
+    """Create sample time series data"""
+    np.random.seed(42)
+
+    X = []
+    y = []
+
+    for _ in range(n_samples):
+        # Create sequence with trend and seasonality
+        sequence = np.zeros((seq_length, n_features))
+
+        # Add trend
+        for i in range(seq_length):
+            sequence[i] = np.sin(i * 0.1) + np.random.randn(n_features) * 0.1
+
+        X.append(sequence)
+
+        # Binary classification: positive if sequence has upward trend
+        trend = sequence[-1, 0] - sequence[0, 0]
+        target = 1 if trend > 0 else 0
+        y.append(target)
+
+    return np.array(X), np.array(y)
+
+# Generate dataset
+X, y = create_sample_data()
+print("Dataset shape:", X.shape, y.shape)
+
+# Split data
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Create Transformer model
+def create_transformer_model():
+    inputs = keras.Input(shape=(20, 10))
+
+    # Positional encoding
+    pos_encoding = positional_encoding(20, 10)
+    x = inputs + pos_encoding
+
+    # Transformer encoder layers
+    x = TransformerEncoderLayer(10, 2, 32)(x)
+    x = TransformerEncoderLayer(10, 2, 32)(x)
+
+    # Global average pooling
+    x = layers.GlobalAveragePooling1D()(x)
+
+    # Output layer
+    outputs = layers.Dense(1, activation='sigmoid')(x)
+
+    model = keras.Model(inputs=inputs, outputs=outputs)
+    return model
+
+# Create and compile model
+transformer_model = create_transformer_model()
+transformer_model.compile(
+    optimizer='adam',
+    loss='binary_crossentropy',
+    metrics=['accuracy']
+)
+
+# Model summary
+print("
+Transformer Model Summary:")
+transformer_model.summary()
+
+# Train model
+print("
+Training Transformer...")
+history = transformer_model.fit(
+    X_train, y_train,
+    epochs=10,
+    batch_size=32,
+    validation_split=0.2,
+    verbose=1
+)
+
+# Evaluate model
+loss, accuracy = transformer_model.evaluate(X_test, y_test, verbose=0)
+print(f"\nTransformer Test Accuracy: {accuracy:.4f}")
+
+# Compare with LSTM
+lstm_comparison = keras.Sequential([
+    layers.LSTM(32, input_shape=(20, 10)),
+    layers.Dense(1, activation='sigmoid')
+])
+
+lstm_comparison.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+lstm_comparison.fit(X_train, y_train, epochs=10, batch_size=32, verbose=0)
+_, lstm_accuracy = lstm_comparison.evaluate(X_test, y_test, verbose=0)
+
+print("
+Model Comparison:")
+print(f"Transformer: {accuracy:.4f} accuracy")
+print(f"LSTM: {lstm_accuracy:.4f} accuracy")
+
+print("
+Transformer Architecture Summary:")
+print("- Self-attention allows parallel processing")
+print("- Positional encoding preserves sequence order")
+print("- Multi-head attention captures different relationships")
+print("- No vanishing gradient problem")
+print("- Highly parallelizable and efficient")</pre>
+                    <button class="copy-btn" onclick="copyCode('transformer-code')">Copy</button>
+                    <button class="run-btn" onclick="runCode('transformer-code', 'transformer-output')">Run Code</button>
+                    <div class="output-area" id="transformer-output"></div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Chapter 11 Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the main advantage of Transformers over RNNs?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q11_1" value="a"> A) Fewer parameters</label>
+                        <label><input type="radio" name="q11_1" value="b"> B) Parallel processing capability</label>
+                        <label><input type="radio" name="q11_1" value="c"> C) Simpler architecture</label>
+                        <label><input type="radio" name="q11_1" value="d"> D) Less memory usage</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> Why do Transformers need positional encoding?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q11_2" value="a"> A) To reduce model size</label>
+                        <label><input type="radio" name="q11_2" value="b"> B) To preserve sequence order information</label>
+                        <label><input type="radio" name="q11_2" value="c"> C) To speed up training</label>
+                        <label><input type="radio" name="q11_2" value="d"> D) To reduce overfitting</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkQuiz('transformers', ['b', 'b'])">Submit Quiz</button>
+                <div class="quiz-result" id="transformers-result"></div>
+            </div>
+        </div>
+
+        <!-- Chapter 12: Attention Mechanisms -->
+        <div id="attention" class="content-area">
+            <h2>🎯 Chapter 12: Attention Mechanisms</h2>
+
+            <div class="topic-content">
+                <div class="theory-section">
+                    <h3>Attention Mechanisms</h3>
+                    <p>Attention mechanisms allow neural networks to focus on the most relevant parts of the input when making predictions. They have become fundamental to modern deep learning.</p>
+
+                    <h3>Types of Attention:</h3>
+                    <h4>1. Self-Attention</h4>
+                    <p>Each position attends to all other positions in the same sequence.</p>
+
+                    <h4>2. Cross-Attention</h4>
+                    <p>One sequence attends to another sequence (e.g., decoder attending to encoder).</p>
+
+                    <h4>3. Global Attention</h4>
+                    <p>Every position attends to every other position.</p>
+
+                    <h4>4. Local Attention</h4>
+                    <p>Positions attend only to nearby positions.</p>
+
+                    <h3>Scaled Dot-Product Attention:</h3>
+                    <div class="formula">
+                        <strong>Attention Formula:</strong><br>
+                        \(\text{Attention}(Q, K, V) = \softmax\left(\frac{QK^T}{\sqrt{d_k}}\right)V\)
+                    </div>
+
+                    <h3>Multi-Head Attention:</h3>
+                    <p>Splits queries, keys, and values into multiple heads to capture different types of relationships.</p>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-header"># Attention Mechanisms Implementation</div>
+                    <pre id="attention-code">import numpy as np
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+
+# Scaled Dot-Product Attention
+def scaled_dot_product_attention(q, k, v, mask=None):
+    """Calculate scaled dot-product attention"""
+    # Query-Key dot product
+    matmul_qk = tf.matmul(q, k, transpose_b=True)
+
+    # Scale by sqrt(d_k)
+    dk = tf.cast(tf.shape(k)[-1], tf.float32)
+    scaled_attention_logits = matmul_qk / tf.math.sqrt(dk)
+
+    # Apply mask (optional)
+    if mask is not None:
+        scaled_attention_logits += (mask * -1e9)
+
+    # Softmax
+    attention_weights = tf.nn.softmax(scaled_attention_logits, axis=-1)
+
+    # Weighted sum with values
+    output = tf.matmul(attention_weights, v)
+
+    return output, attention_weights
+
+# Multi-Head Attention
+class MultiHeadAttention(layers.Layer):
+    def __init__(self, d_model, num_heads):
+        super(MultiHeadAttention, self).__init__()
+        self.num_heads = num_heads
+        self.d_model = d_model
+
+        assert d_model % self.num_heads == 0
+
+        self.depth = d_model // self.num_heads
+
+        self.wq = layers.Dense(d_model)
+        self.wk = layers.Dense(d_model)
+        self.wv = layers.Dense(d_model)
+        self.dense = layers.Dense(d_model)
+
+    def split_heads(self, x, batch_size):
+        """Split into multiple heads"""
+        x = tf.reshape(x, (batch_size, -1, self.num_heads, self.depth))
+        return tf.transpose(x, perm=[0, 2, 1, 3])
+
+    def call(self, v, k, q, mask=None):
+        batch_size = tf.shape(q)[0]
+
+        q = self.wq(q)
+        k = self.wk(k)
+        v = self.wv(v)
+
+        q = self.split_heads(q, batch_size)
+        k = self.split_heads(k, batch_size)
+        v = self.split_heads(v, batch_size)
+
+        # Attention
+        scaled_attention, attention_weights = scaled_dot_product_attention(q, k, v, mask)
+
+        # Reshape
+        scaled_attention = tf.transpose(scaled_attention, perm=[0, 2, 1, 3])
+        concat_attention = tf.reshape(scaled_attention, (batch_size, -1, self.d_model))
+
+        output = self.dense(concat_attention)
+
+        return output, attention_weights
+
+# Demonstrate attention with simple example
+def demonstrate_attention():
+    """Show how attention works with simple numbers"""
+    # Simple query, key, value matrices
+    q = np.array([[1, 0, 1]])  # Query
+    k = np.array([[1, 1, 0], [0, 1, 1], [1, 0, 0]])  # Keys
+    v = np.array([[1, 2], [3, 4], [5, 6]])  # Values
+
+    print("Query (Q):", q)
+    print("Keys (K):", k)
+    print("Values (V):", v)
+
+    # Manual attention calculation
+    scores = np.dot(q, k.T)  # Q * K^T
+    print("
+Attention scores (Q*K^T):", scores)
+
+    # Scale by sqrt(d_k)
+    d_k = k.shape[1]
+    scaled_scores = scores / np.sqrt(d_k)
+    print(f"Scaled scores (divided by sqrt({d_k})):", scaled_scores)
+
+    # Softmax
+    attention_weights = tf.nn.softmax(scaled_scores, axis=-1).numpy()
+    print("Attention weights (softmax):", attention_weights)
+
+    # Weighted sum with values
+    output = np.dot(attention_weights, v)
+    print("Final output (attention * V):", output)
+
+    return output
+
+# Run demonstration
+print("=== Attention Mechanism Demonstration ===")
+attention_output = demonstrate_attention()
+
+# Create attention visualization data
+def create_attention_heatmap():
+    """Create sample attention heatmap"""
+    seq_length = 6
+    # Simulate attention weights
+    attention_matrix = np.random.rand(seq_length, seq_length)
+    # Make it more diagonal-focused (local attention)
+    for i in range(seq_length):
+        for j in range(seq_length):
+            if abs(i - j) > 2:
+                attention_matrix[i, j] *= 0.1
+
+    # Normalize rows
+    row_sums = attention_matrix.sum(axis=1, keepdims=True)
+    attention_matrix = attention_matrix / row_sums
+
+    return attention_matrix
+
+# Generate attention heatmap
+attention_heatmap = create_attention_heatmap()
+print("
+Sample Attention Heatmap:")
+print(attention_heatmap)
+
+# Attention in sequence-to-sequence
+print("
+=== Sequence-to-Sequence Attention ===")
+# Simulate encoder-decoder attention
+encoder_outputs = np.random.rand(5, 8)  # 5 time steps, 8 features
+decoder_hidden = np.random.rand(1, 8)   # Current decoder state
+
+# Cross attention: decoder attends to encoder
+attention_scores = np.dot(decoder_hidden, encoder_outputs.T)
+attention_weights = tf.nn.softmax(attention_scores, axis=-1).numpy()
+
+print(f"Encoder outputs shape: {encoder_outputs.shape}")
+print(f"Decoder hidden shape: {decoder_hidden.shape}")
+print(f"Attention weights: {attention_weights}")
+
+# Context vector
+context_vector = np.dot(attention_weights, encoder_outputs)
+print(f"Context vector: {context_vector}")
+
+print("
+Attention Mechanism Summary:")
+print("- Attention allows models to focus on relevant information")
+print("- Self-attention captures relationships within a sequence")
+print("- Cross-attention captures relationships between sequences")
+print("- Multi-head attention captures different types of relationships")
+print("- Essential for transformers and modern NLP models")</pre>
+                    <button class="copy-btn" onclick="copyCode('attention-code')">Copy</button>
+                    <button class="run-btn" onclick="runCode('attention-code', 'attention-output')">Run Code</button>
+                    <div class="output-area" id="attention-output"></div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Chapter 12 Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the purpose of the scaling factor (√d_k) in attention?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q12_1" value="a"> A) Prevent vanishing gradients</label>
+                        <label><input type="radio" name="q12_1" value="b"> B) Prevent attention scores from becoming too large</label>
+                        <label><input type="radio" name="q12_1" value="c"> C) Increase model capacity</label>
+                        <label><input type="radio" name="q12_1" value="d"> D) Reduce computational complexity</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> What does multi-head attention allow the model to do?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q12_2" value="a"> A) Process multiple sequences simultaneously</label>
+                        <label><input type="radio" name="q12_2" value="b"> B) Capture different types of relationships</label>
+                        <label><input type="radio" name="q12_2" value="c"> C) Reduce model parameters</label>
+                        <label><input type="radio" name="q12_2" value="d"> D) Speed up training</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkQuiz('attention', ['b', 'b'])">Submit Quiz</button>
+                <div class="quiz-result" id="attention-result"></div>
+            </div>
+        </div>
+
+        <!-- Chapter 13: BERT & GPT -->
+        <div id="bert-gpt" class="content-area">
+            <h2>💬 Chapter 13: BERT, GPT & Modern LLMs</h2>
+
+            <div class="topic-content">
+                <div class="theory-section">
+                    <h3>Modern Language Models</h3>
+                    <p>BERT and GPT represent two major families of large language models that have revolutionized natural language processing.</p>
+
+                    <h3>BERT (Bidirectional Encoder Representations from Transformers):</h3>
+                    <ul>
+                        <li><strong>Bidirectional:</strong> Considers both left and right context</li>
+                        <li><strong>Encoder-only:</strong> Focuses on understanding input text</li>
+                        <li><strong>Pre-training:</strong> Masked Language Modeling and Next Sentence Prediction</li>
+                        <li><strong>Fine-tuning:</strong> Adapts to specific NLP tasks</li>
+                    </ul>
+
+                    <h3>GPT (Generative Pre-trained Transformer):</h3>
+                    <ul>
+                        <li><strong>Unidirectional:</strong> Left-to-right language modeling</li>
+                        <li><strong>Decoder-only:</strong> Focuses on text generation</li>
+                        <li><strong>Autoregressive:</strong> Predicts next token based on previous tokens</li>
+                        <li><strong>Scaling:</strong> Performance improves with model size</li>
+                    </ul>
+
+                    <h3>Key Differences:</h3>
+                    <ul>
+                        <li><strong>BERT:</strong> Better for understanding tasks (classification, Q&A)</li>
+                        <li><strong>GPT:</strong> Better for generation tasks (writing, translation)</li>
+                        <li><strong>Training:</strong> BERT uses masked LM, GPT uses next token prediction</li>
+                    </ul>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-header"># BERT and GPT Concepts with Code Examples</div>
+                    <pre id="bert-gpt-code"># Note: This demonstrates concepts. Real BERT/GPT models require transformers library.
+
+import numpy as np
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Sample text classification task
+texts = [
+    "I love this movie! It's fantastic and well-acted.",
+    "This film is terrible. I hated every minute of it.",
+    "Great customer service! They were very helpful.",
+    "Worst experience ever. I will never come back.",
+    "Excellent product quality and fast delivery.",
+    "Disappointing purchase. Not worth the money.",
+    "Highly recommended! Five stars from me.",
+    "Avoid this at all costs. Complete waste of time."
+]
+
+labels = [1, 0, 1, 0, 1, 0, 1, 0]  # 1=positive, 0=negative
+
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(
+    texts, labels, test_size=0.25, random_state=42
+)
+
+# Traditional approach: TF-IDF + Logistic Regression
+print("=== Traditional ML Approach ===")
+tfidf = TfidfVectorizer(max_features=1000)
+X_train_tfidf = tfidf.fit_transform(X_train)
+X_test_tfidf = tfidf.transform(X_test)
+
+traditional_model = LogisticRegression(random_state=42)
+traditional_model.fit(X_train_tfidf, y_train)
+
+traditional_pred = traditional_model.predict(X_test_tfidf)
+traditional_accuracy = accuracy_score(y_test, traditional_pred)
+print(f"Traditional ML Accuracy: {traditional_accuracy:.3f}")
+
+# Simulate BERT-like approach (simplified)
+print("
+=== BERT-like Approach (Simplified) ===")
+
+class SimpleBERTLike:
+    def __init__(self, vocab_size=1000, embedding_dim=128):
+        self.embedding_dim = embedding_dim
+        self.token_embedding = np.random.randn(vocab_size, embedding_dim) * 0.01
+        self.position_embedding = np.random.randn(50, embedding_dim) * 0.01  # Max 50 tokens
+        self.classifier = LogisticRegression(random_state=42)
+
+    def encode_text(self, text):
+        """Simple text encoding (in reality, this would use subword tokenization)"""
+        # Simple word-level tokenization
+        words = text.lower().split()
+        # Convert to indices (simplified)
+        indices = [hash(word) % 1000 for word in words[:10]]  # Limit to 10 tokens
+
+        # Get embeddings
+        token_embeds = self.token_embedding[indices]
+        pos_embeds = self.position_embedding[:len(indices)]
+
+        # Combine token and position embeddings
+        combined = token_embeds + pos_embeds
+
+        # Global average pooling (simplified)
+        return np.mean(combined, axis=0)
+
+    def encode_texts(self, texts):
+        """Encode multiple texts"""
+        return np.array([self.encode_text(text) for text in texts])
+
+    def train(self, texts, labels):
+        """Train the model"""
+        X_encoded = self.encode_texts(texts)
+        self.classifier.fit(X_encoded, labels)
+        return self.classifier
+
+    def predict(self, texts):
+        """Make predictions"""
+        X_encoded = self.encode_texts(texts)
+        return self.classifier.predict(X_encoded)
+
+# Create and train BERT-like model
+bert_like = SimpleBERTLike()
+bert_classifier = bert_like.train(X_train, y_train)
+
+# Make predictions
+bert_pred = bert_classifier.predict(X_test)
+bert_accuracy = accuracy_score(y_test, bert_pred)
+print(f"BERT-like Model Accuracy: {bert_accuracy:.3f}")
+
+# Simulate GPT-like text generation (simplified)
+print("
+=== GPT-like Text Generation (Simplified) ===")
+
+class SimpleGPTLike:
+    def __init__(self, vocab_size=1000, embedding_dim=64, max_length=20):
+        self.embedding_dim = embedding_dim
+        self.max_length = max_length
+        self.token_embedding = np.random.randn(vocab_size, embedding_dim) * 0.01
+        self.position_embedding = np.random.randn(max_length, embedding_dim) * 0.01
+        self.output_projection = np.random.randn(embedding_dim, vocab_size) * 0.01
+
+    def generate_next_token(self, current_tokens, temperature=1.0):
+        """Generate next token given previous tokens"""
+        if len(current_tokens) >= self.max_length:
+            return None
+
+        # Get embeddings
+        token_embeds = self.token_embedding[current_tokens]
+        pos_embeds = self.position_embedding[:len(current_tokens)]
+
+        # Combine embeddings
+        combined = token_embeds + pos_embeds
+
+        # Average representation
+        context_vector = np.mean(combined, axis=0)
+
+        # Compute logits (simplified)
+        logits = np.dot(context_vector, self.output_projection)
+
+        # Apply temperature
+        logits = logits / temperature
+
+        # Convert to probabilities
+        exp_logits = np.exp(logits - np.max(logits))  # Numerical stability
+        probabilities = exp_logits / np.sum(exp_logits)
+
+        # Sample next token
+        next_token = np.random.choice(len(probabilities), p=probabilities)
+        return next_token
+
+    def generate_text(self, start_tokens, length=10, temperature=0.8):
+        """Generate text sequence"""
+        current_tokens = start_tokens.copy()
+
+        for _ in range(length):
+            next_token = self.generate_next_token(current_tokens, temperature)
+            if next_token is None:
+                break
+            current_tokens.append(next_token)
+
+        return current_tokens
+
+# Demonstrate text generation
+print("GPT-like Text Generation:")
+start_tokens = [42, 123, 456]  # Example starting tokens
+generated_sequence = SimpleGPTLike().generate_text(start_tokens, length=5)
+print(f"Generated sequence: {generated_sequence}")
+
+# Compare approaches
+print("
+=== Model Comparison ===")
+print(f"Traditional ML (TF-IDF + LR): {traditional_accuracy:.3f}")
+print(f"BERT-like (Contextual embeddings): {bert_accuracy:.3f}")
+print("Difference: Shows the power of contextual understanding")
+
+print("
+Modern LLM Summary:")
+print("- BERT: Excellent for understanding and classification tasks")
+print("- GPT: Excellent for text generation and completion")
+print("- Both use transformer architecture with attention")
+print("- Pre-training on massive datasets enables few-shot learning")
+print("- Fine-tuning adapts models to specific tasks")
+print("- Scaling laws show that bigger models perform better")</pre>
+                    <button class="copy-btn" onclick="copyCode('bert-gpt-code')">Copy</button>
+                    <button class="run-btn" onclick="runCode('bert-gpt-code', 'bert-gpt-output')">Run Code</button>
+                    <div class="output-area" id="bert-gpt-output"></div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Chapter 13 Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the main difference between BERT and GPT architectures?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q13_1" value="a"> A) BERT is encoder-only, GPT is decoder-only</label>
+                        <label><input type="radio" name="q13_1" value="b"> B) GPT is bidirectional, BERT is unidirectional</label>
+                        <label><input type="radio" name="q13_1" value="c"> C) BERT uses RNNs, GPT uses transformers</label>
+                        <label><input type="radio" name="q13_1" value="d"> D) GPT is smaller than BERT</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> Which model is better suited for text generation tasks?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q13_2" value="a"> A) BERT</label>
+                        <label><input type="radio" name="q13_2" value="b"> B) GPT</label>
+                        <label><input type="radio" name="q13_2" value="c"> C) Both equally</label>
+                        <label><input type="radio" name="q13_2" value="d"> D) Neither</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkQuiz('bert-gpt', ['a', 'b'])">Submit Quiz</button>
+                <div class="quiz-result" id="bert-gpt-result"></div>
+            </div>
+        </div>
+
+        <!-- Chapter 14: Advanced LLM Architectures -->
+        <div id="advanced-llm" class="content-area">
+            <h2>🚀 Chapter 14: Advanced LLM Architectures</h2>
+
+            <div class="topic-content">
+                <div class="theory-section">
+                    <h3>Advanced Large Language Models</h3>
+                    <p>Beyond basic transformers, modern LLMs incorporate sophisticated architectural improvements for better performance, efficiency, and capabilities.</p>
+
+                    <h3>Key Innovations:</h3>
+                    <h4>1. Mixture of Experts (MoE)</h4>
+                    <p>Uses multiple specialized sub-models (experts) and routes different inputs to different experts.</p>
+
+                    <h4>2. Rotary Position Embedding (RoPE)</h4>
+                    <p>Rotation-based positional encoding that enables better length extrapolation.</p>
+
+                    <h4>3. Multi-Query Attention</h4>
+                    <p>Shares keys and values across multiple query heads to improve efficiency.</p>
+
+                    <h4>4. Flash Attention</h4>
+                    <p>Optimized attention computation that reduces memory usage and improves speed.</p>
+
+                    <h3>Scaling Laws:</h3>
+                    <p>Empirical relationships showing how model performance improves with more data, parameters, and compute.</p>
+
+                    <h3>Emergent Abilities:</h3>
+                    <p>Complex capabilities that appear when models reach sufficient scale.</p>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-header"># Advanced LLM Concepts and Implementation</div>
+                    <pre id="advanced-llm-code">import numpy as np
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+
+# Rotary Position Embedding (RoPE)
+def create_rotary_embedding(seq_len, d_model):
+    """Create rotary position embedding"""
+    position = np.arange(seq_len, dtype=np.float32)[:, np.newaxis]
+    div_term = np.exp(np.arange(0, d_model, 2, dtype=np.float32) * (-np.log(10000.0) / d_model))
+
+    sin_pos = np.sin(position * div_term)
+    cos_pos = np.cos(position * div_term)
+
+    # Interleave sin and cos
+    rotary_emb = np.zeros((seq_len, d_model))
+    rotary_emb[:, 0::2] = sin_pos
+    rotary_emb[:, 1::2] = cos_pos
+
+    return tf.constant(rotary_emb, dtype=tf.float32)
+
+def apply_rotary_embedding(x, rotary_emb):
+    """Apply rotary embedding to input tensor"""
+    # x shape: (batch_size, seq_len, d_model)
+    # rotary_emb shape: (seq_len, d_model)
+
+    # Expand rotary embedding for batch size
+    rotary_emb = tf.expand_dims(rotary_emb, 0)  # (1, seq_len, d_model)
+    rotary_emb = tf.tile(rotary_emb, [tf.shape(x)[0], 1, 1])  # (batch_size, seq_len, d_model)
+
+    # Apply rotation
+    x1 = x[..., ::2]  # Even dimensions
+    x2 = x[..., 1::2]  # Odd dimensions
+
+    # Rotate
+    x_rotated = tf.concat([
+        x1 * rotary_emb[..., ::2] - x2 * rotary_emb[..., 1::2],
+        x2 * rotary_emb[..., ::2] + x1 * rotary_emb[..., 1::2]
+    ], axis=-1)
+
+    return x_rotated
+
+# Multi-Query Attention
+class MultiQueryAttention(layers.Layer):
+    def __init__(self, d_model, num_heads, num_key_value_heads=1):
+        super(MultiQueryAttention, self).__init__()
+        self.num_heads = num_heads
+        self.num_key_value_heads = num_key_value_heads
+        self.d_model = d_model
+
+        self.depth = d_model // num_heads
+
+        self.wq = layers.Dense(d_model)
+        self.wk = layers.Dense(d_model // num_heads * num_key_value_heads)
+        self.wv = layers.Dense(d_model // num_heads * num_key_value_heads)
+        self.dense = layers.Dense(d_model)
+
+    def call(self, x):
+        batch_size = tf.shape(x)[0]
+        seq_len = tf.shape(x)[1]
+
+        # Query: multiple heads
+        q = self.wq(x)  # (batch_size, seq_len, d_model)
+        q = tf.reshape(q, (batch_size, seq_len, self.num_heads, self.depth))
+        q = tf.transpose(q, [0, 2, 1, 3])  # (batch_size, num_heads, seq_len, depth)
+
+        # Key and Value: shared across heads
+        k = self.wk(x)  # (batch_size, seq_len, d_model//num_heads)
+        v = self.wv(x)  # (batch_size, seq_len, d_model//num_heads)
+
+        # Expand for multiple heads
+        k = tf.tile(tf.expand_dims(k, 1), [1, self.num_heads, 1, 1])
+        v = tf.tile(tf.expand_dims(v, 1), [1, self.num_heads, 1, 1])
+
+        # Scaled dot-product attention
+        matmul_qk = tf.matmul(q, k, transpose_b=True)
+        dk = tf.cast(self.depth, tf.float32)
+        scaled_attention_logits = matmul_qk / tf.math.sqrt(dk)
+
+        attention_weights = tf.nn.softmax(scaled_attention_logits, axis=-1)
+        output = tf.matmul(attention_weights, v)
+
+        # Reshape
+        output = tf.transpose(output, [0, 2, 1, 3])
+        output = tf.reshape(output, (batch_size, seq_len, self.d_model))
+
+        return self.dense(output)
+
+# Mixture of Experts (simplified)
+class MixtureOfExperts(layers.Layer):
+    def __init__(self, d_model, num_experts=4, top_k=2):
+        super(MixtureOfExperts, self).__init__()
+        self.num_experts = num_experts
+        self.top_k = top_k
+        self.d_model = d_model
+
+        # Create multiple expert networks
+        self.experts = [
+            keras.Sequential([
+                layers.Dense(d_model * 2, activation='relu'),
+                layers.Dense(d_model)
+            ]) for _ in range(num_experts)
+        ]
+
+        # Gating network
+        self.gate = layers.Dense(num_experts, activation='softmax')
+
+    def call(self, x):
+        batch_size = tf.shape(x)[0]
+        seq_len = tf.shape(x)[1]
+
+        # Flatten for gating
+        x_flat = tf.reshape(x, (batch_size * seq_len, self.d_model))
+
+        # Get expert weights
+        gate_weights = self.gate(x_flat)  # (batch_size*seq_len, num_experts)
+
+        # Select top-k experts
+        _, top_k_indices = tf.nn.top_k(gate_weights, k=self.top_k)
+
+        # Process through experts
+        expert_outputs = []
+        for i in range(self.num_experts):
+            expert_output = self.experts[i](x)
+            expert_outputs.append(expert_output)
+
+        # Stack expert outputs
+        expert_stack = tf.stack(expert_outputs, axis=1)  # (batch_size, seq_len, num_experts, d_model)
+
+        # Select top-k experts for each position
+        # This is a simplified version
+        output = tf.reduce_mean(expert_stack, axis=2)  # Average across experts
+
+        return output
+
+# Demonstrate advanced concepts
+print("=== Advanced LLM Architecture Components ===")
+
+# Create sample data
+seq_len = 10
+d_model = 64
+batch_size = 2
+
+# Sample input
+x = tf.random.normal((batch_size, seq_len, d_model))
+
+print(f"Input shape: {x.shape}")
+
+# Test Rotary Position Embedding
+rotary_emb = create_rotary_embedding(seq_len, d_model)
+print(f"Rotary embedding shape: {rotary_emb.shape}")
+
+x_rotated = apply_rotary_embedding(x, rotary_emb)
+print(f"Rotated input shape: {x_rotated.shape}")
+
+# Test Multi-Query Attention
+mq_attention = MultiQueryAttention(d_model, num_heads=4, num_key_value_heads=2)
+mq_output = mq_attention(x)
+print(f"Multi-query attention output shape: {mq_output.shape}")
+
+# Test Mixture of Experts
+moe = MixtureOfExperts(d_model, num_experts=4, top_k=2)
+moe_output = moe(x)
+print(f"Mixture of Experts output shape: {moe_output.shape}")
+
+print("
+Advanced LLM Features:")
+print("- Rotary embeddings improve length extrapolation")
+print("- Multi-query attention reduces memory usage")
+print("- Mixture of experts enables larger effective capacity")
+print("- These innovations make LLMs more efficient and capable")
+
+# Scaling demonstration
+print("
+=== Model Scaling Effects ===")
+model_sizes = [1000000, 10000000, 100000000, 1000000000]  # Parameters
+performance_improvements = [0.1, 0.3, 0.5, 0.7]  # Hypothetical improvements
+
+print("Model Size | Performance Improvement")
+print("-----------|----------------------")
+for size, improvement in zip(model_sizes, performance_improvements):
+    print(f"{size//1000000}M params | +{improvement*100:.0f}% performance")
+
+print("
+Scaling Laws Summary:")
+print("- Larger models perform better on most tasks")
+print("- More data improves performance predictably")
+print("- Compute-optimal training requires balancing model size and data")
+print("- Emergent abilities appear at certain scales")
+print("- Efficiency improvements allow training larger models")</pre>
+                    <button class="copy-btn" onclick="copyCode('advanced-llm-code')">Copy</button>
+                    <button class="run-btn" onclick="runCode('advanced-llm-code', 'advanced-llm-output')">Run Code</button>
+                    <div class="output-area" id="advanced-llm-output"></div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Chapter 14 Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the main benefit of Mixture of Experts (MoE) in LLMs?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q14_1" value="a"> A) Reduce model size</label>
+                        <label><input type="radio" name="q14_1" value="b"> B) Enable larger effective capacity with fewer active parameters</label>
+                        <label><input type="radio" name="q14_1" value="c"> C) Speed up training</label>
+                        <label><input type="radio" name="q14_1" value="d"> D) Improve interpretability</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> What do scaling laws tell us about large language models?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q14_2" value="a"> A) Bigger models always perform worse</label>
+                        <label><input type="radio" name="q14_2" value="b"> B) Performance improves predictably with more data and parameters</label>
+                        <label><input type="radio" name="q14_2" value="c"> C) Model size doesn't affect performance</label>
+                        <label><input type="radio" name="q14_2" value="d"> D) Smaller models are always better</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkQuiz('advanced-llm', ['b', 'b'])">Submit Quiz</button>
+                <div class="quiz-result" id="advanced-llm-result"></div>
+            </div>
+        </div>
+
+        <!-- Chapter 15: ML Model Deployment -->
+        <div id="deployment-ml" class="content-area">
+            <h2>🌐 Chapter 15: ML Model Deployment</h2>
+
+            <div class="topic-content">
+                <div class="theory-section">
+                    <h3>Deploying Machine Learning Models</h3>
+                    <p>Model deployment is the process of making trained ML models available for real-world use. It involves serving predictions, monitoring performance, and maintaining reliability.</p>
+
+                    <h3>Deployment Strategies:</h3>
+                    <h4>1. REST API Services</h4>
+                    <p>Create web services that accept input data and return predictions.</p>
+
+                    <h4>2. Batch Processing</h4>
+                    <p>Process large amounts of data offline on a schedule.</p>
+
+                    <h4>3. Edge Deployment</h4>
+                    <p>Deploy models on mobile devices or IoT devices.</p>
+
+                    <h4>4. Cloud Deployment</h4>
+                    <p>Use cloud platforms for scalable model serving.</p>
+
+                    <h3>Production Considerations:</h3>
+                    <ul>
+                        <li><strong>Scalability:</strong> Handle varying loads</li>
+                        <li><strong>Latency:</strong> Minimize response times</li>
+                        <li><strong>Reliability:</strong> Ensure high availability</li>
+                        <li><strong>Monitoring:</strong> Track model performance</li>
+                        <li><strong>Versioning:</strong> Manage model updates</li>
+                    </ul>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-header"># ML Model Deployment with Flask and Docker</div>
+                    <pre id="deployment-ml-code"># Complete ML model deployment example
+
+from flask import Flask, request, jsonify
+import numpy as np
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import StandardScaler
+import joblib
+import os
+
+# Initialize Flask app
+app = Flask(__name__)
+
+# Global variables for model and scaler
+model = None
+scaler = None
+model_version = "1.0.0"
+
+def load_model():
+    """Load the trained model and scaler"""
+    global model, scaler
+
+    try:
+        model = joblib.load('house_price_model.pkl')
+        scaler = joblib.load('scaler.pkl')
+        print("Model loaded successfully")
+    except FileNotFoundError:
+        print("Model files not found. Training default model...")
+        train_default_model()
+
+def train_default_model():
+    """Train a simple model for demonstration"""
+    global model, scaler
+
+    # Sample house price data
+    np.random.seed(42)
+    n_samples = 1000
+
+    data = {
+        'bedrooms': np.random.randint(1, 6, n_samples),
+        'bathrooms': np.random.randint(1, 4, n_samples),
+        'square_feet': np.random.randint(800, 5000, n_samples),
+        'year_built': np.random.randint(1950, 2023, n_samples),
+        'price': np.random.randint(100000, 1000000, n_samples)
+    }
+
+    df = pd.DataFrame(data)
+
+    # Feature engineering
+    df['age'] = 2023 - df['year_built']
+    df['price_per_sqft'] = df['price'] / df['square_feet']
+
+    # Prepare features
+    features = ['bedrooms', 'bathrooms', 'square_feet', 'age']
+    X = df[features]
+    y = df['price']
+
+    # Scale features
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+
+    # Train model
+    model = LinearRegression()
+    model.fit(X_scaled, y)
+
+    # Save model and scaler
+    joblib.dump(model, 'house_price_model.pkl')
+    joblib.dump(scaler, 'scaler.pkl')
+
+    print("Default model trained and saved")
+
+# Load model on startup
+load_model()
+
+@app.route('/health', methods=['GET'])
+def health_check():
+    """Health check endpoint"""
+    return jsonify({
+        "status": "healthy",
+        "service": "House Price Prediction API",
+        "model_version": model_version,
+        "timestamp": pd.Timestamp.now().isoformat()
+    })
+
+@app.route('/predict', methods=['POST'])
+def predict_price():
+    """Predict house price from input features"""
+    try:
+        # Get input data
+        data = request.get_json()
+
+        if not data:
+            return jsonify({
+                "error": "No input data provided",
+                "status": "failed"
+            }), 400
+
+        # Extract features
+        required_features = ['bedrooms', 'bathrooms', 'square_feet', 'year_built']
+
+        if not all(feature in data for feature in required_features):
+            return jsonify({
+                "error": f"Missing required features. Required: {required_features}",
+                "status": "failed"
+            }), 400
+
+        # Prepare input for prediction
+        input_data = np.array([[
+            data['bedrooms'],
+            data['bathrooms'],
+            data['square_feet'],
+            2023 - data['year_built']  # Calculate age
+        ]])
+
+        # Scale input
+        input_scaled = scaler.transform(input_data)
+
+        # Make prediction
+        prediction = model.predict(input_scaled)[0]
+
+        # Prepare response
+        response = {
+            "predicted_price": float(prediction),
+            "model_version": model_version,
+            "features_used": required_features,
+            "input_data": data,
+            "status": "success",
+            "confidence": 0.85  # In real implementation, this would be calculated
+        }
+
+        # Log prediction (in production, use proper logging)
+        print(f"Prediction made: ${prediction:,.2f} for input: {data}")
+
+        return jsonify(response)
+
+    except Exception as e:
+        return jsonify({
+            "error": str(e),
+            "status": "failed"
+        }), 500
+
+@app.route('/model-info', methods=['GET'])
+def model_info():
+    """Get information about the deployed model"""
+    return jsonify({
+        "model_name": "House Price Predictor",
+        "model_type": "Linear Regression",
+        "version": model_version,
+        "features": ['bedrooms', 'bathrooms', 'square_feet', 'year_built'],
+        "framework": "Scikit-learn",
+        "deployment_date": "2024-01-01",
+        "last_updated": pd.Timestamp.now().isoformat()
+    })
+
+@app.route('/batch-predict', methods=['POST'])
+def batch_predict():
+    """Make predictions on multiple houses"""
+    try:
+        data = request.get_json()
+
+        if not data or 'houses' not in data:
+            return jsonify({
+                "error": "No houses data provided",
+                "status": "failed"
+            }), 400
+
+        houses = data['houses']
+        predictions = []
+
+        for house in houses:
+            # Prepare input
+            input_data = np.array([[
+                house['bedrooms'],
+                house['bathrooms'],
+                house['square_feet'],
+                2023 - house['year_built']
+            ]])
+
+            # Scale and predict
+            input_scaled = scaler.transform(input_data)
+            prediction = model.predict(input_scaled)[0]
+
+            predictions.append({
+                "input": house,
+                "predicted_price": float(prediction),
+                "status": "success"
+            })
+
+        return jsonify({
+            "predictions": predictions,
+            "total_predictions": len(predictions),
+            "model_version": model_version,
+            "status": "success"
+        })
+
+    except Exception as e:
+        return jsonify({
+            "error": str(e),
+            "status": "failed"
+        }), 500
+
+@app.route('/retrain', methods=['POST'])
+def retrain_model():
+    """Retrain model with new data (admin endpoint)"""
+    try:
+        # In a real implementation, this would:
+        # 1. Validate admin authentication
+        # 2. Load new training data
+        # 3. Retrain the model
+        # 4. Update model version
+        # 5. Run validation tests
+
+        return jsonify({
+            "message": "Model retraining endpoint (not implemented in demo)",
+            "status": "info"
+        })
+
+    except Exception as e:
+        return jsonify({
+            "error": str(e),
+            "status": "failed"
+        }), 500
+
+# Error handlers
+@app.errorhandler(404)
+def not_found(error):
+    return jsonify({
+        "error": "Endpoint not found",
+        "status": "failed"
+    }), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    return jsonify({
+        "error": "Internal server error",
+        "status": "failed"
+    }), 500
+
+# Main entry point
+if __name__ == '__main__':
+    print("🏠 House Price Prediction API")
+    print("Available endpoints:")
+    print("- GET  /health")
+    print("- GET  /model-info")
+    print("- POST /predict")
+    print("- POST /batch-predict")
+    print("- POST /retrain")
+
+    # Run the server
+    app.run(host='0.0.0.0', port=5000, debug=True)</pre>
+                    <button class="copy-btn" onclick="copyCode('deployment-ml-code')">Copy</button>
+                    <button class="run-btn" onclick="runCode('deployment-ml-code', 'deployment-ml-output')">Run Code</button>
+                    <div class="output-area" id="deployment-ml-output"></div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Chapter 15 Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the main purpose of model deployment?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q15_1" value="a"> A) Training models</label>
+                        <label><input type="radio" name="q15_1" value="b"> B) Making trained models available for real-world use</label>
+                        <label><input type="radio" name="q15_1" value="c"> C) Data collection</label>
+                        <label><input type="radio" name="q15_1" value="d"> D) Model evaluation</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> Which deployment strategy is best for mobile applications?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q15_2" value="a"> A) Cloud deployment</label>
+                        <label><input type="radio" name="q15_2" value="b"> B) Edge deployment</label>
+                        <label><input type="radio" name="q15_2" value="c"> C) Batch processing</label>
+                        <label><input type="radio" name="q15_2" value="d"> D) REST API</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkQuiz('deployment-ml', ['b', 'b'])">Submit Quiz</button>
+                <div class="quiz-result" id="deployment-ml-result"></div>
+            </div>
+        </div>
+
+        <!-- Chapter 16: AI Ethics -->
+        <div id="ai-ethics" class="content-area">
+            <h2>⚖️ Chapter 16: AI Ethics & Responsible AI</h2>
+
+            <div class="topic-content">
+                <div class="theory-section">
+                    <h3>AI Ethics and Responsible AI</h3>
+                    <p>As AI systems become more powerful and pervasive, ethical considerations become increasingly important. Responsible AI development requires careful attention to fairness, accountability, transparency, and societal impact.</p>
+
+                    <h3>Key Ethical Considerations:</h3>
+                    <h4>1. Bias and Fairness</h4>
+                    <p>AI systems can perpetuate and amplify existing biases in training data.</p>
+
+                    <h4>2. Privacy and Security</h4>
+                    <p>Protecting user data and preventing malicious use of AI systems.</p>
+
+                    <h4>3. Transparency and Explainability</h4>
+                    <p>Understanding how AI systems make decisions.</p>
+
+                    <h4>4. Accountability</h4>
+                    <p>Determining responsibility for AI system actions and decisions.</p>
+
+                    <h4>5. Societal Impact</h4>
+                    <p>Considering broader effects on employment, inequality, and human rights.</p>
+
+                    <h3>Responsible AI Principles:</h3>
+                    <ul>
+                        <li><strong>Fairness:</strong> Avoid discrimination and bias</li>
+                        <li><strong>Reliability:</strong> Ensure robust and safe operation</li>
+                        <li><strong>Privacy:</strong> Protect user data and confidentiality</li>
+                        <li><strong>Inclusivity:</strong> Benefit diverse user groups</li>
+                        <li><strong>Transparency:</strong> Enable understanding of AI behavior</li>
+                        <li><strong>Accountability:</strong> Accept responsibility for AI outcomes</li>
+                    </ul>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-header"># AI Ethics: Bias Detection and Fairness Analysis</div>
+                    <pre id="ai-ethics-code">import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, confusion_matrix
+import matplotlib.pyplot as plt
+
+# Simulate biased dataset
+def create_biased_dataset(n_samples=1000, bias_factor=0.3):
+    """Create a dataset with potential bias"""
+    np.random.seed(42)
+
+    data = {
+        'age': np.random.randint(18, 70, n_samples),
+        'income': np.random.randint(20000, 150000, n_samples),
+        'education': np.random.choice(['High School', 'Bachelor', 'Master', 'PhD'], n_samples),
+        'gender': np.random.choice(['Male', 'Female'], n_samples),
+        'location': np.random.choice(['Urban', 'Rural'], n_samples)
+    }
+
+    df = pd.DataFrame(data)
+
+    # Create target variable with potential bias
+    # Higher income and education should correlate with approval
+    # But introduce bias against certain groups
+    approval_score = (
+        df['income'] / 100000 +  # Normalize income
+        (df['education'].map({'High School': 1, 'Bachelor': 2, 'Master': 3, 'PhD': 4})) / 4 +
+        np.random.randn(n_samples) * 0.2
+    )
+
+    # Introduce bias: reduce scores for certain groups
+    bias_mask = (df['gender'] == 'Female') & (df['location'] == 'Rural')
+    approval_score[bias_mask] -= bias_factor
+
+    # Convert to binary outcome
+    df['approved'] = (approval_score > 0.5).astype(int)
+
+    return df
+
+# Create biased dataset
+df = create_biased_dataset(bias_factor=0.4)
+print("Dataset created with potential bias")
+print("Class distribution:", df['approved'].value_counts().to_dict())
+print("Gender distribution:", df['gender'].value_counts().to_dict())
+
+# Analyze bias in the data
+print("
+=== Bias Analysis ===")
+
+# Gender bias
+gender_approval = df.groupby('gender')['approved'].mean()
+print("Approval rate by gender:")
+print(gender_approval)
+
+# Location bias
+location_approval = df.groupby('location')['approved'].mean()
+print("
+Approval rate by location:")
+print(location_approval)
+
+# Intersectional bias
+intersectional = df.groupby(['gender', 'location'])['approved'].mean()
+print("
+Approval rate by gender and location:")
+print(intersectional)
+
+# Train model and check for bias
+features = ['age', 'income', 'education']
+X = pd.get_dummies(df[features], columns=['education'])
+y = df['approved']
+
+# Encode education
+education_mapping = {'High School': 1, 'Bachelor': 2, 'Master': 3, 'PhD': 4}
+X['education_encoded'] = df['education'].map(education_mapping)
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X[['age', 'income', 'education_encoded']], y, test_size=0.3, random_state=42
+)
+
+# Train model
+model = LogisticRegression(random_state=42)
+model.fit(X_train, y_train)
+
+# Evaluate overall performance
+y_pred = model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+print(f"\nOverall model accuracy: {accuracy:.3f}")
+
+# Check performance by subgroups
+print("
+=== Fairness Analysis ===")
+
+# Create test set with subgroup information
+test_df = df.iloc[X_test.index].copy()
+test_df['predicted'] = y_pred
+
+# Performance by gender
+gender_fairness = test_df.groupby('gender').apply(
+    lambda x: accuracy_score(x['approved'], x['predicted'])
+)
+print("Accuracy by gender:")
+print(gender_fairness)
+
+# Performance by location
+location_fairness = test_df.groupby('location').apply(
+    lambda x: accuracy_score(x['approved'], x['predicted'])
+)
+print("
+Accuracy by location:")
+print(location_fairness)
+
+# Demographic parity check
+approval_rates = test_df.groupby(['gender', 'location'])['predicted'].mean()
+print("
+Predicted approval rates by demographic group:")
+print(approval_rates)
+
+# Statistical parity difference
+max_rate = approval_rates.max()
+min_rate = approval_rates.min()
+parity_difference = max_rate - min_rate
+print(f"\nStatistical parity difference: {parity_difference:.3f}")
+
+if parity_difference > 0.1:
+    print("⚠️  Significant bias detected in model predictions!")
+else:
+    print("✅ Model appears relatively fair")
+
+# Mitigation strategies
+print("
+=== Bias Mitigation Strategies ===")
+
+# 1. Data augmentation
+print("1. Data Augmentation: Collect more diverse training data")
+
+# 2. Reweighting
+print("2. Sample Reweighting: Give higher weight to underrepresented groups")
+
+# 3. Fairness constraints
+print("3. Fairness Constraints: Add fairness regularizers to loss function")
+
+# 4. Post-processing
+print("4. Post-processing: Adjust predictions to ensure fairness")
+
+print("
+=== Ethical AI Checklist ===")
+ethical_checklist = [
+    "✅ Define clear objectives and success metrics",
+    "✅ Assess and mitigate bias in training data",
+    "✅ Ensure transparency in model decisions",
+    "✅ Implement privacy-preserving techniques",
+    "✅ Establish accountability mechanisms",
+    "✅ Consider broader societal impacts",
+    "✅ Enable human oversight and intervention",
+    "✅ Plan for model updates and retirement"
+]
+
+for item in ethical_checklist:
+    print(item)
+
+print("
+AI Ethics Summary:")
+print("- Bias can be unintentionally introduced through data or algorithms")
+print("- Fairness requires proactive identification and mitigation")
+print("- Transparency builds trust and enables accountability")
+print("- Privacy protection is essential for user rights")
+print("- Responsible AI considers both technical and societal impacts")
+print("- Ethics should be integrated throughout the AI development lifecycle")</pre>
+                    <button class="copy-btn" onclick="copyCode('ai-ethics-code')">Copy</button>
+                    <button class="run-btn" onclick="runCode('ai-ethics-code', 'ai-ethics-output')">Run Code</button>
+                    <div class="output-area" id="ai-ethics-output"></div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Chapter 16 Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the most common source of bias in AI systems?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q16_1" value="a"> A) Algorithm design</label>
+                        <label><input type="radio" name="q16_1" value="b"> B) Training data</label>
+                        <label><input type="radio" name="q16_1" value="c"> C) Hardware limitations</label>
+                        <label><input type="radio" name="q16_1" value="d"> D) User input</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> Why is transparency important in AI systems?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q16_2" value="a"> A) To reduce model size</label>
+                        <label><input type="radio" name="q16_2" value="b"> B) To build trust and enable accountability</label>
+                        <label><input type="radio" name="q16_2" value="c"> C) To speed up training</label>
+                        <label><input type="radio" name="q16_2" value="d"> D) To reduce computational cost</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkQuiz('ai-ethics', ['b', 'b'])">Submit Quiz</button>
+                <div class="quiz-result" id="ai-ethics-result"></div>
+            </div>
+        </div>
+
+        <!-- Chapter 17: Future of AI -->
+        <div id="future-ai" class="content-area">
+            <h2>🔮 Chapter 17: Future of AI & Emerging Trends</h2>
+
+            <div class="topic-content">
+                <div class="theory-section">
+                    <h3>The Future of Artificial Intelligence</h3>
+                    <p>AI is evolving rapidly, with new breakthroughs happening at an unprecedented pace. Understanding emerging trends is crucial for staying ahead in the AI field.</p>
+
+                    <h3>Current Trends:</h3>
+                    <h4>1. Multimodal AI</h4>
+                    <p>Models that can process and generate text, images, audio, and video simultaneously.</p>
+
+                    <h4>2. AI Safety and Alignment</h4>
+                    <p>Ensuring AI systems are safe, beneficial, and aligned with human values.</p>
+
+                    <h4>3. Edge AI</h4>
+                    <p>Running AI models on edge devices for privacy and low latency.</p>
+
+                    <h4>4. Quantum Machine Learning</h4>
+                    <p>Leveraging quantum computing for faster AI training and inference.</p>
+
+                    <h4>5. Neuro-Symbolic AI</h4>
+                    <p>Combining neural networks with symbolic reasoning.</p>
+
+                    <h3>Emerging Technologies:</h3>
+                    <ul>
+                        <li><strong>Foundation Models:</strong> Large pre-trained models adapted to many tasks</li>
+                        <li><strong>Generative AI:</strong> Creating new content (text, images, code, etc.)</li>
+                        <li><strong>AI Agents:</strong> Autonomous systems that can plan and execute tasks</li>
+                        <li><strong>Brain-Computer Interfaces:</strong> Direct neural interfaces</li>
+                    </ul>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-header"># Emerging AI Trends and Future Technologies</div>
+                    <pre id="future-ai-code"># Demonstration of emerging AI concepts
+
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
+import warnings
+warnings.filterwarnings('ignore')
+
+# Simulate AI progress over time
+def simulate_ai_progress():
+    """Simulate AI capabilities over time"""
+    years = np.arange(2020, 2035)
+    capabilities = []
+
+    for year in years:
+        # Base capability grows exponentially
+        base_capability = 1 * (1.5 ** (year - 2020))
+
+        # Add breakthrough effects
+        if year >= 2022:
+            base_capability *= 1.2  # Transformer breakthrough
+        if year >= 2025:
+            base_capability *= 1.3  # Multimodal breakthrough
+        if year >= 2028:
+            base_capability *= 1.4  # AGI-related breakthrough
+        if year >= 2032:
+            base_capability *= 1.5  # Quantum AI breakthrough
+
+        capabilities.append(base_capability)
+
+    return years, capabilities
+
+# Generate AI progress data
+years, capabilities = simulate_ai_progress()
+
+print("=== AI Progress Simulation ===")
+print("Year | Capability Level")
+print("-----|----------------")
+for year, capability in zip(years, capabilities):
+    print(f"{year} | {capability".1f"}")
+
+# Predict future AI capabilities
+print("
+=== Future Predictions ===")
+
+# Use historical data to predict future
+X = years.reshape(-1, 1)
+y = np.array(capabilities)
+
+# Split for training
+train_years = years[:10]  # 2020-2029
+train_capabilities = y[:10]
+
+# Train model
+future_predictor = RandomForestRegressor(n_estimators=100, random_state=42)
+future_predictor.fit(train_years.reshape(-1, 1), train_capabilities)
+
+# Predict future years
+future_years = np.array([2030, 2031, 2032, 2033, 2034]).reshape(-1, 1)
+predictions = future_predictor.predict(future_years)
+
+print("Predictions for future years:")
+for year, pred in zip([2030, 2031, 2032, 2033, 2034], predictions):
+    print(f"{year}: {pred".1f"}")
+
+# AI job market simulation
+def simulate_job_market():
+    """Simulate AI job market trends"""
+    years = np.arange(2020, 2030)
+    ai_jobs = []
+
+    for year in years:
+        # Exponential growth in AI jobs
+        base_jobs = 100000 * (1.4 ** (year - 2020))
+
+        # Add market effects
+        if year >= 2023:
+            base_jobs *= 1.1  # Increased adoption
+        if year >= 2025:
+            base_jobs *= 1.2  # AI becomes mainstream
+        if year >= 2027:
+            base_jobs *= 1.15  # Regulatory support
+
+        ai_jobs.append(int(base_jobs))
+
+    return years, ai_jobs
+
+job_years, job_counts = simulate_job_market()
+
+print("
+=== AI Job Market Growth ===")
+print("Year | AI Jobs | Growth Rate")
+print("-----|---------|------------")
+for i, (year, jobs) in enumerate(zip(job_years, job_counts)):
+    growth = "N/A" if i == 0 else f"{((jobs - job_counts[i-1]) / job_counts[i-1] * 100)".1f}%"
+    print(f"{year} | {jobs","} | {growth}")
+
+# AI investment trends
+print("
+=== AI Investment Trends ===")
+investment_years = np.arange(2015, 2025)
+investments = [2, 5, 12, 25, 45, 80, 140, 220, 350, 500]  # In billions USD
+
+print("Year | AI Investment (Billions USD)")
+print("-----|---------------------------")
+for year, investment in zip(investment_years, investments):
+    print(f"{year} | ${investment}")
+
+# Calculate growth rates
+growth_rates = []
+for i in range(1, len(investments)):
+    growth = (investments[i] - investments[i-1]) / investments[i-1] * 100
+    growth_rates.append(growth)
+
+print("
+Investment Growth Rates:")
+for i, growth in enumerate(growth_rates):
+    print(f"{investment_years[i+1]}: {growth".1f"}%")
+
+# Emerging AI applications
+print("
+=== Emerging AI Applications ===")
+
+emerging_apps = {
+    "Healthcare": [
+        "Personalized medicine and drug discovery",
+        "Medical imaging and diagnostics",
+        "Mental health monitoring and support",
+        "Robotic surgery assistance"
+    ],
+    "Transportation": [
+        "Autonomous vehicles and drones",
+        "Traffic optimization and prediction",
+        "Smart infrastructure management",
+        "Last-mile delivery optimization"
+    ],
+    "Education": [
+        "Personalized learning platforms",
+        "Intelligent tutoring systems",
+        "Automated grading and feedback",
+        "Language learning and translation"
+    ],
+    "Environment": [
+        "Climate modeling and prediction",
+        "Renewable energy optimization",
+        "Wildlife conservation and monitoring",
+        "Disaster prediction and response"
+    ]
+}
+
+for category, applications in emerging_apps.items():
+    print(f"\n{category}:")
+    for app in applications:
+        print(f"  • {app}")
+
+print("
+=== Future AI Challenges ===")
+challenges = [
+    "Ensuring AI safety and alignment with human values",
+    "Managing the economic impact of AI automation",
+    "Protecting privacy in an AI-driven world",
+    "Preventing AI misuse and malicious applications",
+    "Ensuring equitable access to AI benefits",
+    "Developing robust AI governance frameworks"
+]
+
+for i, challenge in enumerate(challenges, 1):
+    print(f"{i}. {challenge}")
+
+print("
+=== AI Readiness Scorecard ===")
+ai_skills = [
+    "Python Programming",
+    "Machine Learning Fundamentals",
+    "Deep Learning with Neural Networks",
+    "Natural Language Processing",
+    "Computer Vision",
+    "Model Deployment and Production",
+    "AI Ethics and Responsible AI",
+    "Emerging AI Technologies"
+]
+
+print("AI Skills Readiness:")
+for i, skill in enumerate(ai_skills, 1):
+    # Simulate skill level (in real implementation, this would be assessed)
+    skill_level = min(100, 20 + i * 10 + np.random.randint(-10, 10))
+    progress_bar = "█" * (skill_level // 10) + "░" * (10 - skill_level // 10)
+    print(f"{i}. {skill}: [{progress_bar}] {skill_level}%")
+
+print("
+Future of AI Summary:")
+print("- AI capabilities are growing exponentially")
+print("- Multimodal AI will become standard")
+print("- Edge AI will enable privacy-preserving applications")
+print("- Quantum computing will accelerate AI research")
+print("- AI safety and ethics will become critical priorities")
+print("- The AI job market will continue rapid expansion")
+print("- Interdisciplinary AI skills will be highly valued")
+print("- Responsible AI development will be essential for sustainable progress")</pre>
+                    <button class="copy-btn" onclick="copyCode('future-ai-code')">Copy</button>
+                    <button class="run-btn" onclick="runCode('future-ai-code', 'future-ai-output')">Run Code</button>
+                    <div class="output-area" id="future-ai-output"></div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Chapter 17 Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the main focus of AI safety research?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q17_1" value="a"> A) Making AI systems faster</label>
+                        <label><input type="radio" name="q17_1" value="b"> B) Ensuring AI systems are beneficial and aligned with human values</label>
+                        <label><input type="radio" name="q17_1" value="c"> C) Reducing AI model sizes</label>
+                        <label><input type="radio" name="q17_1" value="d"> D) Making AI more complex</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> What is an emergent ability in large language models?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q17_2" value="a"> A) A bug that appears in large models</label>
+                        <label><input type="radio" name="q17_2" value="b"> B) Complex capabilities that appear when models reach sufficient scale</label>
+                        <label><input type="radio" name="q17_2" value="c"> C) A feature that disappears with model size</label>
+                        <label><input type="radio" name="q17_2" value="d"> D) A training technique for small models</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkQuiz('future-ai', ['b', 'b'])">Submit Quiz</button>
+                <div class="quiz-result" id="future-ai-result"></div>
+            </div>
+        </div>
+
+        <!-- Chapter 18: AI Capstone Projects -->
+        <div id="capstone-ai" class="content-area">
+            <h2>🎯 Chapter 18: AI Capstone Projects</h2>
+
+            <div class="topic-content">
+                <div class="theory-section">
+                    <h3>Comprehensive AI Projects</h3>
+                    <p>Apply all your AI/ML/LLM knowledge by building end-to-end projects that solve real-world problems. These capstone projects will demonstrate your mastery of AI technologies.</p>
+
+                    <h3>Project Categories:</h3>
+                    <h4>1. Predictive Analytics</h4>
+                    <p>Build systems that predict future outcomes from historical data.</p>
+
+                    <h4>2. Natural Language Processing</h4>
+                    <p>Create applications that understand and generate human language.</p>
+
+                    <h4>3. Computer Vision</h4>
+                    <p>Develop systems that can see and interpret visual information.</p>
+
+                    <h4>4. Autonomous Systems</h4>
+                    <p>Build AI agents that can make decisions and take actions.</p>
+
+                    <h3>Project Lifecycle:</h3>
+                    <ol>
+                        <li><strong>Problem Definition:</strong> Identify a real-world problem</li>
+                        <li><strong>Data Collection:</strong> Gather relevant datasets</li>
+                        <li><strong>Exploratory Analysis:</strong> Understand your data</li>
+                        <li><strong>Model Development:</strong> Build and train AI models</li>
+                        <li><strong>Evaluation:</strong> Assess model performance</li>
+                        <li><strong>Deployment:</strong> Make your solution available</li>
+                        <li><strong>Monitoring:</strong> Track performance in production</li>
+                    </ol>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-header"># AI Capstone Project: Intelligent Document Processing System</div>
+                    <pre id="capstone-ai-code"># Complete AI-powered document processing system
+
+import streamlit as st
+import pandas as pd
+import numpy as np
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, classification_report
+import nltk
+from nltk.tokenize import word_tokenize, sent_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+import re
+import PyPDF2
+from PIL import Image
+import pytesseract
+import cv2
+
+# Download NLTK data
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
+
+class IntelligentDocumentProcessor:
+    def __init__(self):
+        """Initialize the AI document processing system"""
+        self.text_classifier = None
+        self.is_trained = False
+        self.document_types = [
+            'invoice', 'contract', 'resume', 'report',
+            'email', 'letter', 'article', 'presentation'
+        ]
+
+    def preprocess_text(self, text):
+        """Comprehensive text preprocessing"""
+        # Convert to lowercase
+        text = text.lower()
+
+        # Remove URLs, emails, phone numbers
+        text = re.sub(r'http\S+', '', text)
+        text = re.sub(r'\S+@\S+', '', text)
+        text = re.sub(r'\d{10}', '', text)  # Remove phone numbers
+
+        # Remove special characters and numbers
+        text = re.sub(r'[^a-zA-Z\s]', '', text)
+
+        # Tokenize
+        tokens = word_tokenize(text)
+
+        # Remove stopwords
+        stop_words = set(stopwords.words('english'))
+        tokens = [word for word in tokens if word not in stop_words]
+
+        # Lemmatize
+        lemmatizer = WordNetLemmatizer()
+        tokens = [lemmatizer.lemmatize(word) for word in tokens]
+
+        return ' '.join(tokens)
+
+    def extract_text_from_pdf(self, pdf_file):
+        """Extract text from PDF files"""
+        try:
+            pdf_reader = PyPDF2.PdfReader(pdf_file)
+            text = ""
+            for page in pdf_reader.pages:
+                text += page.extract_text()
+            return text
+        except Exception as e:
+            st.error(f"Error reading PDF: {e}")
+            return ""
+
+    def extract_text_from_image(self, image_file):
+        """Extract text from images using OCR"""
+        try:
+            image = Image.open(image_file)
+            text = pytesseract.image_to_string(image)
+            return text
+        except Exception as e:
+            st.error(f"Error reading image: {e}")
+            return ""
+
+    def classify_document(self, text):
+        """Classify document type using AI"""
+        if not self.is_trained:
+            return "Model not trained yet"
+
+        # Preprocess text
+        processed_text = self.preprocess_text(text)
+
+        # Transform to features
+        features = self.vectorizer.transform([processed_text])
+
+        # Predict
+        prediction = self.document_types[self.classifier.predict(features)[0]]
+        confidence = np.max(self.classifier.predict_proba(features))
+
+        return {
+            "document_type": prediction,
+            "confidence": float(confidence),
+            "processed_text": processed_text[:200] + "..."
+        }
+
+    def train_model(self, documents, labels):
+        """Train the document classification model"""
+        # Preprocess all documents
+        processed_docs = [self.preprocess_text(doc) for doc in documents]
+
+        # Create TF-IDF features
+        self.vectorizer = TfidfVectorizer(max_features=5000)
+        X = self.vectorizer.fit_transform(processed_docs)
+        y = np.array(labels)
+
+        # Split data
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=0.2, random_state=42
+        )
+
+        # Train classifier
+        self.classifier = RandomForestClassifier(n_estimators=100, random_state=42)
+        self.classifier.fit(X_train, y_train)
+
+        # Evaluate
+        y_pred = self.classifier.predict(X_test)
+        accuracy = accuracy_score(y_test, y_pred)
+
+        self.is_trained = True
+        return accuracy
+
+# Streamlit web application
+def main():
+    st.set_page_config(
+        page_title="AI FOR ALL University - Document Processor",
+        page_icon="📄",
+        layout="wide"
+    )
+
+    st.title("🎓 AI FOR ALL University - Intelligent Document Processing")
+    st.subheader("Capstone Project: AI-Powered Document Analysis System")
+
+    # Initialize session state
+    if 'processor' not in st.session_state:
+        st.session_state.processor = IntelligentDocumentProcessor()
+
+    processor = st.session_state.processor
+
+    # Sidebar
+    st.sidebar.title("📋 Project Information")
+    st.sidebar.info("""
+    **Capstone Project Features:**
+    - Multi-modal document processing
+    - AI-powered document classification
+    - Text extraction from PDF and images
+    - Natural language processing
+    - Machine learning classification
+    - Real-time analysis and insights
+
+    **Technologies Used:**
+    - Python, Streamlit, Scikit-learn
+    - NLTK for text processing
+    - PyPDF2 for PDF processing
+    - Tesseract OCR for image text extraction
+    - Random Forest for classification
+    """)
+
+    # Main content tabs
+    tab1, tab2, tab3, tab4 = st.tabs(["🏠 Home", "🤖 AI Training", "📄 Document Analysis", "📊 About Project"])
+
+    with tab1:
+        st.header("Welcome to the Intelligent Document Processing System")
+
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            st.metric("Documents Processed", "1,247", "+12%")
+        with col2:
+            st.metric("AI Accuracy", "94.2%", "+2.1%")
+        with col3:
+            st.metric("Processing Speed", "2.3s", "-0.4s")
+
+        st.info("""
+        This capstone project demonstrates:
+        - End-to-end AI system development
+        - Multi-modal data processing
+        - Real-time AI inference
+        - Production-ready web application
+        - Best practices in AI deployment
+        """)
+
+    with tab2:
+        st.header("🤖 AI Model Training")
+
+        # Sample training data
+        sample_documents = [
+            "INVOICE #12345, Date: 2024-01-15, Customer: ABC Corp, Amount: $1,250.00, Due Date: 2024-02-15",
+            "EMPLOYMENT CONTRACT, This agreement is between XYZ Company and John Doe, effective January 1, 2024",
+            "CURRICULUM VITAE, John Smith, Software Engineer, Experience: 5 years, Skills: Python, Java, AI/ML",
+            "ANNUAL REPORT 2023, Company Performance, Revenue: $10M, Growth: 15%, Market Share: 8%",
+            "EMAIL MESSAGE, Subject: Project Update, From: manager@company.com, Status: In Progress",
+            "BUSINESS LETTER, Dear Sir/Madam, We are pleased to inform you about our new services",
+            "RESEARCH ARTICLE, Title: Advances in Machine Learning, Authors: Dr. Jane Doe, Abstract: This paper presents...",
+            "POWERPOINT PRESENTATION, Slide 1: Company Overview, Slide 2: Market Analysis, Slide 3: Future Plans"
+        ]
+
+        sample_labels = [0, 1, 2, 3, 4, 5, 6, 7]  # 0=invoice, 1=contract, etc.
+
+        if st.button("🚀 Train AI Model", type="primary"):
+            with st.spinner("Training AI model..."):
+                accuracy = processor.train_model(sample_documents, sample_labels)
+
+                st.success(f"✅ AI Model trained successfully! Accuracy: {accuracy:.1%}")
+                st.info("The model can now classify documents into 8 categories.")
+
+        # Show training data
+        st.subheader("Training Data Preview")
+        train_df = pd.DataFrame({
+            'Document Type': processor.document_types,
+            'Sample Count': [8] * len(processor.document_types),
+            'Description': [
+                'Financial invoices and billing documents',
+                'Legal contracts and agreements',
+                'Professional resumes and CVs',
+                'Business and financial reports',
+                'Email communications',
+                'Formal business letters',
+                'Research papers and articles',
+                'Presentation documents'
+            ]
+        })
+        st.dataframe(train_df)
+
+    with tab3:
+        st.header("📄 Document Analysis")
+
+        if not processor.is_trained:
+            st.warning("⚠️ Please train the AI model first!")
+            return
+
+        # File upload
+        st.subheader("Upload Document")
+        uploaded_file = st.file_uploader(
+            "Choose a PDF or image file",
+            type=['pdf', 'png', 'jpg', 'jpeg']
+        )
+
+        if uploaded_file is not None:
+            with st.spinner("Processing document..."):
+                # Extract text based on file type
+                if uploaded_file.type == 'application/pdf':
+                    text = processor.extract_text_from_pdf(uploaded_file)
+                    st.success("✅ PDF text extracted successfully!")
+                else:
+                    text = processor.extract_text_from_image(uploaded_file)
+                    st.success("✅ Image text extracted using OCR!")
+
+                if text.strip():
+                    # Classify document
+                    classification = processor.classify_document(text)
+
+                    # Display results
+                    col1, col2 = st.columns(2)
+
+                    with col1:
+                        st.metric("Document Type", classification["document_type"])
+                        st.metric("Confidence", f"{classification['confidence']:.1%}")
+
+                    with col2:
+                        st.info("Document Preview:")
+                        st.text_area("Extracted Text", text[:500] + "..." if len(text) > 500 else text, height=150)
+
+                    # Document-specific insights
+                    st.subheader("📊 Document Insights")
+
+                    if classification["document_type"] == "invoice":
+                        st.write("💰 **Invoice Analysis:**")
+                        st.write("- Amount detection and validation")
+                        st.write("- Due date monitoring")
+                        st.write("- Vendor information extraction")
+
+                    elif classification["document_type"] == "resume":
+                        st.write("👤 **Resume Analysis:**")
+                        st.write("- Skills and experience extraction")
+                        st.write("- Education background analysis")
+                        st.write("- Contact information parsing")
+
+                    elif classification["document_type"] == "contract":
+                        st.write("📋 **Contract Analysis:**")
+                        st.write("- Key terms and conditions")
+                        st.write("- Party information extraction")
+                        st.write("- Important dates and deadlines")
+
+                    # Text statistics
+                    st.write("📈 **Text Statistics:**")
+                    words = len(text.split())
+                    sentences = len(sent_tokenize(text))
+                    avg_words_per_sentence = words / sentences if sentences > 0 else 0
+
+                    stat_col1, stat_col2, stat_col3 = st.columns(3)
+                    with stat_col1:
+                        st.metric("Total Words", words)
+                    with stat_col2:
+                        st.metric("Sentences", sentences)
+                    with stat_col3:
+                        st.metric("Avg Words/Sentence", f"{avg_words_per_sentence:.1f}")
+                else:
+                    st.error("❌ Could not extract text from the uploaded file.")
+
+    with tab4:
+        st.header("📊 About This Capstone Project")
+
+        st.info("""
+        **Project Overview:**
+        This intelligent document processing system demonstrates advanced AI capabilities including:
+        - Multi-modal document processing (PDF, images)
+        - Natural language processing and text analysis
+        - Machine learning classification
+        - Computer vision with OCR
+        - Production-ready web application
+
+        **Technical Architecture:**
+        - **Frontend:** Streamlit web application
+        - **AI Models:** Random Forest classification with TF-IDF features
+        - **Text Processing:** NLTK for comprehensive text preprocessing
+        - **Document Processing:** PyPDF2 for PDF text extraction
+        - **Image Processing:** Tesseract OCR for image text extraction
+        - **Deployment:** Ready for cloud deployment with Docker
+
+        **Key Features:**
+        - Real-time document classification
+        - Multi-format support (PDF, images)
+        - Confidence scoring for predictions
+        - Document-specific insights and analysis
+        - User-friendly web interface
+        - Scalable architecture for enterprise use
+
+        **Learning Outcomes:**
+        - End-to-end AI project development
+        - Multi-modal data processing
+        - Production web application deployment
+        - Best practices in AI system design
+        - Integration of multiple AI technologies
+        """)
+
+        st.success("🎉 Congratulations on completing the AI FOR ALL University AI/ML/LLM course!")
+
+        # Project evaluation
+        st.subheader("🎯 Project Evaluation")
+        evaluation_metrics = {
+            "Technical Complexity": "⭐⭐⭐⭐⭐",
+            "AI Integration": "⭐⭐⭐⭐⭐",
+            "User Experience": "⭐⭐⭐⭐⭐",
+            "Production Readiness": "⭐⭐⭐⭐⭐",
+            "Innovation": "⭐⭐⭐⭐⭐"
+        }
+
+        for metric, rating in evaluation_metrics.items():
+            st.write(f"**{metric}:** {rating}")
+
+if __name__ == "__main__":
+    main()</pre>
+                    <button class="copy-btn" onclick="copyCode('capstone-ai-code')">Copy</button>
+                    <button class="run-btn" onclick="runCode('capstone-ai-code', 'capstone-ai-output')">Run Code</button>
+                    <div class="output-area" id="capstone-ai-output"></div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Chapter 18 Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the most important aspect of a successful AI capstone project?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q18_1" value="a"> A) Using the most complex algorithms</label>
+                        <label><input type="radio" name="q18_1" value="b"> B) Solving a real-world problem end-to-end</label>
+                        <label><input type="radio" name="q18_1" value="c"> C) Having the highest accuracy</label>
+                        <label><input type="radio" name="q18_1" value="d"> D) Using the latest frameworks</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> What does 'end-to-end AI project' mean?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q18_2" value="a"> A) Using only one type of AI model</label>
+                        <label><input type="radio" name="q18_2" value="b"> B) Building a complete system from data to deployment</label>
+                        <label><input type="radio" name="q18_2" value="c"> C) Training models for maximum epochs</label>
+                        <label><input type="radio" name="q18_2" value="d"> D) Using the most expensive hardware</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkQuiz('capstone-ai', ['b', 'b'])">Submit Quiz</button>
+                <div class="quiz-result" id="capstone-ai-result"></div>
+            </div>
+        </div>
+
+        <!-- Chapter 19: AI Mastery Certification -->
+        <div id="certification-ai" class="content-area">
+            <h2>🏆 Chapter 19: AI Mastery Certification</h2>
+
+            <div class="certification">
+                <h2>🎓 AI MASTERY CERTIFICATE</h2>
+
+                <div class="certification-content">
+                    <h3>Awarded to</h3>
+                    <h1 id="studentName" style="color: #8b4513; margin: 1rem 0;">[Your Name]</h1>
+
+                    <p>For successfully completing the</p>
+                    <h2 style="color: #2c3e50; margin: 1rem 0;">AI FOR ALL University</h2>
+                    <h3>AI/ML/LLM Interactive Learning Platform</h3>
+
+                    <p style="font-size: 1.2em; margin: 2rem 0;">
+                        This comprehensive course covered the complete spectrum of artificial intelligence,
+                        machine learning, and large language models, from foundational concepts to
+                        advanced architectures and real-world applications.
+                    </p>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin: 2rem 0;">
+                        <div>
+                            <h4>📚 Chapters Completed</h4>
+                            <p>19 Comprehensive Chapters</p>
+                        </div>
+                        <div>
+                            <h4>🎯 Skills Mastered</h4>
+                            <p>ML, DL, NLP, CV, LLMs</p>
+                        </div>
+                        <div>
+                            <h4>🏆 Certification Level</h4>
+                            <p>AI/ML/LLM Expert</p>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 1.1em; margin-top: 2rem;">
+                        <strong>Date of Completion:</strong> <span id="completionDate"></span>
+                    </p>
+
+                    <button onclick="generateCertificate()" style="background: #ffd700; color: #8b4513; border: none; padding: 15px 30px; border-radius: 25px; font-size: 1.1em; font-weight: bold; cursor: pointer; margin-top: 2rem;">
+                        🎓 Generate Your Certificate
+                    </button>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Final AI Mastery Exam</h3>
+                <p style="margin-bottom: 2rem;">Complete this comprehensive exam to earn your AI Mastery certification!</p>
+
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> What is the primary advantage of deep learning over traditional machine learning?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="cert1" value="a"> A) Requires less data</label>
+                        <label><input type="radio" name="cert1" value="b"> B) Automatic feature extraction</label>
+                        <label><input type="radio" name="cert1" value="c"> C) Faster training</label>
+                        <label><input type="radio" name="cert1" value="d"> D) Simpler models</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> Which component makes transformers different from RNNs?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="cert2" value="a"> A) Self-attention mechanism</label>
+                        <label><input type="radio" name="cert2" value="b"> B) Recurrent connections</label>
+                        <label><input type="radio" name="cert2" value="c"> C) Convolutional layers</label>
+                        <label><input type="radio" name="cert2" value="d"> D) Pooling operations</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q3:</strong> What is the purpose of the encoder in transformer architecture?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="cert3" value="a"> A) Generate output text</label>
+                        <label><input type="radio" name="cert3" value="b"> B) Understand input context</label>
+                        <label><input type="radio" name="cert3" value="c"> C) Apply convolution filters</label>
+                        <label><input type="radio" name="cert3" value="d"> D) Pool spatial dimensions</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q4:</strong> Which evaluation metric is most important for imbalanced datasets?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="cert4" value="a"> A) Accuracy</label>
+                        <label><input type="radio" name="cert4" value="b"> B) F1-Score</label>
+                        <label><input type="radio" name="cert4" value="c"> C) Mean Squared Error</label>
+                        <label><input type="radio" name="cert4" value="d"> D) R² Score</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q5:</strong> What is the main challenge in deploying large language models?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="cert5" value="a"> A) Computational requirements</label>
+                        <label><input type="radio" name="cert5" value="b"> B) Model accuracy</label>
+                        <label><input type="radio" name="cert5" value="c"> C) Training time</label>
+                        <label><input type="radio" name="cert5" value="d"> D) Data availability</label>
+                    </div>
+                </div>
+
+                <button class="quiz-btn" onclick="checkQuizCertification(['b', 'a', 'b', 'b', 'a'])" style="background: linear-gradient(135deg, #ffd700, #ffed4e); color: #8b4513; font-weight: bold;">
+                    🎓 Complete AI Mastery Certification
+                </button>
+                <div class="quiz-result" id="certification-ai-result"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>🎓 <strong>AI FOR ALL University</strong> - Comprehensive AI/ML/LLM Learning Platform</p>
+        <p>📚 19 Chapters • 🤖 Machine Learning • 🧠 Deep Learning • 💬 Large Language Models • ⚡ Transformers</p>
+        <p>🔗 <strong>Prepared by:</strong> <a href="https://www.linkedin.com/in/pusulurisrinivasa/" target="_blank">Srini Pusuluri</a></p>
+        <p>💻 <strong>Practice:</strong> <a href="https://www.google.com/search?q=free+python+online+compiler" target="_blank">Find Free Python Online Compilers</a></p>
+        <p>© 2024 AI FOR ALL University. Empowering the next generation of AI innovators! 🚀</p>
+    </div>
+
+    <button class="back-to-top" onclick="scrollToTop()">↑</button>
+
+    <script>
+        let completedChapters = 0;
+        const totalChapters = 19;
+
+        function showChapter(chapterId) {
+            // Hide all content areas
+            const contentAreas = document.querySelectorAll('.content-area');
+            contentAreas.forEach(area => {
+                area.classList.remove('active');
+            });
+
+            // Show selected chapter
+            document.getElementById(chapterId).classList.add('active');
+
+            // Update progress
+            updateProgress();
+        }
+
+        function checkQuiz(chapter, correctAnswers) {
+            const resultDiv = document.getElementById(chapter + '-result');
+            let correct = 0;
+            let total = correctAnswers.length;
+
+            // Check each answer
+            correctAnswers.forEach((answer, index) => {
+                const questionName = `q${chapter === 'ml-intro' ? '1' : chapter === 'linear-regression' ? '2' : chapter === 'logistic-classification' ? '3' : chapter === 'svm' ? '4' : chapter === 'decision-trees' ? '5' : chapter === 'ensemble' ? '6' : chapter === 'unsupervised' ? '7' : chapter === 'neural-networks' ? '8' : chapter === 'cnn' ? '9' : chapter === 'rnn-lstm' ? '10' : chapter === 'transformers' ? '11' : chapter === 'attention' ? '12' : chapter === 'bert-gpt' ? '13' : chapter === 'advanced-llm' ? '14' : chapter === 'deployment-ml' ? '15' : chapter === 'ai-ethics' ? '16' : chapter === 'future-ai' ? '17' : chapter === 'capstone-ai' ? '18' : 'cert'}_${index + 1}`;
+                const selected = document.querySelector(`input[name="${questionName}"]:checked`);
+                if (selected && selected.value === answer) {
+                    correct++;
+                }
+            });
+
+            // Show result
+            resultDiv.style.display = 'block';
+            if (correct === total) {
+                resultDiv.className = 'quiz-result correct';
+                resultDiv.innerHTML = `🎉 Excellent! You got all ${correct} questions correct! Chapter completed!`;
+
+                // Mark chapter as completed
+                markChapterCompleted(chapter);
+            } else {
+                resultDiv.className = 'quiz-result incorrect';
+                resultDiv.innerHTML = `You got ${correct} out of ${total} questions correct. Please review the chapter and try again!`;
+            }
+        }
+
+        function checkQuizCertification(correctAnswers) {
+            const resultDiv = document.getElementById('certification-ai-result');
+            let correct = 0;
+            let total = correctAnswers.length;
+
+            // Check each answer using the correct naming pattern for certification quiz
+            correctAnswers.forEach((answer, index) => {
+                const questionName = `cert${index + 1}`;
+                const selected = document.querySelector(`input[name="${questionName}"]:checked`);
+                if (selected && selected.value === answer) {
+                    correct++;
+                }
+            });
+
+            // Show result
+            resultDiv.style.display = 'block';
+            if (correct === total) {
+                resultDiv.className = 'quiz-result correct';
+                resultDiv.innerHTML = `🎉 Congratulations! You got all ${correct} questions correct! You have earned your AI Mastery Certification!`;
+
+                // Show certificate section
+                document.querySelector('.certification').style.display = 'block';
+
+                // Mark final chapter as completed
+                markChapterCompleted('certification-ai');
+            } else {
+                resultDiv.className = 'quiz-result incorrect';
+                resultDiv.innerHTML = `You got ${correct} out of ${total} questions correct. Please review the chapters and try again!`;
+            }
+        }
+
+        function markChapterCompleted(chapter) {
+            // Update navigation card
+            const navCard = document.querySelector(`[onclick="showChapter('${chapter}')"]`);
+            if (navCard) {
+                navCard.classList.add('completed');
+            }
+
+            // Update progress
+            completedChapters++;
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progressPercentage = (completedChapters / totalChapters) * 100;
+            document.getElementById('progressFill').style.width = progressPercentage + '%';
+        }
+
+        function generateCertificate() {
+            const name = prompt("Enter your full name for the certificate:");
+            if (name) {
+                document.getElementById('studentName').textContent = name;
+                document.getElementById('completionDate').textContent = new Date().toLocaleDateString();
+
+                // Show certificate
+                const certSection = document.getElementById('certification-ai');
+                certSection.scrollIntoView({ behavior: 'smooth' });
+
+                // Create downloadable certificate
+                setTimeout(() => {
+                    alert(`🎓 Congratulations ${name}! Your AI Mastery certificate has been generated. In a real implementation, this would be downloadable as PDF.`);
+                }, 1000);
+            }
+        }
+
+        function copyCode(elementId) {
+            const codeElement = document.getElementById(elementId);
+            const codeText = codeElement.textContent;
+
+            navigator.clipboard.writeText(codeText).then(() => {
+                alert('Code copied to clipboard!');
+            }).catch(() => {
+                alert('Failed to copy code. Please copy manually.');
+            });
+        }
+
+        function runCode(codeId, outputId) {
+            const outputDiv = document.getElementById(outputId);
+            outputDiv.style.display = 'block';
+            outputDiv.innerHTML = '<p>✅ Code executed successfully! (Demo mode)</p><p>In a real environment, this would show actual Python output.</p>';
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Show back to top button when scrolling
+        window.addEventListener('scroll', function() {
+            const btn = document.querySelector('.back-to-top');
+            if (window.pageYOffset > 300) {
+                btn.style.display = 'block';
+            } else {
+                btn.style.display = 'none';
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            showChapter('ml-intro');
+        });
+    </script>
+</body>
+</html>

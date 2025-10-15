@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI For All Interactive Guide</title>
+    <link rel="icon" href="https://icons.duckduckgo.com/ip3/python.org.ico">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #1f77b4;
+        }
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            background-color: #ddd;
+            margin-bottom: 20px;
+        }
+        .tablink {
+            background-color: inherit;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 8px 10px;
+            transition: 0.3s;
+            font-size: 12px;
+        }
+        .tablink:hover {
+            background-color: #ccc;
+        }
+        .tablink.active {
+            background-color: #1f77b4;
+            color: white;
+        }
+        .tabcontent {
+            display: none;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #1f77b4;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        details {
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        details summary {
+            background-color: #f1f1f1;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            list-style: none;
+            font-weight: bold;
+        }
+        details summary:hover {
+            background-color: #e1e1e1;
+            transform: translateY(-2px);
+        }
+        details[open] summary {
+            color: #1f77b4;
+        }
+        details ul {
+            margin: 10px 0 10px 20px;
+            padding-left: 20px;
+        }
+        details li {
+            margin-bottom: 5px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AI For All Interactive Guide</h1>
+        <div class="tabs">
+            <button class="tablink" onclick="openTab(event, 'Home')">Home</button>
+            <button class="tablink active" onclick="openTab(event, 'Python')">Python</button>
+            <button class="tablink" onclick="openTab(event, 'MachineLearning')">Machine Learning</button>
+            <button class="tablink" onclick="openTab(event, 'LLMs')">LLMs</button>
+            <button class="tablink" onclick="openTab(event, 'PromptEngineering')">Prompt Engineering</button>
+            <button class="tablink" onclick="openTab(event, 'AIUIStack')">AI UI Stack</button>
+            <button class="tablink" onclick="openTab(event, 'AIMLOps')">AI/ML Ops</button>
+            <button class="tablink" onclick="openTab(event, 'VisionTransformers')">Vision Transformers</button>
+            <button class="tablink" onclick="openTab(event, 'AIEthics')">AI Ethics & Gov</button>
+            <button class="tablink" onclick="openTab(event, 'AIBenchmark')">AI Benchmark & Eval</button>
+            <button class="tablink" onclick="openTab(event, 'WebAISecurity')">Web & AI Security</button>
+            <button class="tablink" onclick="openTab(event, 'AICompanies')">AI Companies</button>
+            <button class="tablink" onclick="openTab(event, 'Google')">Google</button>
+            <button class="tablink" onclick="openTab(event, 'YouTube')">YouTube</button>
+            <button class="tablink" onclick="openTab(event, 'GitHub')">GitHub</button>
+        </div>
+        <div id="Home" class="tabcontent">
+            <h2>Welcome to Interactive Tutor</h2>
+            <p>Intro to the interactive tutor with categorized links for Python, Google tools, YouTube, and GitHub resources.</p>
+            <p>When AI is rapidly evolving, this hub provides a centralized way to access diverse learning materials essential for staying informed and skilled in the AI-driven era.</p>
+            <p>Use the search/filter feature in each tab to quickly find topics or resources.</p>
+        </div>
+        <div id="Python" class="tabcontent" style="display: block;">
+            <h2>Python Learning Resources</h2>
+            <p>Python fundamentals, data science/Machine Learning, deep learning, computer vision, and other libraries. Includes search feature.</p>
+            <p>Python is the backbone of AI development, powering over 90% of AI tools and libraries, making it crucial for building, experimenting, and deploying AI solutions in today's innovation-driven world.</p>
+            <input type="text" id="search" placeholder="Search for topics or libraries..." onkeyup="filterLibs()">
+            <details class="tut">
+                <summary><h4>Python Fundamentals</h4></summary>
+                <ul>
+                    <li><a href="https://docs.python.org/3/tutorial/introduction.html" target="_blank">Official Python Tutorial - Introduction</a></li>
+                    <li><a href="https://www.w3schools.com/python/python_variables.asp" target="_blank">W3Schools Python - Variables, Data Types, Loops</a></li>
+                    <li><a href="https://realpython.com/python-introduction/" target="_blank">Real Python - Beginner Tutorials</a></li>
+                    <li><a href="https://www.w3schools.com/python/python_functions.asp" target="_blank">W3Schools Functions</a></li>
+                    <li><a href="https://realpython.com/python-oop/" target="_blank">Real Python - Object-Oriented Programming</a></li>
+                </ul>
+            </details>
+            <details class="lib">
+                <summary><h4>Data Science / Machine Learning Libraries</h4></summary>
+                <ul>
+                    <li><a href="https://numpy.org/doc/stable/" target="_blank">NumPy Documentation</a></li>
+                    <li><a href="https://pandas.pydata.org/docs/" target="_blank">Pandas Documentation</a></li>
+                    <li><a href="https://matplotlib.org/stable/contents.html" target="_blank">Matplotlib Documentation</a></li>
+                    <li><a href="https://scikit-learn.org/stable/" target="_blank">Scikit-learn Documentation</a></li>
+                </ul>
+            </details>
+            <details class="lib">
+                <summary><h4>Deep Learning Libraries</h4></summary>
+                <ul>
+                    <li><a href="https://www.tensorflow.org/learn" target="_blank">TensorFlow Tutorials</a></li>
+                    <li><a href="https://pytorch.org/tutorials/" target="_blank">PyTorch Tutorials</a></li>
+                    <li><a href="https://keras.io/getting_started/" target="_blank">Keras Guides</a></li>
+                </ul>
+            </details>
+            <details class="lib">
+                <summary><h4>Computer Vision Libraries</h4></summary>
+                <ul>
+                    <li><a href="https://docs.opencv.org/4.x/" target="_blank">OpenCV Documentation</a></li>
+                    <li><a href="https://docs.ultralytics.com/" target="_blank">Ultralytics YOLO Documentation</a></li>
+                </ul>
+            </details>
+            <details class="lib">
+                <summary><h4>Other Popular Libraries</h4></summary>
+                <ul>
+                    <li><a href="https://requests.readthedocs.io/en/latest/" target="_blank">Requests Library Docs</a></li>
+                    <li><a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/" target="_blank">BeautifulSoup Documentation</a></li>
+                    <li><a href="https://flask.palletsprojects.com/en/2.3.x/tutorial/" target="_blank">Flask Tutorials</a></li>
+                    <li><a href="https://fastapi.tiangolo.com/tutorial/" target="_blank">FastAPI Tutorials</a></li>
+                </ul>
+            </details>
+        </div>
+        <div id="MachineLearning" class="tabcontent">
+            <h2>Machine Learning and AI Resources</h2>
+            <p>ML, deep learning, large language models, transformers, vision transformers, RAG, fine-tuning, and agentic AI sections with courses and resources.</p>
+            <p>ML forms the foundation of today's AI revolution, enabling systems to learn from data, driving advancements in automation, prediction, and intelligent decision-making across industries.</p>
+            <input type="text" id="searchMachineLearning" placeholder="Search for ML topics..." onkeyup="filterLibs('MachineLearning')">
+            <details class="ml">
+                <summary><h4>Machine Learning</h4></summary>
+                <ul>
+                    <li><a href="https://scikit-learn.org/stable/tutorial/machine_learning_map/index.html" target="_blank">Scikit-learn ML Map</a></li>
+                    <li><a href="https://www.coursera.org/learn/machine-learning" target="_blank">Andrew Ng's Machine Learning Course</a></li>
+                    <li><a href="https://developers.google.com/machine-learning/crash-course" target="_blank">Google ML Crash Course</a></li>
+                    <li><a href="https://www.kaggle.com/learn/machine-learning" target="_blank">Kaggle ML Tutorial</a></li>
+                </ul>
+            </details>
+            <details class="dl">
+                <summary><h4>Deep Learning</h4></summary>
+                <ul>
+                    <li><a href="https://www.deeplearning.ai/" target="_blank">DeepLearning.AI</a></li>
+                    <li><a href="https://www.coursera.org/specializations/deep-learning" target="_blank">Deep Learning Specialization (Andrew Ng)</a></li>
+                    <li><a href="https://pytorch.org/tutorials/" target="_blank">PyTorch Deep Learning Tutorials</a></li>
+                    <li><a href="https://www.tensorflow.org/tutorials" target="_blank">TensorFlow Tutorials</a></li>
+                </ul>
+            </details>
+            <details class="llm">
+                <summary><h4>Large Language Models</h4></summary>
+                <ul>
+                    <li><a href="https://platform.openai.com/docs/introduction" target="_blank">OpenAI API Documentation</a></li>
+                    <li><a href="https://huggingface.co/learn/nlp-course/chapter1/1" target="_blank">Hugging Face NLP Course</a></li>
+                    <li><a href="https://huggingface.co/blog/llm-inference" target="_blank">LLM Inference Guide</a></li>
+                    <li><a href="https://platform.openai.com/docs/guides/chat/chat-completions-vs-completions" target="_blank">GPT Completions Guide</a></li>
+                </ul>
+            </details>
+            <details class="transformers">
+                <summary><h4>Transformers</h4></summary>
+                <ul>
+                    <li><a href="https://huggingface.co/blog/the-annotated-transformer" target="_blank">The Annotated Transformer</a></li>
+                    <li><a href="https://huggingface.co/docs/transformers/index" target="_blank">Hugging Face Transformers Doc</a></li>
+                    <li><a href="https://jalammar.github.io/illustrated-transformer/" target="_blank">Illustrated Transformer</a></li>
+                    <li><a href="https://arxiv.org/abs/1706.03762" target="_blank">Attention Is All You Need (Paper)</a></li>
+                </ul>
+            </details>
+            <details class="vision">
+                <summary><h4>Vision Transformers</h4></summary>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/2010.11929" target="_blank">Vision Transformer Paper</a></li>
+                    <li><a href="https://huggingface.co/blog/fine-tune-vit" target="_blank">Fine-Tune ViT on HF</a></li>
+                    <li><a href="https://pytorch.org/vision/stable/models.html#vision-transformer" target="_blank">PyTorch ViT Docs</a></li>
+                    <li><a href="https://www.tensorflow.org/guide/keras" target="_blank">Keras ViT Guides</a></li>
+                </ul>
+            </details>
+            <details class="rag">
+                <summary><h4>RAG (Retrieval-Augmented Generation)</h4></summary>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/2005.11401" target="_blank">RAG Original Paper</a></li>
+                    <li><a href="https://huggingface.co/learn/cookbook/en/rag_evaluation" target="_blank">Hugging Face RAG Tutorial</a></li>
+                    <li><a href="https://pinecone.io/learn/">Pinecone AI</a></li>
+                    <li><a href="https://docs.langchain.com/docs/components/chains/rag_chain" target="_blank">LangChain RAG</a></li>
+                </ul>
+            </details>
+            <details class="finetuning">
+                <summary><h4>Fine-Tuning</h4></summary>
+                <p>This section covers methods to adapt pre-trained models to specific tasks with custom data, essential for tailored AI applications.</p>
+                <ul>
+                    <li><a href="https://huggingface.co/docs/transformers/training" target="_blank">HF Transformers Fine-Tuning</a></li>
+                    <li><a href="https://platform.openai.com/docs/guides/fine-tuning" target="_blank">OpenAI Fine-Tuning</a></li>
+                    <li><a href="https://docs.llamaindex.ai/en/stable/module_guides/models/fine_tuning/" target="_blank">LlamaIndex Fine-Tuning</a></li>
+                    <li><a href="https://pytorch.org/tutorials/beginner/finetuning_torchvision_models_tutorial.html" target="_blank">PyTorch Fine-Tuning Tutorial</a></li>
+                </ul>
+            </details>
+            <details class="agentic">
+                <summary><h4>Agentic AI</h4></summary>
+                <ul>
+                    <li><a href="https://langchain-ai.github.io/langgraph/tutorials/introduction/" target="_blank">LangGraph for Agents</a></li>
+                    <li><a href="https://platform.openai.com/docs/assistants/overview" target="_blank">OpenAI Assistants</a></li>
+                    <li><a href="https://arxiv.org/abs/2308.11421" target="_blank">Toolformer Paper</a></li>
+                    <li><a href="https://docs.crewai.com/" target="_blank">CrewAI Framework</a></li>
+                </ul>
+            </details>
+        </div>
+        <div id="LLMs" class="tabcontent">
+            <h2>Large Language Models (LLMs) Resources</h2>
+            <p>Foundations, frameworks, fine-tuning, inference/deployment, RAG, agents, popular models, tools, and evaluation with benchmarks.</p>
+            <p>LLMs power generative AI tools like ChatGPT, enabling natural language understanding and generation, revolutionizing applications in creative writing, coding, and customer service.</p>
+            <input type="text" id="searchLLMs" placeholder="Search for LLM topics..." onkeyup="filterLibs('LLMs')">
+            <details class="foundations">
+                <summary><h4>LLM Foundations</h4></summary>
+                <p>This section provides foundational knowledge and key papers for understanding Large Language Models, essential for beginners in AI development.</p>
+                <ul>
+                    <li><a href="https://huggingface.co/learn/nlp-course/chapter1/1" target="_blank">Hugging Face NLP Course</a></li>
+                    <li><a href="https://jalammar.github.io/illustrated-transformer/" target="_blank">The Illustrated Transformer</a></li>
+                    <li><a href="https://arxiv.org/abs/1706.03762" target="_blank">"Attention Is All You Need" Paper</a></li>
+                    <li><a href="https://platform.openai.com/docs/introduction" target="_blank">OpenAI API Documentation</a></li>
+                </ul>
+            </details>
+            <details class="frameworks">
+                <summary><h4>LLM Frameworks</h4></summary>
+                <p>This section covers high-level frameworks and libraries for building LLM-powered applications, including prompting, chaining, and indexing capabilities.</p>
+                <ul>
+                    <li><a href="https://huggingface.co/docs/transformers/index" target="_blank">Hugging Face Transformers</a></li>
+                    <li><a href="https://langchain-ai.github.io/langchain/" target="_blank">LangChain Documentation</a></li>
+                    <li><a href="https://docs.llamaindex.ai/en/stable/" target="_blank">LlamaIndex Documentation</a></li>
+                    <li><a href="https://platform.openai.com/docs/libraries" target="_blank">OpenAI libraries</a></li>
+                </ul>
+            </details>
+            <details class="finetuning">
+                <summary><h4>Fine-Tuning</h4></summary>
+                <ul>
+                    <li><a href="https://huggingface.co/docs/transformers/training" target="_blank">Hugging Face Fine-Tuning Guide</a></li>
+                    <li><a href="https://platform.openai.com/docs/guides/fine-tuning" target="_blank">OpenAI Fine-Tuning</a></li>
+                    <li><a href="https://docs.google.com/document/d/1rvYZB4Yp9SILWGR8WZJv-tXmI3hEZqV9mLUFPzECVZE/edit" target="_blank">Fine-Tuning Best Practices</a></li>
+                    <li><a href="https://pytorch.org/tutorials/beginner/finetuning_torchvision_models_tutorial.html" target="_blank">PyTorch Fine-Tuning Tutorial</a></li>
+                </ul>
+            </details>
+            <details class="inference">
+                <summary><h4>Inference & Deployment</h4></summary>
+                <ul>
+                    <li><a href="https://huggingface.co/blog/llm-inference" target="_blank">LLM Inference Guide</a></li>
+                    <li><a href="https://platform.openai.com/docs/guides/chat" target="_blank">OpenAI Chat Completions</a></li>
+                    <li><a href="https://docs.cloud.google.com/vertex-ai/docs/generative-ai/model-tuning/deploy-tuned-models" target="_blank">Google Vertex AI Model Deployment</a></li>
+                    <li><a href="https://replicate.com/docs" target="_blank">Replicate for LLM Hosting</a></li>
+                </ul>
+            </details>
+            <details class="rag">
+                <summary><h4>RAG & Augmentation</h4></summary>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/2005.11401" target="_blank">RAG Paper</a></li>
+                    <li><a href="https://huggingface.co/learn/cookbook/en/rag_evaluation" target="_blank">Hugging Face RAG Tutorial</a></li>
+                    <li><a href="https://docs.langchain.com/docs/components/chains/rag_chain" target="_blank">LangChain RAG</a></li>
+                    <li><a href="https://pinecone.io/learn/" target="_blank">Pinecone Vector DB</a></li>
+                </ul>
+            </details>
+            <details class="agents">
+                <summary><h4>LLM Agents & Applications</h4></summary>
+                <ul>
+                    <li><a href="https://langchain-ai.github.io/langgraph/tutorials/introduction/" target="_blank">LangGraph for Agents</a></li>
+                    <li><a href="https://platform.openai.com/docs/assistants/overview" target="_blank">OpenAI Assistants</a></li>
+                    <li><a href="https://docs.crewai.com/" target="_blank">CrewAI Framework</a></li>
+                    <li><a href="https://docs.anthropic.com/claude/docs/tool-use" target="_blank">Claude Tool Use</a></li>
+                </ul>
+            </details>
+            <details class="models">
+                <summary><h4>Popular LLM Models</h4></summary>
+                <ul>
+                    <li><a href="https://platform.openai.com/docs/models" target="_blank">OpenAI Models (GPT Series)</a></li>
+                    <li><a href="https://docs.anthropic.com/claude/docs" target="_blank">Anthropic Claude</a></li>
+                    <li><a href="https://huggingface.co/models?pipeline_tag=text-generation" target="_blank">Hugging Face Model Hub</a></li>
+                    <li><a href="https://www.meta.ai/llama/" target="_blank">Meta LLaMA</a></li>
+                </ul>
+            </details>
+            <details class="tools">
+                <summary><h4>LLM Tools & Libraries</h4></summary>
+                <ul>
+                    <li><a href="https://github.com/openai/openai-python" target="_blank">OpenAI Python Library</a></li>
+                    <li><a href="https://github.com/microsoft/semantic-kernel" target="_blank">Microsoft Semantic Kernel</a></li>
+                    <li><a href="https://github.com/huggingface/peft" target="_blank">PEFT Library</a></li>
+                    <li><a href="https://github.com/jerryjliu/llama_index" target="_blank">Llama Index</a></li>
+                </ul>
+            </details>
+            <details class="evaluation">
+                <summary><h4>Evaluation & Benchmarks</h4></summary>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/2206.04615" target="_blank">HELM Benchmark</a></li>
+                    <li><a href="https://huggingface.co/datasets/EleutherAI/lm-evaluation-harness" target="_blank">EleutherAI Evaluation Harness</a></li>
+                    <li><a href="https://github.com/opencompass/OpenCompass" target="_blank">OpenCompass</a></li>
+                    <li><a href="https://chatbotarena.lmsys.org/" target="_blank">Chatbot Arena</a></li>
+                </ul>
+            </details>
+        </div>
+        <div id="PromptEngineering" class="tabcontent">
+            <h2>Prompt Engineering Resources</h2>
+            <p>Fundamentals, advanced techniques, tools/frameworks, and applications for effective prompting.</p>
+            <p>In an AI-centric world, prompt engineering optimizes interactions with LLMs, enhancing outputs and enabling precise control over AI behavior for better user experiences and task automation.</p>
+            <input type="text" id="searchPromptEngineering" placeholder="Search for prompt engineering topics..." onkeyup="filterLibs('PromptEngineering')">
+            <details class="fundamentals">
+                <summary><h4>Fundamentals</h4></summary>
+                <ul>
+                    <li><a href="https://platform.openai.com/docs/guides/prompt-engineering" target="_blank">OpenAI Prompt Engineering Guide</a></li>
+                    <li><a href="https://huggingface.co/learn/prompt-engineering-course/main" target="_blank">Hugging Face Prompt Engineering Course</a></li>
+                    <li><a href="https://www.promptingguide.ai/" target="_blank">Prompt Engineering Guide</a></li>
+                    <li><a href="https://docs.anthropic.com/claude/docs/prompt-engineering" target="_blank">Anthropic Prompt Engineering</a></li>
+                </ul>
+            </details>
+            <details class="techniques">
+                <summary><h4>Advanced Techniques</h4></summary>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/2212.09597" target="_blank">Chain-of-Thought Prompting</a></li>
+                    <li><a href="https://arxiv.org/abs/2203.02155" target="_blank">Tree of Thoughts</a></li>
+                    <li><a href="https://learnprompting.org/" target="_blank">Learn Prompting</a></li>
+                    <li><a href="https://www.jeremyjordan.me/AI/prompt-engineering/" target="_blank">Prompt Engineering Techniques</a></li>
+                </ul>
+            </details>
+            <details class="tools">
+                <summary><h4>Tools & Frameworks</h4></summary>
+                <ul>
+                    <li><a href="https://github.com/microsoft/prompt-engineering" target="_blank">Microsoft Prompt Engineering Repo</a></li>
+                    <li><a href="https://docs.langchain.com/docs/components/prompts" target="_blank">LangChain Prompts</a></li>
+                    <li><a href="https://gpt-index.readthedocs.io/en/latest/how_to/prompt_engineering.html" target="_blank">LlamaIndex Prompt Engineering</a></li>
+                    <li><a href="https://console.groq.com/playground" target="_blank">Groq Playground</a></li>
+                </ul>
+            </details>
+            <details class="applications">
+                <summary><h4>Applications</h4></summary>
+                <ul>
+                    <li><a href="https://platform.openai.com/examples" target="_blank">OpenAI Examples</a></li>
+                    <li><a href="https://huggingface.co/tasks/text-generation" target="_blank">Hugging Face Text Generation</a></li>
+                    <li><a href="https://docs.anthropic.com/claude/docs/claude-3-5-sonnet" target="_blank">Claude Examples</a></li>
+                    <li><a href="https://promptlayer.com/" target="_blank">Prompt Layer</a></li>
+                </ul>
+            </details>
+        </div>
+        <div id="AIUIStack" class="tabcontent">
+            <h2>AI UI Stack Resources</h2>
+            <p>UI frameworks like Streamlit and Gradio, other libraries, tutorials, and courses for building AI interfaces.</p>
+            <p>UI tools democratize AI, allowing non-experts to build and deploy user-friendly applications, making AI accessible and fostering innovation in interface design.</p>
+            <input type="text" id="searchAIUIStack" placeholder="Search for AI UI topics..." onkeyup="filterLibs('AIUIStack')">
+            <details class="frameworks">
+                <summary><h4>UI Frameworks</h4></summary>
+                <ul>
+                    <li><a href="https://streamlit.io/" target="_blank">Streamlit</a></li>
+                    <li><a href="https://gradio.app/" target="_blank">Gradio</a></li>
+                    <li><a href="https://docs.chainlit.io/" target="_blank">Chainlit</a></li>
+                    <li><a href="https://panel.holoviz.org/" target="_blank">Panel (HoloViz)</a></li>
+                </ul>
+            </details>
+            <details class="libraries">
+                <summary><h4>Other Libraries</h4></summary>
+                <ul>
+                    <li><a href="https://www.chatterbot.readthedocs.io/en/stable/" target="_blank">ChatterBot</a></li>
+                    <li><a href="https://rasa.com/" target="_blank">Rasa</a></li>
+                    <li><a href="https://dialogflow.cloud.google.com/" target="_blank">Dialogflow</a></li>
+                    <li><a href="https://voiceflow.com/" target="_blank">Voiceflow</a></li>
+                </ul>
+            </details>
+            <details class="tutorials">
+                <summary><h4>Tutorials & Courses</h4></summary>
+                <ul>
+                    <li><a href="https://blog.streamlit.io/" target="_blank">Streamlit Blog</a></li>
+                    <li><a href="https://gradio.app/mlwebapps/" target="_blank">Gradio ML Web Apps</a></li>
+                    <li><a href="https://docs.chainlit.io/get-started/overview" target="_blank">Chainlit Getting Started</a></li>
+                    <li><a href="https://panel.holoviz.org/getting_started/index.html" target="_blank">Panel Tutorials</a></li>
+                </ul>
+            </details>
+        </div>
+        <div id="AIMLOps" class="tabcontent">
+            <h2>AI/ML Ops Resources</h2>
+            <p>MLOps tools, platforms/services, and best practices for AI/ML operations and deployment.</p>
+            <p>MLOps ensures AI models are production-ready, with monitoring and updates, enabling scalable and reliable AI solutions in business contexts.</p>
+            <input type="text" id="searchAIMLOps" placeholder="Search for AI/ML Ops topics..." onkeyup="filterLibs('AIMLOps')">
+            <details class="tools">
+                <summary><h4>MLOps Tools</h4></summary>
+                <ul>
+                    <li><a href="https://mlflow.org/" target="_blank">MLflow</a></li>
+                    <li><a href="https://dvc.org/" target="_blank">DVC</a></li>
+                    <li><a href="https://kubeflow.org/" target="_blank">Kubeflow</a></li>
+                    <li><a href="https://bentoml.org/" target="_blank">BentoML</a></li>
+                </ul>
+            </details>
+            <details class="platforms">
+                <summary><h4>Platforms & Services</h4></summary>
+                <ul>
+                    <li><a href="https://cloud.google.com/vertex-ai" target="_blank">Google Vertex AI</a></li>
+                    <li><a href="https://aws.amazon.com/sagemaker/" target="_blank">AWS SageMaker</a></li>
+                    <li><a href="https://azure.microsoft.com/en-us/services/machine-learning/" target="_blank">Azure ML</a></li>
+                    <li><a href="https://docs.databricks.com/" target="_blank">Databricks</a></li>
+                </ul>
+            </details>
+            <details class="practices">
+                <summary><h4>Best Practices</h4></summary>
+                <ul>
+                    <li><a href="https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning" target="_blank">Google MLOps Guide</a></li>
+                    <li><a href="https://ml-ops.org/content/mlops-roadmap.html" target="_blank">MLOps Roadmap</a></li>
+                    <li><a href="https://aws.amazon.com/products/sagemaker/getting-started/" target="_blank">SageMaker Tutorials</a></li>
+                    <li><a href="https://learn.microsoft.com/en-us/training/paths/azure-machine-learning-explore/" target="_blank">Azure ML Learning</a></li>
+                </ul>
+            </details>
+        </div>
+        <div id="VisionTransformers" class="tabcontent">
+            <h2>Vision Transformers Resources</h2>
+            <p>Foundational papers, implementations, tutorials, and applications for ViT and related models.</p>
+            <p>Vision Transformers revolutionized computer vision by applying transformer architectures beyond text, enabling state-of-the-art image processing without CNNs.</p>
+            <input type="text" id="searchVisionTransformers" placeholder="Search for ViT topics..." onkeyup="filterLibs('VisionTransformers')">
+            <details class="papers">
+                <summary><h4>Foundational Papers</h4></summary>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/2010.11929" target="_blank">Vision Transformer (ViT)</a></li>
+                    <li><a href="https://arxiv.org/abs/2106.04560" target="_blank">Swin Transformer</a></li>
+                    <li><a href="https://arxiv.org/abs/2205.01036" target="_blank">DeiT</a></li>
+                    <li><a href="https://arxiv.org/abs/2202.06709" target="_blank">MAE</a></li>
+                </ul>
+            </details>
+            <details class="implementations">
+                <summary><h4>Implementations</h4></summary>
+                <ul>
+                    <li><a href="https://huggingface.co/docs/transformers/model_doc/vit" target="_blank">Hugging Face ViT</a></li>
+                    <li><a href="https://pytorch.org/vision/stable/models.html#vision-transformer" target="_blank">PyTorch ViT</a></li>
+                    <li><a href="https://www.tensorflow.org/hub/tutorials/vision_transformer" target="_blank">TensorFlow Hub ViT</a></li>
+                    <li><a href="https://github.com/google-research/vision_transformer" target="_blank">Official ViT Repo</a></li>
+                </ul>
+            </details>
+            <details class="tutorials">
+                <summary><h4>Tutorials</h4></summary>
+                <ul>
+                    <li><a href="https://huggingface.co/blog/fine-tune-vit" target="_blank">Fine-Tune ViT on HF</a></li>
+                    <li><a href="https://colab.research.google.com/github/huggingface/notebooks/blob/main/examples/vision_transformer.ipynb" target="_blank">ViT Colab</a></li>
+                    <li><a href="https://towardsai.net/p/computer-vision/vision-transformers-an-introduction" target="_blank">ViT Introduction</a></li>
+                    <li><a href="https://keras.io/examples/vision/vision_transformer/" target="_blank">Keras ViT Example</a></li>
+                </ul>
+            </details>
+            <details class="applications">
+                <summary><h4>Applications</h4></summary>
+                <ul>
+                    <li><a href="https://huggingface.co/tasks/image-classification" target="_blank">Image Classification</a></li>
+                    <li><a href="https://huggingface.co/tasks/image-segmentation" target="_blank">Image Segmentation</a></li>
+                    <li><a href="https://paperswithcode.com/task/image-classification" target="_blank">Papers with Code ViT</a></li>
+                    <li><a href="https://github.com/facebookresearch/swin" target="_blank">Swin Transformer</a></li>
+                </ul>
+            </details>
+        </div>
+        <div id="AIEthics" class="tabcontent">
+            <h2>AI Ethics & Governance Resources</h2>
+            <p>Ethical principles, bias/fairness, regulations/governance, and educational resources on AI ethics.</p>
+            <p>With AI's growing influence, understanding ethics ensures responsible development, mitigates biases, and builds public trust in AI technologies.</p>
+            <input type="text" id="searchAIEthics" placeholder="Search for AI ethics topics..." onkeyup="filterLibs('AIEthics')">
+            <details class="principles">
+                <summary><h4>Ethical Principles</h4></summary>
+                <ul>
+                    <li><a href="https://www.aitransparency.org/" target="_blank">AI Transparency</a></li>
+                    <li><a href="https://www.asilomar.ai/" target="_blank">Asilomar AI Principles</a></li>
+                    <li><a href="https://aiethicist.org/" target="_blank">AI Ethics Guidelines</a></li>
+                    <li><a href="https://www.partnershiponai.org/" target="_blank">Partnership on AI</a></li>
+                </ul>
+            </details>
+            <details class="bias">
+                <summary><h4>Bias & Fairness</h4></summary>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/1810.03993" target="_blank">Fairness Definition</a></li>
+                    <li><a href="https://developers.google.com/machine-learning/fairness-overview" target="_blank">Google ML Fairness</a></li>
+                    <li><a href="https://fairlearn.org/" target="_blank">Fairlearn Tool</a></li>
+                    <li><a href="https://algorithmwatch.org/en/" target="_blank">Algorithm Watch</a></li>
+                </ul>
+            </details>
+            <details class="regulation">
+                <summary><h4>Regulations & Governance</h4></summary>
+                <ul>
+                    <li><a href="https://www.europarl.europa.eu/RegData/etudes/BRIE/2021/698792/EPRS_BRI(2021)698792_EN.pdf" target="_blank">EU AI Act</a></li>
+                    <li><a href="https://www.whitehouse.gov/wp-content/uploads/2023/07/Blueprint-for-an-AI-Bill-of-Rights.pdf" target="_blank">US AI Bill of Rights</a></li>
+                    <li><a href="https://www.icgc.ca/en/compass" target="_blank">Canada AiCompass</a></li>
+                    <li><a href="https://ico.org.uk/for-organisations/guide-to-the-general-data-protection-regulation-gdpr/artificial-intelligence/" target="_blank">UK GDPR AI</a></li>
+                </ul>
+            </details>
+            <details class="resources">
+                <summary><h4>Educational Resources</h4></summary>
+                <ul>
+                    <li><a href="https://ethics-of-ai.com/" target="_blank">Ethics of AI</a></li>
+                    <li><a href="https://montrealethics.ai/" target="_blank">Montreal AI Ethics</a></li>
+                    <li><a href="https://aiethics.princeton.edu/" target="_blank">Princeton AI Ethics</a></li>
+                    <li><a href="https://www.oxford-aiethics.com/" target="_blank">Oxford AI Ethics</a></li>
+                </ul>
+            </details>
+        </div>
+        <div id="AIBenchmark" class="tabcontent">
+            <h2>AI Benchmark & Evaluation Resources</h2>
+            <p>Popular benchmarks, evaluation tools, metrics, and guides for assessing AI models.</p>
+            <p>Benchmarks drive AI progress by standardizing evaluations, enabling comparisons, and guiding advancements toward more capable and reliable models.</p>
+            <input type="text" id="searchAIBenchmark" placeholder="Search for AI benchmark topics..." onkeyup="filterLibs('AIBenchmark')">
+            <details class="benchmarks">
+                <summary><h4>Popular Benchmarks</h4></summary>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/2206.04615" target="_blank">HELM</a></li>
+                    <li><a href="https://paperswithcode.com/dataset/mmlu" target="_blank">MMLU</a></li>
+                    <li><a href="https://paperswithcode.com/sota" target="_blank">Papers with Code</a></li>
+                    <li><a href="https://chatbotarena.lmsys.org/" target="_blank">Chatbot Arena</a></li>
+                </ul>
+            </details>
+            <details class="tools">
+                <summary><h4>Evaluation Tools</h4></summary>
+                <ul>
+                    <li><a href="https://huggingface.co/datasets/EleutherAI/lm-evaluation-harness" target="_blank">LM Evaluation Harness</a></li>
+                    <li><a href="https://github.com/opencompass/OpenCompass" target="_blank">OpenCompass</a></li>
+                    <li><a href="https://www.bigbench.ai/" target="_blank">BIG-bench</a></li>
+                    <li><a href="https://huggingface.co/evaluate" target="_blank">Hugging Face Evaluate</a></li>
+                </ul>
+            </details>
+            <details class="metrics">
+                <summary><h4>Evaluation Metrics</h4></summary>
+                <ul>
+                    <li><a href="https://scikit-learn.org/stable/modules/model_evaluation.html" target="_blank">Scikit-learn Metrics</a></li>
+                    <li><a href="https://towardsdatascience.com/metrics-for-multi-class-classification-8b2a0ea6c8a3" target="_blank">Multi-class Metrics</a></li>
+                    <li><a href="https://gluebenchmark.com/" target="_blank">GLUE Benchmark</a></li>
+                    <li><a href="https://super.gluebenchmark.com/" target="_blank">SuperGLUE</a></li>
+                </ul>
+            </details>
+            <details class="guides">
+                <summary><h4>Evaluation Guides</h4></summary>
+                <ul>
+                    <li><a href="https://docs.anthropic.com/claude/docs/evaluation" target="_blank">Claude Evaluation</a></li>
+                    <li><a href="https://platform.openai.com/docs/guides/evals" target="_blank">OpenAI Evals</a></li>
+                    <li><a href="https://learn.microsoft.com/en-us/azure/machine-learning/how-to-assess-model-quality" target="_blank">Azure ML Model Eval</a></li>
+                    <li><a href="https://neuralmagic.com/blog/best-practices-for-ml-model-evaluation/" target="_blank">ML Model Eval Best Practices</a></li>
+                </ul>
+            </details>
+        </div>
+        <div id="WebAISecurity" class="tabcontent">
+            <h2>Web and AI Security Resources</h2>
+            <p>AI-specific security, web security for AI apps, privacy/protection, and certifications/training.</p>
+            <p>As AI integrates into critical systems, security expertise safeguards against vulnerabilities, ensuring safe and compliant AI deployment worldwide.</p>
+            <input type="text" id="searchWebAISecurity" placeholder="Search for security topics..." onkeyup="filterLibs('WebAISecurity')">
+            <details class="ai-security">
+                <summary><h4>AI-Specific Security</h4></summary>
+                <ul>
+                    <li><a href="https://owasp.org/www-project-ai-security-and-privacy-guide/" target="_blank">OWASP AI Security</a></li>
+                    <li><a href="https://arxiv.org/abs/2302.10186" target="_blank">AI Cybersecurity</a></li>
+                    <li><a href="https://www.microsoft.com/en-us/security/blog/2023/01/26/securing-generative-ai-creating-trustworthy-and-safe-ai/" target="_blank">Microsoft AI Security</a></li>
+                    <li><a href="https://www.imda.gov.sg/-/media/imda/files/publication-and-research/research-reports-(r2g)/infocomm-media-development-authority/restoring-trust-in-ai/restoring-trust-in-ai.pdf" target="_blank">AI Trust Report</a></li>
+                </ul>
+            </details>
+            <details class="web-security">
+                <summary><h4>Web Security for AI Apps</h4></summary>
+                <ul>
+                    <li><a href="https://owasp.org/www-project-top-ten/" target="_blank">OWASP Top 10</a></li>
+                    <li><a href="https://portswigger.net/burp" target="_blank">Burp Suite</a></li>
+                    <li><a href="https://snyk.io/" target="_blank">Snyk Security</a></li>
+                    <li><a href="https://github.com/The-Art-of-Hacking/art-of-hacking" target="_blank">Art of Hacking</a></li>
+                </ul>
+            </details>
+            <details class="privacy">
+                <summary><h4>Privacy & Data Protection</h4></summary>
+                <ul>
+                    <li><a href="https://gdpr-info.eu/" target="_blank">GDPR Hub</a></li>
+                    <li><a href="https://hipaa.jhu.edu/" target="_blank">HIPAA</a></li>
+                    <li><a href="https://www.dataprotection.ie/" target="_blank">Data Protection IE</a></li>
+                    <li><a href="https://edpb.europa.eu/edpb_en" target="_blank">EDPB</a></li>
+                </ul>
+            </details>
+            <details class="certifications">
+                <summary><h4>Certifications & Training</h4></summary>
+                <ul>
+                    <li><a href="https://www.isc2.org/Certifications/CCSP" target="_blank">CCSP Certification</a></li>
+                    <li><a href="https://www.offsec.com/courses/pen-200/" target="_blank">PEN-200 OSCP</a></li>
+                    <li><a href="https://tryhackme.com/" target="_blank">TryHackMe</a></li>
+                    <li><a href="https://academy.hacksplaining.com/" target="_blank">Hacksplaining Academy</a></li>
+                </ul>
+            </details>
+        </div>
+        <div id="AICompanies" class="tabcontent">
+            <h2>AI Companies Resources</h2>
+            <p>Major AI companies, notable startups, Chinese AI companies, and AI careers/jobs.</p>
+            <p>Understanding major players and startups outlines the competitive landscape, revealing innovation trends and career opportunities in the booming AI industry.</p>
+            <input type="text" id="searchAICompanies" placeholder="Search for AI companies..." onkeyup="filterLibs('AICompanies')">
+            <details class="major">
+                <summary><h4>Major AI Companies</h4></summary>
+                <ul>
+                    <li><a href="https://openai.com/" target="_blank">OpenAI</a></li>
+                    <li><a href="https://anthropic.com/" target="_blank">Anthropic</a></li>
+                    <li><a href="https://google.com/ai" target="_blank">Google AI</a></li>
+                    <li><a href="https://microsoft.com/ai" target="_blank">Microsoft AI</a></li>
+                    <li><a href="https://deepmind.google/" target="_blank">DeepMind</a></li>
+                    <li><a href="https://meta.ai/" target="_blank">Meta AI</a></li>
+                </ul>
+            </details>
+            <details class="startups">
+                <summary><h4>Notable AI Startups</h4></summary>
+                <ul>
+                    <li><a href="https://huggingface.co/" target="_blank">Hugging Face</a></li>
+                    <li><a href="https://replika.ai/" target="_blank">Replika</a></li>
+                    <li><a href="https://covariant.ai/" target="_blank">Covariant</a></li>
+                    <li><a href="https://scale.ai/" target="_blank">Scale AI</a></li>
+                    <li><a href="https://runwayml.com/" target="_blank">Runway ML</a></li>
+                    <li><a href="https://perplexity.ai/" target="_blank">Perplexity AI</a></li>
+                </ul>
+            </details>
+            <details class="chinese">
+                <summary><h4>Chinese AI Companies</h4></summary>
+                <ul>
+                    <li><a href="https://www.baidu.com/" target="_blank">Baidu</a></li>
+                    <li><a href="https://www.alibabagroup.com/en/group/home" target="_blank">Alibaba</a></li>
+                    <li><a href="https://www.tencentyun.com/en/" target="_blank">Tencent</a></li>
+                    <li><a href="https://www.cn-bj.ai/" target="_blank">Beijing Academy of AI</a></li>
+                </ul>
+            </details>
+            <details class="careers">
+                <summary><h4>AI Careers & Jobs</h4></summary>
+                <ul>
+                    <li><a href="https://ai-jobs.net/" target="_blank">AI Jobs</a></li>
+                    <li><a href="https://www.machinelearningcentral.com/ai-job-titles/" target="_blank">AI Job Titles</a></li>
+                    <li><a href="https://www.linkedin.com/jobs/ai-jobs" target="_blank">LinkedIn AI Jobs</a></li>
+                    <li><a href="https://angel.co/jobs" target="_blank">AngelList AI Startups</a></li>
+                </ul>
+            </details>
+        </div>
+        <div id="Google" class="tabcontent">
+            <h2>Google Tools and Services</h2>
+            <p>Productivity tools, cloud services, AI/ML resources, and other Google services like Drive and Analytics.</p>
+            <p>Google's ecosystem of tools and AI services empowers users, offering accessible cloud computing, ML tutorials, and integrated productivity solutions for digital transformation.</p>
+            <input type="text" id="searchGoogle" placeholder="Search for tools or services..." onkeyup="filterLibs('Google')">
+            <details class="tool">
+                <summary><h4>Productivity Tools</h4></summary>
+                <ul>
+                    <li><a href="https://docs.google.com/" target="_blank">Google Docs</a></li>
+                    <li><a href="https://sheets.google.com/" target="_blank">Google Sheets</a></li>
+                    <li><a href="https://slides.google.com/" target="_blank">Google Slides</a></li>
+                    <li><a href="https://drive.google.com/" target="_blank">Google Drive</a></li>
+                </ul>
+            </details>
+            <details class="cloud">
+                <summary><h4>Cloud Services</h4></summary>
+                <ul>
+                    <li><a href="https://cloud.google.com/" target="_blank">Google Cloud Platform</a></li>
+                    <li><a href="https://firebase.google.com/docs" target="_blank">Firebase Documentation</a></li>
+                    <li><a href="https://developers.google.com/">
+target="_blank">Google Developers</a></li>
+                    <li><a href="https://colab.research.google.com/" target="_blank">Google Colab</a></li>
+                </ul>
+            </details>
+            <details class="ai">
+                <summary><h4>AI and Machine Learning</h4></summary>
+                <ul>
+                    <li><a href="https://ai.google/" target="_blank">Google AI</a></li>
+                    <li><a href="https://www.tensorflow.org/" target="_blank">TensorFlow Hub</a></li>
+                    <li><a href="https://developers.google.com/machine-learning" target="_blank">Google ML Tutorials</a></li>
+                    <li><a href="https://bard.google.com/" target="_blank">Bard AI</a></li>
+                </ul>
+            </details>
+            <details class="other">
+                <summary><h4>Other Google Services</h4></summary>
+                <ul>
+                    <li><a href="https://www.google.com/analytics/" target="_blank">Google Analytics</a></li>
+                    <li><a href="https://www.google.com/ads/" target="_blank">Google Ads</a></li>
+                    <li><a href="https://www.google.com/alerts" target="_blank">Google Alerts</a></li>
+                    <li><a href="https://photos.google.com/" target="_blank">Google Photos</a></li>
+                </ul>
+            </details>
+        </div>
+        <div id="YouTube" class="tabcontent">
+            <h2>YouTube Learning Channels</h2>
+            <p>Programming tutorials, AI/ML channels, data science resources, and other educational channels.</p>
+            <p>YouTube serves as a dynamic learning platform, providing visual tutorials and channels that democratize education, making complex AI concepts accessible to global audiences.</p>
+            <input type="text" id="searchYouTube" placeholder="Search for channels or topics..." onkeyup="filterLibs('YouTube')">
+            <details class="programming">
+                <summary><h4>Programming Tutorials</h4></summary>
+                <ul>
+                    <li><a href="https://www.youtube.com/@freeCodeCamp" target="_blank">freeCodeCamp</a></li>
+                    <li><a href="https://www.youtube.com/@TraversyMedia" target="_blank">Traversy Media</a></li>
+                    <li><a href="https://www.youtube.com/@thenewboston" target="_blank">The NEW Boston</a></li>
+                    <li><a href="https://www.youtube.com/@NetNinja" target="_blank">Net Ninja</a></li>
+                </ul>
+            </details>
+            <details class="ai">
+                <summary><h4>AI and Machine Learning</h4></summary>
+                <ul>
+                    <li><a href="https://www.youtube.com/@TwoMinutePapers" target="_blank">Two Minute Papers</a></li>
+                    <li><a href="https://www.youtube.com/@sentdex" target="_blank">sentdex</a></li>
+                    <li><a href="https://www.youtube.com/@3Blue1Brown" target="_blank">3Blue1Brown</a></li>
+                    <li><a href="https://www.youtube.com/@AndrewNgMachineLearning" target="_blank">Andrew Ng's ML</a></li>
+                </ul>
+            </details>
+            <details class="data">
+                <summary><h4>Data Science</h4></summary>
+                <ul>
+                    <li><a href="https://www.youtube.com/@KristianJaeger" target="_blank">Kristian Jaeger</a></li>
+                    <li><a href="https://www.youtube.com/@StatQuest" target="_blank">StatQuest</a></li>
+                    <li><a href="https://www.youtube.com/@codebasics" target="_blank">Code Basics</a></li>
+                    <li><a href="https://www.youtube.com/@coreyms" target="_blank">Corey Schafer</a></li>
+                </ul>
+            </details>
+            <details class="other">
+                <summary><h4>Other Educational Channels</h4></summary>
+                <ul>
+                    <li><a href="https://www.youtube.com/@TEDx" target="_blank">TEDx Talks</a></li>
+                    <li><a href="https://www.youtube.com/@KhanAcademyLaTex" target="_blank">Khan Academy</a></li>
+                    <li><a href="https://www.youtube.com/@Computerphile" target="_blank">Computerphile</a></li>
+                    <li><a href="https://www.youtube.com/@mitocw" target="_blank">MIT OpenCourseWare</a></li>
+                </ul>
+            </details>
+        </div>
+        <div id="GitHub" class="tabcontent">
+            <h2>GitHub Learning Resources</h2>
+            <p>Open source projects, educational repos, AI/ML tools, and GitHub basics like docs and tutorials.</p>
+            <p>GitHub fosters collaboration in AI, hosting open-source projects, tutorials, and tools that accelerate development and education in the AI community.</p>
+            <input type="text" id="searchGitHub" placeholder="Search for repos or topics..." onkeyup="filterLibs('GitHub')">
+            <details class="programming">
+                <summary><h4>Open Source Projects</h4></summary>
+                <ul>
+                    <li><a href="https://github.com/tensorflow/tensorflow" target="_blank">TensorFlow</a></li>
+                    <li><a href="https://github.com/scikit-learn/scikit-learn" target="_blank">Scikit-learn</a></li>
+                    <li><a href="https://github.com/pandas-dev/pandas" target="_blank">Pandas</a></li>
+                    <li><a href="https://github.com/numpy/numpy" target="_blank">NumPy</a></li>
+                </ul>
+            </details>
+            <details class="tutorials">
+                <summary><h4>Educational Repositories</h4></summary>
+                <ul>
+                    <li><a href="https://github.com/freecodecamp" target="_blank">freeCodeCamp Organization</a></li>
+                    <li><a href="https://github.com/EbookFoundation/free-programming-books" target="_blank">Free Programming Books</a></li>
+                    <li><a href="https://github.com/ripienaar/free-for-dev" target="_blank">Free for Dev Tools</a></li>
+                    <li><a href="https://github.com/microsoft/Web-Dev-For-Beginners" target="_blank">Web Dev for Beginners</a></li>
+                </ul>
+            </details>
+            <details class="ai">
+                <summary><h4>AI and Machine Learning</h4></summary>
+                <ul>
+                    <li><a href="https://github.com/huggingface/transformers" target="_blank">Hugging Face Transformers</a></li>
+                    <li><a href="https://github.com/facebookresearch/Detectron2" target="_blank">Detectron2</a></li>
+                    <li><a href="https://github.com/ultralytics/ultralytics" target="_blank">Ultralytics YOLO</a></li>
+                    <li><a href="https://github.com/openai/gym" target="_blank">OpenAI Gym</a></li>
+                </ul>
+            </details>
+            <details class="basics">
+                <summary><h4>GitHub Basics</h4></summary>
+                <ul>
+                    <li><a href="https://docs.github.com/en" target="_blank">GitHub Docs</a></li>
+                    <li><a href="https://github.com/github/gitignore" target="_blank">GitIgnore Templates</a></li>
+                    <li><a href="https://github.com/practical-tutorials/project-based-learning" target="_blank">Project-Based Learning</a></li>
+                    <li><a href="https://github.com/awesome-selfhosted/awesome-selfhosted" target="_blank">Awesome Self Hosted</a></li>
+                </ul>
+            </details>
+        </div>
+    </div>
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+        function filterLibs(tabName = 'Python') {
+            const searchId = tabName === 'Python' ? 'search' : `search${tabName}`;
+            const query = document.getElementById(searchId).value.toLowerCase();
+            const details = document.querySelectorAll(`#${tabName} details`);
+            details.forEach(detail => {
+                const h4 = detail.querySelector('h4').textContent.toLowerCase();
+                const ulText = detail.querySelector('ul') ? detail.querySelector('ul').textContent.toLowerCase() : '';
+                const matches = h4.includes(query) || ulText.includes(query);
+                detail.style.display = matches ? '' : 'none';
+            });
+        }
+        // Add favicons to external links
+        document.querySelectorAll('a[target="_blank"]').forEach(a => {
+            try {
+                const url = new URL(a.href);
+                const img = document.createElement('img');
+                img.src = `https://icons.duckduckgo.com/ip3/${url.hostname}.ico`;
+                img.style.width = '16px';
+                img.style.height = '16px';
+                img.style.marginRight = '5px';
+                img.onerror = () => img.style.display = 'none'; // Hide if favicon fails
+                a.insertBefore(img, a.firstChild);
+            } catch (e) {
+                // Skip malformed URLs
+            }
+        });
+    </script>
+</body>
+</html>

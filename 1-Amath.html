@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transformer Mathematics - Visual Guide</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            margin: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
+            color: white;
+            border-radius: 15px 15px 0 0;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Ladder/Step Visual Design */
+        .ladder-container {
+            position: relative;
+            margin: 50px 0;
+        }
+
+        .step {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 3px solid #3b82f6;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.1);
+        }
+
+        .step:before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: -40px;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 40px;
+            background: linear-gradient(180deg, #3b82f6 0%, #1e40af 100%);
+        }
+
+        .step:first-child:before {
+            display: none;
+        }
+
+        .step-number {
+            position: absolute;
+            left: -60px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .step-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .step h3 {
+            color: #1e40af;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .math-equation {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .equation-breakdown {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .key-concepts {
+            background: #ecfdf5;
+            border-left: 4px solid #10b981;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .math-explanation {
+            background: #f0f9ff;
+            border-left: 4px solid #0ea5e9;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .summary-table th {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .summary-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .summary-table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .summary-table tr:hover {
+            background: #e0f2fe;
+            transition: background 0.3s ease;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .conclusion {
+            background: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            border-radius: 15px;
+            margin-top: 50px;
+            box-shadow: 0 20px 40px rgba(30, 64, 175, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .container { margin: 10px; padding: 15px; }
+            .step-number { position: static; margin-bottom: 20px; margin-left: auto; margin-right: auto; }
+            .step:before { display: none; }
+            .summary-table { font-size: 0.9rem; }
+            header h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧠 Transformer Mathematics Guide</h1>
+            <p>From Text to AI Understanding - Step-by-Step Mathematical Journey</p>
+            <p style="font-size: 1rem; margin-top: 15px;">Designed for high school students and beginners to understand the math behind modern AI</p>
+        </header>
+
+        <div class="ladder-container">
+            <!-- Stage 1: Input Processing -->
+            <div class="step">
+                <div class="step-icon">🧩</div>
+                <div class="step-number">1</div>
+                <h3>INPUT STAGE: Tokenization & Embedding</h3>
+                <p><strong>From raw text to machine-readable numbers</strong></p>
+
+                <div class="math-equation">
+                    <strong>Text → Tokens → Embeddings</strong><br><br>
+                    Raw text → [token integers] → dense vectors<br><br>
+                    Each token <strong>tᵢ</strong> becomes vector <strong>eᵢ ∈ ℝᵈ</strong><br><br>
+                    <strong>eᵢ = Wᴱ[tᵢ]</strong> where Wᴱ ∈ ℝ^(V×d) is embedding matrix
+                </div>
+
+                <div class="key-concepts">
+                    <strong>📚 Key Math Used:</strong> Matrix lookup (equivalent to matrix multiplication with one-hot vectors)<br>
+                    <strong>V</strong> = vocabulary size, <strong>d</strong> = embedding dimension<br>
+                    <strong>Example:</strong> BERT has d=768, V=50,257
+                </div>
+            </div>
+
+            <!-- Stage 2: Positional Encoding -->
+            <div class="step">
+                <div class="step-icon">📐</div>
+                <div class="step-number">2</div>
+                <h3>POSITIONAL ENCODING</h3>
+                <p><strong>How the model knows word order (since there's no recurrence)</strong></p>
+
+                <div class="math-equation">
+                    <strong>Sinusoidal Position Encoding:</strong><br><br>
+                    PE(pos, 2i) = sin(pos / 10000^(2i/d_model))<br>
+                    PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model))<br><br>
+                    <strong>Final input:</strong> zᵢ⁽⁰⁾ = eᵢ + PE_(pos)
+                </div>
+
+                <div class="equation-breakdown">
+                    <strong>Uses:</strong> Trigonometric functions (sin, cos) for smooth periodic position representation
+                </div>
+
+                <div class="key-concepts">
+                    <strong>💡 Why this works:</strong> Unique encoding per position, extrapolation to longer sequences, relative position information through addition
+                </div>
+            </div>
+
+            <!-- Stage 3: Self-Attention -->
+            <div class="step">
+                <div class="step-icon">🎯</div>
+                <div class="step-number">3</div>
+                <h3>SELF-ATTENTION MECHANISM</h3>
+                <p><strong>The core: Every token attends to every other token simultaneously</strong></p>
+
+                <div class="math-explanation">
+                    <strong>Step 3.1: Three linear projections from each input vector</strong>
+                </div>
+                <div class="math-equation">
+                    qᵢ = zᵢ^(l-1) × W_Q<br>
+                    kᵢ = zᵢ^(l-1) × W_K<br>
+                    vᵢ = zᵢ^(l-1) × W_V<br><br>
+                    Where W_Q, W_K, W_V ∈ ℝ^(d×d_k) are learnable matrices
+                </div>
+
+                <div class="math-explanation">
+                    <strong>Step 3.2: Attention scores (scaled dot-product similarity)</strong>
+                </div>
+                <div class="math-equation">
+                    score_ij = (q_i ⋅ k_j^T) / √d_k<br><br>
+                    <strong>Matrix form:</strong> Q × K^T ∈ ℝ^(seq_len×seq_len)
+                </div>
+
+                <div class="math-explanation">
+                    <strong>Step 3.3: Softmax normalization (converts scores to probabilities)</strong>
+                </div>
+                <div class="math-equation">
+                    α_ij = exp(score_ij) / ∑_{j'} exp(score_ij')<br><br>
+                    <strong>Output:</strong> attention weights that sum to 1 for each row
+                </div>
+
+                <div class="math-explanation">
+                    <strong>Step 3.4: Weighted sum of values (attention output)</strong>
+                </div>
+                <div class="math-equation">
+                    o_i = ∑_j α_ij × v_j<br><br>
+                    <strong>Matrix form:</strong> O = Softmax(scores) × V
+                </div>
+
+                <div class="math-explanation">
+                    <strong>Step 3.5: Multi-Head Attention (parallel processing)</strong>
+                </div>
+                <div class="math-equation">
+                    MHA(Q,K,V) = Concat(head₁, ..., head_h) × W_O<br><br>
+                    Each head does attention in parallel, then concatenated
+                </div>
+
+                <div class="key-concepts">
+                    <strong>🔧 Operations used:</strong> Matrix multiplication, dot products, softmax (exponentiation + normalization), scaling, concatenation
+                </div>
+            </div>
+
+            <!-- Stage 4: Feed-Forward Network -->
+            <div class="step">
+                <div class="step-icon">🔄</div>
+                <div class="step-number">4</div>
+                <h3>FEED-FORWARD NETWORK (FFN)</h3>
+                <p><strong>Individual token processing after attention combines all context</strong></p>
+
+                <div class="math-equation">
+                    FFN(x) = ReLU(x × W₁ + b₁) × W₂ + b₂<br><br>
+                    <strong>Expansion:</strong> Typically 4x wider (768→3072→768 for BERT)<br>
+                    <strong>ReLU activation:</strong> ReLU(z) = max(0, z)
+                </div>
+
+                <div class="key-concepts">
+                    <strong>📚 Math Operations:</strong><br>
+                    - Matrix multiplication<br>
+                    - Bias addition<br>
+                    - ReLU nonlinearity (piecewise linear function)<br>
+                    - Another matrix multiplication
+                </div>
+            </div>
+
+            <!-- Stage 5: Layer Normalization -->
+            <div class="step">
+                <div class="step-icon">⚖️</div>
+                <div class="step-number">5</div>
+                <h3>LAYER NORMALIZATION</h3>
+                <p><strong>Stabilizes gradients and training dynamics</strong></p>
+
+                <div class="math-equation">
+                    <strong>Per-token normalization across features:</strong><br><br>
+                    First, normalize features of each token:<br>
+                    x̂_i = (x_i - μ) / √(σ² + ε)<br><br>
+                    Then, learnable scaling:<br>
+                    y_i = γ × x̂_i + β<br><br>
+                    Where μ = mean across features, σ² = variance across features
+                </div>
+
+                <div class="equation-breakdown">
+                    <strong>Computes:</strong> Mean, variance, square root, division<br>
+                    <strong>Uses:</strong> Learnable parameters γ and β for each position
+                </div>
+            </div>
+
+            <!-- Stage 6: Residual Connections -->
+            <div class="step">
+                <div class="step-icon">🔁</div>
+                <div class="step-number">6</div>
+                <h3>RESIDUAL CONNECTIONS</h3>
+                <p><strong>Preserves gradient flow through deep networks</strong></p>
+
+                <div class="math-equation">
+                    <strong>Add & Norm architecture:</strong><br><br>
+                    output = x + Sublayer(x)<br>
+                    final = LayerNorm(output)
+                </div>
+
+                <div class="key-concepts">
+                    <strong>🎯 Result:</strong> Simple vector addition (identity + sublayer output), enables training of very deep networks
+                </div>
+            </div>
+
+            <!-- Stage 7: Output Layer -->
+            <div class="step">
+                <div class="step-icon">🎯</div>
+                <div class="step-number">7</div>
+                <h3>OUTPUT PROJECTION & SOFTMAX</h3>
+                <p><strong>Converts hidden representations to next-token predictions</strong></p>
+
+                <div class="math-equation">
+                    <strong>Linear projection:</strong><br>
+                    logits = h^L × W_O ∈ ℝ^(seq_len×vocab_size)<br><br>
+                    <strong>Softmax probabilities:</strong><br>
+                    P(token_i) = exp(logits_i) / ∑_all_tokens exp(logits_j)
+                </div>
+
+                <div class="math-explanation">
+                    <strong>Language generation:</strong> Sequential sampling where each step predicts next token conditioned on previous tokens
+                </div>
+            </div>
+
+            <!-- Stage 8: Training -->
+            <div class="step">
+                <div class="step-icon">📉</div>
+                <div class="step-number">8</div>
+                <h3>TRAINING (BACKPROPAGATION)</h3>
+                <p><strong>How the model learns: Calculus and optimization</strong></p>
+
+                <div class="math-equation">
+                    <strong>Cross-entropy loss:</strong><br>
+                    L = -∑_i y_true_i × log(y_pred_i)<br><br>
+                    <strong>Gradient descent update:</strong><br>
+                    θ ← θ - η × ∂L/∂θ<br><br>
+                    Where θ are model parameters, η is learning rate
+                </div>
+
+                <div class="equation-breakdown">
+                    <strong>Requires:</strong> Calculus (chain rule, partial derivatives)<br>
+                    <strong>For:</strong> Linear layers, softmax, normalization, attention, ReLU
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Table -->
+        <h2 style="text-align: center; margin: 50px 0 30px 0; color: #1e40af;">⚖️ Complete Mathematical Operations Summary</h2>
+        <table class="summary-table">
+            <thead>
+                <tr>
+                    <th>🔧 Transformer Stage</th>
+                    <th>📐 Math Operations Used</th>
+                    <th>📝 Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Token → Embedding</strong></td>
+                    <td><span class="highlight">Matrix multiplication</span></td>
+                    <td>e = x × Wᴱ (one-hot vector multiplication)</td>
+                </tr>
+                <tr>
+                    <td><strong>Positional Encoding</strong></td>
+                    <td><span class="highlight">Trigonometric functions</span></td>
+                    <td>sin/cos functions for position representation</td>
+                </tr>
+                <tr>
+                    <td><strong>QKV Projections</strong></td>
+                    <td><span class="highlight">Matrix multiplication</span></td>
+                    <td>Linear transforms of input vectors</td>
+                </tr>
+                <tr>
+                    <td><strong>Attention Scores</strong></td>
+                    <td><span class="highlight">Dot products, scaling</span></td>
+                    <td>QK^T / √d_k similarity matrix</td>
+                </tr>
+                <tr>
+                    <td><strong>Softmax</strong></td>
+                    <td><span class="highlight">Exponential, normalization</span></td>
+                    <td>Convert scores to probabilities</td>
+                </tr>
+                <tr>
+                    <td><strong>Weighted Sum</strong></td>
+                    <td><span class="highlight">Matrix multiplication</span></td>
+                    <td>Attention weights × Values</td>
+                </tr>
+                <tr>
+                    <td><strong>FFN</strong></td>
+                    <td><span class="highlight">Linear + ReLU</span></td>
+                    <td>Nonlinear mapping per token</td>
+                </tr>
+                <tr>
+                    <td><strong>LayerNorm</strong></td>
+                    <td><span class="highlight">Mean, variance, sqrt</span></td>
+                    <td>Normalization across features</td>
+                </tr>
+                <tr>
+                    <td><strong>Residual</strong></td>
+                    <td><span class="highlight">Addition</span></td>
+                    <td>Identity + sublayer output</td>
+                </tr>
+                <tr>
+                    <td><strong>Loss</strong></td>
+                    <td><span class="highlight">Log, cross-entropy</span></td>
+                    <td>Optimization target function</td>
+                </tr>
+                <tr>
+                    <td><strong>Backpropagation</strong></td>
+                    <td><span class="highlight">Derivatives, chain rule</span></td>
+                    <td>Parameter updates for learning</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Key Calculus Concepts -->
+        <div class="step" style="margin: 50px 0; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-color: #f59e0b;">
+            <div class="step-icon">🧠</div>
+            <h3>Essential Calculus Concepts for Understanding Transformers</h3>
+
+            <h4>1. <strong>Chain Rule</strong> (for backpropagation)</h4>
+            <div class="math-equation">
+                If f(g(x)), then d/dx f(g(x)) = f'(g(x)) × g'(x)
+            </div>
+
+            <h4>2. <strong>Matrix Derivatives</strong></h4>
+            <div class="math-equation">
+                ∂L/∂W where L is loss, W is weight matrix
+            </div>
+
+            <h4>3. <strong>Jacobian Matrices</strong> (for non-linear functions)</h4>
+            <div class="math-equation">
+                Derivative of softmax: ∂α_i/∂s_j = α_i(δ_ij - α_j)
+            </div>
+
+            <h4>4. <strong>Partial Derivatives</strong> (effects of individual parameters)</h4>
+            <div class="math-explanation">
+                Used throughout normalization, attention weighting, and all parameter updates
+            </div>
+
+            <h4>5. <strong>Gradient Descent</strong> (optimization algorithm)</h4>
+            <div class="math-equation">
+                θ ← θ - η × ∇_θL (iteratively minimize loss)
+            </div>
+        </div>
+
+        <!-- Autoencoder Mathematical Summary -->
+        <h2 style="text-align: center; margin: 50px 0 30px 0; color: #1e40af;">⚖️ Complete Mathematical Operations Summary for Autoencoder</h2>
+        <table class="summary-table">
+            <thead>
+                <tr>
+                    <th>🗜️ Autoencoder Stage</th>
+                    <th>📐 Math Operations Used</th>
+                    <th>📝 Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Input Processing</strong></td>
+                    <td><span class="highlight">Direct Input</span></td>
+                    <td>x ∈ ℝ^(batch_size × input_dim) - raw feature vector</td>
+                </tr>
+                <tr>
+                    <td><strong>Encoder Layer 1</strong></td>
+                    <td><span class="highlight">Matrix multiplication</span></td>
+                    <td>h₁ = ReLU(W₁ × x + b₁) - first compression step</td>
+                </tr>
+                <tr>
+                    <td><strong>Encoder Layer 2</strong></td>
+                    <td><span class="highlight">Matrix multiplication</span></td>
+                    <td>z = W₂ × h₁ + b₂ - bottleneck latent representation</td>
+                </tr>
+                <tr>
+                    <td><strong>Latent Space</strong></td>
+                    <td><span class="highlight">Identity function</span></td>
+                    <td>z ∈ ℝ^(batch_size × latent_dim) - compressed representation</td>
+                </tr>
+                <tr>
+                    <td><strong>Decoder Layer 1</strong></td>
+                    <td><span class="highlight">Matrix multiplication</span></td>
+                    <td>h₂ = ReLU(W₃ × z + b₃) - expansion from latent space</td>
+                </tr>
+                <tr>
+                    <td><strong>Decoder Layer 2</strong></td>
+                    <td><span class="highlight">Matrix multiplication</span></td>
+                    <td>x̂ = σ(W₄ × h₂ + b₄) - reconstruction with sigmoid</td>
+                </tr>
+                <tr>
+                    <td><strong>Reconstruction Loss</strong></td>
+                    <td><span class="highlight">Mean squared error</span></td>
+                    <td>L = (1/N) × ∑||x - x̂||² - minimize reconstruction error</td>
+                </tr>
+                <tr>
+                    <td><strong>Gradient Computation</strong></td>
+                    <td><span class="highlight">Chain rule derivatives</span></td>
+                    <td>∂L/∂W_matrix for each layer parameter</td>
+                </tr>
+                <tr>
+                    <td><strong>Parameter Update</strong></td>
+                    <td><span class="highlight">Gradient descent</span></td>
+                    <td>W ← W - η × ∂L/∂W - iterative optimization</td>
+                </tr>
+                <tr>
+                    <td><strong>Nonlinearity</strong></td>
+                    <td><span class="highlight">Piecewise functions</span></td>
+                    <td>ReLU(z) = max(0,z), σ(z) = 1/(1+e^(-z))</td>
+                </tr>
+                <tr>
+                    <td><strong>Learning Objective</strong></td>
+                    <td><span class="highlight">Minimization</span></td>
+                    <td>Minimize ||original - reconstructed|| to learn efficient representations</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- FFN vs Autoencoder Detailed Comparison -->
+        <div class="step" style="margin: 50px 0; background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%); border-color: #e91e63;">
+            <h3 style="text-align: center; color: #7b1fa2; margin-bottom: 30px;"><span style="font-size: 1.8rem;">🔍</span> FFN vs Autoencoder: Complete Mathematical Comparison</h3>
+
+            <!-- FFN Section -->
+            <div style="margin-bottom: 40px;">
+                <h4 style="color: #1565c0; border-bottom: 2px solid #2196f3; padding-bottom: 10px;"><span style="font-size: 1.5rem;">🔄</span> Feedforward Network (FFN) in Transformer</h4>
+
+                <div class="key-concepts" style="margin: 20px 0;">
+                    <strong>Applied position-wise (to each token embedding independently).</strong><br>
+                    <strong>Expands the hidden size (typically 2–4× d_model) → applies activation → projects back to d_model.</strong><br>
+                    <strong>No compression intended; designed to increase representational power.</strong>
+                </div>
+
+                <h5 style="color: #1565c0;">PyTorch Implementation:</h5>
+                <div style="background: #2c3e50; color: #eeff41; padding: 20px; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 0.9rem; margin: 15px 0; overflow-x: auto;">
+import torch<br>
+import torch.nn as nn<br><br>
+class TransformerFFN(nn.Module):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;def __init__(self, d_model=512, expansion_factor=4):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;super().__init__()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_hidden = d_model * expansion_factor<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Step 1: expand<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.linear1 = nn.Linear(d_model, d_hidden)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.activation = nn.GELU()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Step 2: compress back<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.linear2 = nn.Linear(d_hidden, d_model)<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;def forward(self, x):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"""<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x: [batch_size, seq_len, d_model]  - token embeddings<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns: [batch_size, seq_len, d_model]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"""<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return self.linear2(self.activation(self.linear1(x)))<br><br>
+# Example usage<br>
+x = torch.rand(2, 5, 512)  # batch_size=2, seq_len=5, d_model=512<br>
+ffn = TransformerFFN()<br>
+output = ffn(x)<br>
+print(output.shape)  # [2, 5, 512]
+                </div>
+
+                <div style="background: #e8f5e8; border: 2px solid #4caf50; border-radius: 5px; padding: 15px; margin: 10px 0;">
+                    <strong>🏷️ Key Points:</strong><br>
+                    - <strong>Expands → nonlinearity → compress back</strong><br>
+                    - <strong>Applied independently to each token (position-wise)</strong><br>
+                    - <strong>Purpose: enrich token representation, not reconstruction</strong>
+                </div>
+            </div>
+
+            <!-- Autoencoder Section -->
+            <div style="margin-bottom: 40px;">
+                <h4 style="color: #7b1fa2; border-bottom: 2px solid #9c27b0; padding-bottom: 10px;"><span style="font-size: 1.5rem;">🗜️</span> Autoencoder</h4>
+
+                <div class="key-concepts" style="margin: 20px 0;">
+                    <strong>Learns to compress and reconstruct inputs.</strong><br>
+                    <strong>The hidden layer (latent space) can be smaller or larger than input.</strong><br>
+                    <strong>Common for denoising, dimensionality reduction, or anomaly detection.</strong>
+                </div>
+
+                <h5 style="color: #7b1fa2;">PyTorch Implementation:</h5>
+                <div style="background: #2c3e50; color: #eeff41; padding: 20px; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 0.9rem; margin: 15px 0; overflow-x: auto;">
+class SimpleAutoencoder(nn.Module):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;def __init__(self, input_dim=784, hidden_dim=128, latent_dim=32):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;super().__init__()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Encoder: compress input<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.encoder = nn.Sequential(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nn.Linear(input_dim, hidden_dim),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nn.ReLU(),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nn.Linear(hidden_dim, latent_dim)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Decoder: reconstruct input<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.decoder = nn.Sequential(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nn.Linear(latent_dim, hidden_dim),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nn.ReLU(),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nn.Linear(hidden_dim, input_dim),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nn.Sigmoid()  # for normalized inputs [0,1]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;def forward(self, x):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"""<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x: [batch_size, input_dim]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns: reconstructed x<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"""<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;z = self.encoder(x)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x_hat = self.decoder(z)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return x_hat<br><br>
+# Example usage<br>
+x = torch.rand(10, 784)  # batch_size=10, input_dim=784<br>
+autoencoder = SimpleAutoencoder()<br>
+reconstructed = autoencoder(x)<br>
+print(reconstructed.shape)  # [10, 784]
+                </div>
+
+                <div style="background: #fce4ec; border: 2px solid #e91e63; border-radius: 5px; padding: 15px; margin: 10px 0;">
+                    <strong>🏷️ Key Points:</strong><br>
+                    - <strong>Compress → latent → reconstruct input</strong><br>
+                    - <strong>Purpose: learn meaningful latent representations and reconstruct inputs</strong><br>
+                    - <strong>Nonlinearities allow learning complex mappings</strong>
+                </div>
+            </div>
+
+            <!-- Comparison Table -->
+            <h5 style="text-align: center; color: #d32f2f; border-bottom: 2px solid #f44336; padding-bottom: 10px; margin: 30px 0 20px 0;">🔍 Side-by-Side Comparison</h5>
+            <table style="width: 100%; border-collapse: collapse; margin: 20px 0; background: white; border: 2px solid #ddd; border-radius: 8px;">
+                <thead>
+                    <tr style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                        <th style="padding: 15px; text-align: left; font-weight: bold; border: 1px solid #ddd;">Feature</th>
+                        <th style="padding: 15px; text-align: center; font-weight: bold; border: 1px solid #ddd;">Transformer FFN</th>
+                        <th style="padding: 15px; text-align: center; font-weight: bold; border: 1px solid #ddd;">Autoencoder</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background: #f9f9f9;">
+                        <td style="padding: 15px; border: 1px solid #ddd;"><strong>Input</strong></td>
+                        <td style="padding: 15px; border: 1px solid #ddd;">Token embedding [batch, seq_len, d_model]</td>
+                        <td style="padding: 15px; border: 1px solid #ddd;">Feature vector [batch, input_dim]</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 15px; border: 1px solid #ddd;"><strong>Hidden Layer</strong></td>
+                        <td style="padding: 15px; border: 1px solid #ddd;">Usually <em>larger</em> than input (d_model × 2–4)</td>
+                        <td style="padding: 15px; border: 1px solid #ddd;">Often <em>smaller</em> than input (latent compression)</td>
+                    </tr>
+                    <tr style="background: #f9f9f9;">
+                        <td style="padding: 15px; border: 1px solid #ddd;"><strong>Purpose</strong></td>
+                        <td style="padding: 15px; border: 1px solid #ddd;">Enrich features, expand representational space</td>
+                        <td style="padding: 15px; border: 1px solid #ddd;">Compress & reconstruct, learn latent representation</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 15px; border: 1px solid #ddd;"><strong>Output</strong></td>
+                        <td style="padding: 15px; border: 1px solid #ddd;">Same shape as input ([batch, seq_len, d_model])</td>
+                        <td style="padding: 15px; border: 1px solid #ddd;">Same shape as input ([batch, input_dim])</td>
+                    </tr>
+                    <tr style="background: #f9f9f9;">
+                        <td style="padding: 15px; border: 1px solid #ddd;"><strong>Nonlinearity</strong></td>
+                        <td style="padding: 15px; border: 1px solid #ddd;">GELU / ReLU</td>
+                        <td style="padding: 15px; border: 1px solid #ddd;">ReLU / Sigmoid</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 15px; border: 1px solid #ddd;"><strong>Position-wise</strong></td>
+                        <td style="padding: 15px; border: 1px solid #ddd;">Yes (applied independently per token)</td>
+                        <td style="padding: 15px; border: 1px solid #ddd;">No, operates on entire input vector</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="background: #e8eaf6; border: 2px solid #5c6bc0; border-radius: 10px; padding: 20px; margin: 20px 0; text-align: center;">
+                <strong>✅ Summary Insight</strong><br><br>
+                <strong style="font-size: 1.2rem; color: #1565c0;">FFN = Position-wise nonlinear expansion for enriching token representations</strong><br><br>
+                <strong style="font-size: 1.2rem; color: #7b1fa2;">Autoencoder = Compress-expand network for learning latent representations</strong><br><br>
+                <em>Same building blocks (linear layers + activations), but fundamentally different goals!</em>
+            </div>
+        </div>
+
+        <!-- Conclusion -->
+        <div class="conclusion">
+            <h2>🎓 You Now Understand the Math Behind Modern AI!</h2>
+            <p>Transformers combine matrix algebra, trigonometry, exponentials, and optimization to learn complex patterns in language. Every AI chatbot, translation system, and text generator you use runs on these fundamental mathematical operations.</p>
+
+            <p style="margin-top: 20px;"><strong>This mathematics enables machines to:</strong></p>
+            <ul style="text-align: left; display: inline-block; margin-top: 10px;">
+                <li>Understand context and relationships between words</li>
+                <li>Generate coherent and creative text</li>
+                <li>Translate between languages with high accuracy</li>
+                <li>Answer questions and provide reasoning</li>
+                <li>Learn from vast amounts of training data</li>
+            </ul>
+
+            <p style="margin-top: 30px; font-style: italic;">The mathematics you learned here powers everything from ChatGPT to Google Translate to GitHub Copilot! 🚀</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI/ML Datasets Atlas (Curated)</title>
+<style>
+  :root{
+    --bg:#0b0f14; --panel:#121821; --muted:#8aa0b5; --accent:#7cc4ff; --line:#1f2a39; --text:#e6eef6;
+    --chip:#0f2538; --chipborder:#284a69;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial; background:var(--bg); color:var(--text)}
+  header{padding:24px 20px; border-bottom:1px solid var(--line); position:sticky; top:0; background:linear-gradient(180deg,var(--bg),rgba(11,15,20,.9))}
+  h1{margin:0; font-size:24px}
+  .subtitle{color:var(--muted); margin-top:6px; font-size:14px}
+  .container{display:flex; gap:14px; padding:16px;}
+  nav{width:280px; min-width:260px; border-right:1px solid var(--line); padding-right:10px}
+  .tab{display:block; padding:10px 12px; border:1px solid var(--line); border-radius:10px; margin:6px 0; text-decoration:none; color:var(--text); background:var(--panel)}
+  .tab:hover{border-color:var(--accent)}
+  .tab.active{outline:2px solid var(--accent); outline-offset:1px}
+  main{flex:1; padding:0 4px 40px}
+  section{display:none; animation:fade .15s ease-in}
+  section.active{display:block}
+  h2{margin:14px 0 6px; font-size:18px}
+  h3{margin:16px 0 6px; font-size:15px; color:var(--accent)}
+  p{color:#c6d6e6}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:10px}
+  .card{border:1px solid var(--line); border-radius:12px; background:var(--panel); padding:12px}
+  .card a{color:#9ed1ff; text-decoration:none}
+  .card a:hover{text-decoration:underline}
+  .chip{display:inline-block; padding:2px 8px; border:1px solid var(--chipborder); border-radius:999px; background:var(--chip); color:#cce6ff; font-size:12px; margin:0 6px 6px 0}
+  .note{border-left:3px solid var(--accent); padding:10px 12px; background:#0e141d; border-radius:8px; margin:10px 0}
+  footer{border-top:1px solid var(--line); padding:16px; color:var(--muted)}
+  .search{margin:10px 0 16px; display:flex; gap:8px}
+  .search input{flex:1; padding:10px 12px; border:1px solid var(--line); border-radius:10px; background:#0e141d; color:var(--text)}
+  .search small{color:var(--muted)}
+</style>
+</head>
+<body>
+  <header>
+    <h1>AI/ML Datasets Atlas</h1>
+    <div class="subtitle">A curated, high-signal index of major dataset hubs and canonical datasets across AI areas. Click a tab; every item links out.</div>
+  </header>
+
+  <div class="container">
+    <nav id="tabs">
+      <a href="#hubs" class="tab active">Global Hubs & Search</a>
+      <a href="#vision" class="tab">Vision (Images/Video)</a>
+      <a href="#nlp" class="tab">LLM/NLP</a>
+      <a href="#audio" class="tab">Audio & Speech</a>
+      <a href="#multimodal" class="tab">Multimodal</a>
+      <a href="#rl" class="tab">Reinforcement Learning</a>
+      <a href="#graph" class="tab">Graphs & Networks</a>
+      <a href="#timeseries" class="tab">Time Series</a>
+      <a href="#tabular" class="tab">Tabular & General ML</a>
+      <a href="#health" class="tab">Health/Bio/Medical</a>
+      <a href="#geospatial" class="tab">Geospatial</a>
+      <a href="#ethics" class="tab">Safety, Bias & Toxicity</a>
+      <a href="#code" class="tab">Code & Software</a>
+    </nav>
+
+    <main>
+      <section id="hubs" class="active">
+        <div class="note">
+          <strong>Note:</strong> No single page can list <em>all</em> datasets on the internet. This is a curated, maintained starting point that covers the principal hubs and the most-used, widely cited datasets in each area.
+        </div>
+        <div class="grid">
+          <div class="card">
+            <h2>Global Hubs</h2>
+            <ul>
+              <li><a href="https://huggingface.co/datasets" target="_blank" rel="noopener">Hugging Face Datasets</a></li>
+              <li><a href="https://www.kaggle.com/datasets" target="_blank" rel="noopener">Kaggle Datasets</a></li>
+              <li><a href="https://datasetsearch.research.google.com/" target="_blank" rel="noopener">Google Dataset Search</a></li>
+              <li><a href="https://paperswithcode.com/datasets" target="_blank" rel="noopener">Papers with Code – Datasets</a></li>
+              <li><a href="https://registry.opendata.aws/" target="_blank" rel="noopener">AWS Open Data Registry</a></li>
+              <li><a href="https://data.gov/" target="_blank" rel="noopener">Data.gov (US)</a></li>
+              <li><a href="https://datasetlist.com/" target="_blank" rel="noopener">Dataset List (community index)</a></li>
+              <li><a href="https://openml.org/search?type=data" target="_blank" rel="noopener">OpenML</a></li>
+              <li><a href="https://zenodo.org/search" target="_blank" rel="noopener">Zenodo</a></li>
+              <li><a href="https://figshare.com/" target="_blank" rel="noopener">Figshare</a></li>
+            </ul>
+            <span class="chip">Search</span><span class="chip">Mirrors</span><span class="chip">Cloud-ready</span>
+          </div>
+
+          <div class="card">
+            <h2>Academic Portals</h2>
+            <ul>
+              <li><a href="https://archive.ics.uci.edu/" target="_blank" rel="noopener">UCI Machine Learning Repository</a></li>
+              <li><a href="https://snap.stanford.edu/data/" target="_blank" rel="noopener">Stanford SNAP</a></li>
+              <li><a href="https://ogb.stanford.edu/docs/dataset_overview/" target="_blank" rel="noopener">Open Graph Benchmark (OGB)</a></li>
+              <li><a href="https://physionet.org/" target="_blank" rel="noopener">PhysioNet</a></li>
+              <li><a href="https://visualdata.io/" target="_blank" rel="noopener">VisualData.io</a></li>
+            </ul>
+            <span class="chip">University</span><span class="chip">Benchmarks</span>
+          </div>
+
+          <div class="card">
+            <h2>Licensing & Use</h2>
+            <p>Check each dataset’s license/terms (commercial use, redistribution, privacy). Many medical and large web-scale corpora have restrictions.</p>
+            <ul>
+              <li><a href="https://creativecommons.org/licenses/" target="_blank" rel="noopener">Creative Commons Licenses</a></li>
+              <li><a href="https://opensource.org/licenses" target="_blank" rel="noopener">Open Source Initiative</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="vision">
+        <h2>Vision (Images/Video)</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Classic & Classification</h3>
+            <ul>
+              <li><a href="http://yann.lecun.com/exdb/mnist/" target="_blank" rel="noopener">MNIST</a></li>
+              <li><a href="https://www.cs.toronto.edu/~kriz/cifar.html" target="_blank" rel="noopener">CIFAR-10/100</a></li>
+              <li><a href="https://www.image-net.org/" target="_blank" rel="noopener">ImageNet</a></li>
+              <li><a href="https://storage.googleapis.com/openimages/web/index.html" target="_blank" rel="noopener">Open Images</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Detection & Segmentation</h3>
+            <ul>
+              <li><a href="https://cocodataset.org/#home" target="_blank" rel="noopener">MS COCO</a></li>
+              <li><a href="http://host.robots.ox.ac.uk/pascal/VOC/" target="_blank" rel="noopener">PASCAL VOC</a></li>
+              <li><a href="https://www.cityscapes-dataset.com/" target="_blank" rel="noopener">Cityscapes</a></li>
+              <li><a href="https://mapillary.com/dataset/vistas" target="_blank" rel="noopener">Mapillary Vistas</a></li>
+              <li><a href="https://www.sceneflowdataset.org/" target="_blank" rel="noopener">Scene Flow</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Video Action & Events</h3>
+            <ul>
+              <li><a href="https://deepmind.google/discover/blog/kinetics/" target="_blank" rel="noopener">Kinetics-700</a></li>
+              <li><a href="https://www.crcv.ucf.edu/data/UCF101.php" target="_blank" rel="noopener">UCF101</a></li>
+              <li><a href="https://serre-lab.clps.brown.edu/resource/hmdb-a-large-human-motion-database/" target="_blank" rel="noopener">HMDB51</a></li>
+              <li><a href="https://developer.qualcomm.com/software/ai-datasets/something-something" target="_blank" rel="noopener">Something-Something V2</a></li>
+              <li><a href="https://epic-kitchens.github.io/" target="_blank" rel="noopener">EPIC-KITCHENS</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Self-Driving / Robotics</h3>
+            <ul>
+              <li><a href="https://www.cvlibs.net/datasets/kitti/" target="_blank" rel="noopener">KITTI</a></li>
+              <li><a href="https://www.nuscenes.org/" target="_blank" rel="noopener">nuScenes</a></li>
+              <li><a href="https://waymo.com/open/" target="_blank" rel="noopener">Waymo Open</a></li>
+              <li><a href="https://www.argoverse.org/" target="_blank" rel="noopener">Argoverse</a></li>
+              <li><a href="https://bdd-data.berkeley.edu/" target="_blank" rel="noopener">BDD100K</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Faces, People, Pose</h3>
+            <ul>
+              <li><a href="https://vis-www.cs.umass.edu/lfw/" target="_blank" rel="noopener">LFW</a></li>
+              <li><a href="https://cocodataset.org/#keypoints-2017" target="_blank" rel="noopener">COCO Keypoints</a></li>
+              <li><a href="http://human-pose.mpi-inf.mpg.de/" target="_blank" rel="noopener">MPII Human Pose</a></li>
+              <li><a href="https://ai.googleblog.com/2016/10/open-sourcing-accurate-vision-based.html" target="_blank" rel="noopener">OpenPose (links)</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Remote Sensing</h3>
+            <ul>
+              <li><a href="https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-2" target="_blank" rel="noopener">Sentinel-2 (ESA)</a></li>
+              <li><a href="https://landsat.gsfc.nasa.gov/data/" target="_blank" rel="noopener">Landsat</a></li>
+              <li><a href="https://spacenet.ai/datasets/" target="_blank" rel="noopener">SpaceNet</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="nlp">
+        <h2>LLM / NLP</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Language Modeling & Corpora</h3>
+            <ul>
+              <li><a href="https://commoncrawl.org/" target="_blank" rel="noopener">Common Crawl</a></li>
+              <li><a href="https://www.tensorflow.org/datasets/catalog/c4" target="_blank" rel="noopener">C4</a></li>
+              <li><a href="https://pile.eleuther.ai/" target="_blank" rel="noopener">The Pile</a></li>
+              <li><a href="https://huggingface.co/datasets/the_stack" target="_blank" rel="noopener">The Stack (Code)</a></li>
+              <li><a href="https://huggingface.co/datasets/openwebtext" target="_blank" rel="noopener">OpenWebText</a></li>
+              <li><a href="https://huggingface.co/datasets/wikitext" target="_blank" rel="noopener">WikiText</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>QA, NLI, Benchmarks</h3>
+            <ul>
+              <li><a href="https://rajpurkar.github.io/SQuAD-explorer/" target="_blank" rel="noopener">SQuAD</a></li>
+              <li><a href="https://gluebenchmark.com/" target="_blank" rel="noopener">GLUE</a></li>
+              <li><a href="https://super.gluebenchmark.com/" target="_blank" rel="noopener">SuperGLUE</a></li>
+              <li><a href="https://nlp.stanford.edu/projects/snli/" target="_blank" rel="noopener">SNLI</a></li>
+              <li><a href="https://cims.nyu.edu/~sbowman/multinli/" target="_blank" rel="noopener">MultiNLI</a></li>
+              <li><a href="https://gsm8k.github.io/" target="_blank" rel="noopener">GSM8K</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>NER, Parsing & Structure</h3>
+            <ul>
+              <li><a href="https://www.clips.uantwerpen.be/conll2003/ner/" target="_blank" rel="noopener">CoNLL 2003 (NER)</a></li>
+              <li><a href="https://catalog.ldc.upenn.edu/LDC2013T19" target="_blank" rel="noopener">OntoNotes</a></li>
+              <li><a href="https://universaldependencies.org/#download" target="_blank" rel="noopener">Universal Dependencies</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Machine Translation</h3>
+            <ul>
+              <li><a href="https://www.statmt.org/wmt23/translation-task.html" target="_blank" rel="noopener">WMT</a></li>
+              <li><a href="https://opus.nlpl.eu/" target="_blank" rel="noopener">OPUS</a></li>
+              <li><a href="https://huggingface.co/datasets/tatoeba" target="_blank" rel="noopener">Tatoeba</a></li>
+              <li><a href="https://www.manythings.org/anki/" target="_blank" rel="noopener">Tatoeba (ManyThings mirror)</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Instruction & Dialogue</h3>
+            <ul>
+              <li><a href="https://huggingface.co/datasets/OpenAssistant/oasst1" target="_blank" rel="noopener">OpenAssistant (OASST1)</a></li>
+              <li><a href="https://huggingface.co/datasets/databricks/databricks-dolly-15k" target="_blank" rel="noopener">Dolly 15k</a></li>
+              <li><a href="https://huggingface.co/datasets/Anthropic/hh-rlhf" target="_blank" rel="noopener">Anthropic HH-RLHF</a></li>
+              <li><a href="https://huggingface.co/datasets/LAION/OIG" target="_blank" rel="noopener">LAION OIG</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="audio">
+        <h2>Audio & Speech</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>ASR (Speech Recognition)</h3>
+            <ul>
+              <li><a href="https://www.openslr.org/12/" target="_blank" rel="noopener">LibriSpeech</a></li>
+              <li><a href="https://commonvoice.mozilla.org/en/datasets" target="_blank" rel="noopener">Mozilla Common Voice</a></li>
+              <li><a href="https://www.openslr.org/" target="_blank" rel="noopener">OpenSLR Index</a></li>
+              <li><a href="https://espnet.github.io/espnet/espnet2_tutorial.html#recipes-and-corpora" target="_blank" rel="noopener">ESPnet Recipes (corpora links)</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Speaker & Emotion</h3>
+            <ul>
+              <li><a href="https://www.robots.ox.ac.uk/~vgg/data/voxceleb/" target="_blank" rel="noopener">VoxCeleb</a></li>
+              <li><a href="https://datashare.ed.ac.uk/handle/10283/2651" target="_blank" rel="noopener">VCTK</a></li>
+              <li><a href="https://www2.informatik.uni-hamburg.de/wtm/Emo-DB/" target="_blank" rel="noopener">Berlin EmoDB</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Sound Events & Music</h3>
+            <ul>
+              <li><a href="https://research.google.com/audioset/" target="_blank" rel="noopener">AudioSet</a></li>
+              <li><a href="https://urbansounddataset.weebly.com/urbansound8k.html" target="_blank" rel="noopener">UrbanSound8K</a></li>
+              <li><a href="https://github.com/karoldvl/ESC-50" target="_blank" rel="noopener">ESC-50</a></li>
+              <li><a href="https://magenta.tensorflow.org/datasets" target="_blank" rel="noopener">Magenta (Music)</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>TTS</h3>
+            <ul>
+              <li><a href="https://keithito.com/LJ-Speech-Dataset/" target="_blank" rel="noopener">LJSpeech</a></li>
+              <li><a href="https://bakerdata.alibaba.com/index" target="_blank" rel="noopener">AISHELL-3</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="multimodal">
+        <h2>Multimodal</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Image ↔ Text</h3>
+            <ul>
+              <li><a href="https://laion.ai/blog/laion-5b/" target="_blank" rel="noopener">LAION-5B</a></li>
+              <li><a href="https://cocodataset.org/#captions-2015" target="_blank" rel="noopener">COCO Captions</a></li>
+              <li><a href="https://google.github.io/conceptual_captions/" target="_blank" rel="noopener">Conceptual Captions</a></li>
+              <li><a href="https://shannon.cs.illinois.edu/DenotationGraph/" target="_blank" rel="noopener">Flickr30k</a></li>
+              <li><a href="https://cs.stanford.edu/people/karpathy/deepimagesent/" target="_blank" rel="noopener">Flickr8k</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>VQA & Grounding</h3>
+            <ul>
+              <li><a href="https://visualqa.org/" target="_blank" rel="noopener">VQA v2</a></li>
+              <li><a href="https://github.com/GeniaLong/refer" target="_blank" rel="noopener">RefCOCO / RefCOCO+ / RefCOCOg</a></li>
+              <li><a href="https://vision.cs.unc.edu/data/mscoco/" target="_blank" rel="noopener">MS COCO (Regions)</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Video ↔ Text</h3>
+            <ul>
+              <li><a href="https://ms-multimedia-challenge.com/2017/dataset" target="_blank" rel="noopener">MSR-VTT</a></li>
+              <li><a href="https://m-bain.github.io/webvid-dataset/" target="_blank" rel="noopener">WebVid-10M</a></li>
+              <li><a href="https://fvdp.cs.ox.ac.uk/kinetics/" target="_blank" rel="noopener">Kinetics (captions via ASR)</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Audio ↔ Text</h3>
+            <ul>
+              <li><a href="https://huggingface.co/datasets/gigaword" target="_blank" rel="noopener">Gigaword (for ASR LM)</a></li>
+              <li><a href="https://github.com/mmorise/World" target="_blank" rel="noopener">Multispeaker corpora links (various)</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="rl">
+        <h2>Reinforcement Learning</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Environments & Suites</h3>
+            <ul>
+              <li><a href="https://www.gymlibrary.dev/" target="_blank" rel="noopener">Gymnasium (OpenAI Gym successor)</a></li>
+              <li><a href="https://www.gymlibrary.dev/environments/atari/" target="_blank" rel="noopener">Atari (ALE)</a></li>
+              <li><a href="https://www.deepmind.com/open-source/deepmind-control-suite" target="_blank" rel="noopener">DeepMind Control Suite</a></li>
+              <li><a href="https://github.com/openai/procgen" target="_blank" rel="noopener">Procgen</a></li>
+              <li><a href="https://meta-world.github.io/" target="_blank" rel="noopener">Meta-World</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Offline RL Datasets</h3>
+            <ul>
+              <li><a href="https://github.com/rail-berkeley/d4rl" target="_blank" rel="noopener">D4RL</a></li>
+              <li><a href="https://d3rlpy.readthedocs.io/en/latest/quickstart.html#datasets" target="_blank" rel="noopener">D3RLPy Datasets</a></li>
+              <li><a href="https://github.com/google-research/football" target="_blank" rel="noopener">Google Research Football</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Sim2Real & Robotics</h3>
+            <ul>
+              <li><a href="https://bair.berkeley.edu/blog/2020/05/27/d4rl/" target="_blank" rel="noopener">D4RL (Robosuite, etc.)</a></li>
+              <li><a href="https://robomimic.github.io/" target="_blank" rel="noopener">RoboMimic</a></li>
+              <li><a href="https://sites.google.com/view/bridge-data/home" target="_blank" rel="noopener">BRIDGE</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="graph">
+        <h2>Graphs & Networks</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Graph Benchmarks</h3>
+            <ul>
+              <li><a href="https://ogb.stanford.edu/docs/dataset_overview/" target="_blank" rel="noopener">OGB (Open Graph Benchmark)</a></li>
+              <li><a href="https://snap.stanford.edu/data/" target="_blank" rel="noopener">Stanford SNAP</a></li>
+              <li><a href="https://networkrepository.com/index.php" target="_blank" rel="noopener">Network Repository</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Knowledge Graphs</h3>
+            <ul>
+              <li><a href="https://developers.google.com/knowledge-graph" target="_blank" rel="noopener">Google Knowledge Graph (API access)</a></li>
+              <li><a href="https://www.wikidata.org/wiki/Wikidata:Database_download" target="_blank" rel="noopener">Wikidata Dumps</a></li>
+              <li><a href="https://www.dbpedia.org/resources/links/" target="_blank" rel="noopener">DBpedia</a></li>
+              <li><a href="https://deepai.org/dataset/freebase" target="_blank" rel="noopener">Freebase (archive)</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="timeseries">
+        <h2>Time Series</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>General & Forecasting</h3>
+            <ul>
+              <li><a href="https://www.cs.ucr.edu/~eamonn/time_series_data_2018/" target="_blank" rel="noopener">UCR/UEA Time Series Archive</a></li>
+              <li><a href="https://www.kaggle.com/competitions/m5-forecasting-accuracy/data" target="_blank" rel="noopener">M5 Forecasting</a></li>
+              <li><a href="https://forecasters.org/resources/time-series-data-library/" target="_blank" rel="noopener">Time Series Data Library</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Finance & Economics</h3>
+            <ul>
+              <li><a href="https://fred.stlouisfed.org/" target="_blank" rel="noopener">FRED</a></li>
+              <li><a href="https://wrds-www.wharton.upenn.edu/" target="_blank" rel="noopener">WRDS (subscription)</a></li>
+              <li><a href="https://www.quandl.com/" target="_blank" rel="noopener">Quandl (Nasdaq Data Link)</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>IoT & Sensors</h3>
+            <ul>
+              <li><a href="https://archive.ics.uci.edu/dataset/241/individual+household+electric+power+consumption" target="_blank" rel="noopener">UCI Household Power</a></li>
+              <li><a href="https://archive.ics.uci.edu/dataset/19/gas+sensor+array+drift+dataset" target="_blank" rel="noopener">UCI Gas Sensor Array</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="tabular">
+        <h2>Tabular & General ML</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Classics</h3>
+            <ul>
+              <li><a href="https://archive.ics.uci.edu/dataset/2/adult" target="_blank" rel="noopener">Adult (Census Income)</a></li>
+              <li><a href="https://www.openml.org/d/31" target="_blank" rel="noopener">Credit-G (German Credit)</a></li>
+              <li><a href="https://www.kaggle.com/c/titanic/data" target="_blank" rel="noopener">Titanic</a></li>
+              <li><a href="https://archive.ics.uci.edu/dataset/159/yeast" target="_blank" rel="noopener">Yeast</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Large Repositories</h3>
+            <ul>
+              <li><a href="https://openml.org/search?type=data" target="_blank" rel="noopener">OpenML (many datasets)</a></li>
+              <li><a href="https://www.kaggle.com/datasets" target="_blank" rel="noopener">Kaggle (tabular)</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Anomaly & Imbalanced</h3>
+            <ul>
+              <li><a href="https://archive.ics.uci.edu/dataset/152/credit+approval" target="_blank" rel="noopener">UCI Credit Approval</a></li>
+              <li><a href="https://www.kdd.org/kdd-cup/view/kdd-cup-1999/Data" target="_blank" rel="noopener">KDD Cup 1999 (Intrusion)</a></li>
+              <li><a href="https://odds.cs.stonybrook.edu/" target="_blank" rel="noopener">ODDS (Outlier Detection)</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="health">
+        <h2>Health / Bio / Medical</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Medical Imaging</h3>
+            <ul>
+              <li><a href="https://stanfordmlgroup.github.io/competitions/chexpert/" target="_blank" rel="noopener">CheXpert</a></li>
+              <li><a href="https://physionet.org/content/mimic-cxr/2.0.0/" target="_blank" rel="noopener">MIMIC-CXR</a></li>
+              <li><a href="https://nihcc.app.box.com/v/ChestXray-NIHCC" target="_blank" rel="noopener">ChestX-ray14</a></li>
+              <li><a href="https://www.isic-archive.com/#!/topWithHeader/onlyHeaderTop/gallery" target="_blank" rel="noopener">ISIC Skin</a></li>
+              <li><a href="https://www.med.upenn.edu/cbica/brats2021/data.html" target="_blank" rel="noopener">BraTS</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>ECG / Physiological</h3>
+            <ul>
+              <li><a href="https://physionet.org/content/mitdb/1.0.0/" target="_blank" rel="noopener">MIT-BIH Arrhythmia</a></li>
+              <li><a href="https://physionet.org/about/database/" target="_blank" rel="noopener">PhysioNet Databases</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Clinical Text</h3>
+            <ul>
+              <li><a href="https://physionet.org/content/mimiciii/1.4/" target="_blank" rel="noopener">MIMIC-III</a></li>
+              <li><a href="https://physionet.org/content/mimiciv/2.2/" target="_blank" rel="noopener">MIMIC-IV</a></li>
+            </ul>
+          </div>
+        </div>
+        <p class="note">Some medical datasets require credentialed access or data use agreements.</p>
+      </section>
+
+      <section id="geospatial">
+        <h2>Geospatial</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Satellite & Aerial</h3>
+            <ul>
+              <li><a href="https://earthengine.google.com/datasets/" target="_blank" rel="noopener">Google Earth Engine Catalog</a></li>
+              <li><a href="https://developers.google.com/earth-engine/guides/ic_volume#landsat" target="_blank" rel="noopener">Landsat Collections</a></li>
+              <li><a href="https://registry.opendata.aws/sentinel-2/" target="_blank" rel="noopener">Sentinel-2 on AWS</a></li>
+              <li><a href="https://spacenet.ai/datasets/" target="_blank" rel="noopener">SpaceNet</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Maps & POI</h3>
+            <ul>
+              <li><a href="https://planet.osm.org/" target="_blank" rel="noopener">OpenStreetMap (Planet)</a></li>
+              <li><a href="https://download.geofabrik.de/" target="_blank" rel="noopener">Geofabrik (OSM extracts)</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="ethics">
+        <h2>Safety, Bias & Toxicity</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Toxicity & Harms</h3>
+            <ul>
+              <li><a href="https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/data" target="_blank" rel="noopener">Jigsaw Toxic Comment</a></li>
+              <li><a href="https://allenai.org/data/real-toxicity-prompts" target="_blank" rel="noopener">RealToxicityPrompts</a></li>
+              <li><a href="https://huggingface.co/datasets/ucberkeley-dlab/measuring-hate-speech" target="_blank" rel="noopener">Hate Speech (various)</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Bias & Fairness</h3>
+            <ul>
+              <li><a href="https://arxiv.org/abs/1903.04561" target="_blank" rel="noopener">WinoBias (paper/links)</a></li>
+              <li><a href="https://github.com/nyu-mll/GLUE-baselines/tree/master/glue_data" target="_blank" rel="noopener">Bias-related GLUE subsets</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="code">
+        <h2>Code & Software</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Code Corpora</h3>
+            <ul>
+              <li><a href="https://huggingface.co/datasets/the_stack" target="_blank" rel="noopener">The Stack</a></li>
+              <li><a href="https://paperswithcode.com/dataset/codeparrot" target="_blank" rel="noopener">CodeParrot</a></li>
+              <li><a href="https://huggingface.co/datasets/code_search_net" target="_blank" rel="noopener">CodeSearchNet</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Bug & Security</h3>
+            <ul>
+              <li><a href="https://github.com/google/oss-fuzz" target="_blank" rel="noopener">OSS-Fuzz (bugs, corpora)</a></li>
+              <li><a href="https://juliahubert.com/devign/" target="_blank" rel="noopener">Devign</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        Built for fast discovery. Want me to add your domain area or a private tab? Ask and I’ll regenerate this page.
+      </footer>
+    </main>
+  </div>
+
+<script>
+  // Simple tab router
+  const tabs = document.querySelectorAll('.tab');
+  const sections = document.querySelectorAll('main section');
+  function show(hash){
+    sections.forEach(s=>s.classList.toggle('active', '#'+s.id===hash));
+    tabs.forEach(t=>t.classList.toggle('active', t.getAttribute('href')===hash));
+    history.replaceState(null, '', hash);
+  }
+  tabs.forEach(t=>t.addEventListener('click', (e)=>{
+    e.preventDefault();
+    show(t.getAttribute('href'));
+  }));
+  if(location.hash && document.querySelector(location.hash)){ show(location.hash); }
+</script>
+</body>
+</html>

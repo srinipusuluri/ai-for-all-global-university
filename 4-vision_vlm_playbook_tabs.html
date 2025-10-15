@@ -1,0 +1,541 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Vision & VLM Implementation Playbook — Rich App</title>
+<style>
+  :root {
+    --bg: #0e111a;
+    --panel: #141826;
+    --panel-2: #0f1320;
+    --text: #e8ecff;
+    --muted: #a9b0c6;
+    --accent: #7aa2ff;
+    --accent2: #7affe4;
+    --warning: #ffd166;
+    --danger: #ff6b6b;
+    --ok: #4ade80;
+    --border: #242840;
+    --code: #0a0e1b;
+  }
+  [data-theme="light"] {
+    --bg: #f7f9ff;
+    --panel: #ffffff;
+    --panel-2: #f1f4ff;
+    --text: #0c1445;
+    --muted: #4a557a;
+    --accent: #3057ff;
+    --accent2: #0aa29a;
+    --warning: #a46a00;
+    --danger: #c0392b;
+    --ok: #0a7a39;
+    --border: #d5dcff;
+    --code: #f3f6ff;
+  }
+
+  html, body { margin:0; padding:0; background:var(--bg); color:var(--text); font-family: Inter, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; line-height:1.6; }
+  header { position: sticky; top: 0; z-index: 4; background: linear-gradient(120deg, var(--panel), var(--panel-2)); border-bottom: 1px solid var(--border); }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+  .hero { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center; padding: 22px 0; }
+  h1 { margin: 0; font-size: 26px; }
+  .muted { color: var(--muted); }
+  .toolbar { display:flex; gap:10px; align-items:center; }
+  .btn { cursor:pointer; padding:8px 12px; border-radius:10px; border:1px solid var(--border); background: transparent; color: var(--text); }
+  .btn:hover { border-color: var(--accent); }
+  .primary { background: linear-gradient(120deg, var(--accent), var(--accent2)); color:#050816; border: none; }
+  .tabs { display:flex; gap:8px; overflow:auto; padding: 10px 0 14px; }
+  .tab { white-space: nowrap; padding:10px 14px; border:1px solid var(--border); border-bottom:none; border-radius:10px 10px 0 0; background: var(--panel); cursor: pointer; color: var(--muted); }
+  .tab.active { color: var(--text); background: linear-gradient(180deg, var(--panel), var(--panel-2)); border-color: var(--accent); }
+  .view { display:none; padding: 18px; border:1px solid var(--border); border-radius: 0 12px 12px 12px; background: var(--panel); }
+  .view.active { display:block; }
+  .grid { display:grid; gap:14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .panel { border:1px solid var(--border); background: var(--panel-2); border-radius:12px; padding:14px; }
+  h2 { margin:14px 0; font-size: 22px; }
+  h3 { margin:10px 0; font-size: 18px; }
+  .badge { display:inline-block; padding:2px 8px; border:1px solid var(--border); border-radius:999px; font-size:12px; color:var(--muted); }
+  table { width:100%; border-collapse: collapse; margin: 12px 0; }
+  th, td { text-align:left; border-bottom:1px dashed var(--border); padding:10px 8px; vertical-align:top; }
+  th { background: rgba(122,162,255,.08); border-bottom:1px solid var(--border); }
+  pre { background: var(--code); border: 1px solid var(--border); color: #dfe6ff; padding: 14px; border-radius: 12px; overflow:auto; position:relative; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+  .copy { position:absolute; right:10px; top:10px; padding:4px 8px; font-size:12px; border-radius:8px; border:1px solid var(--border); background:transparent; color:var(--muted); cursor:pointer; }
+  .callout { border-left:3px solid var(--accent2); background: rgba(122,255,228,0.06); padding:10px 12px; border-radius:8px; }
+  .warning { border-left:3px solid var(--warning); background: rgba(255, 209, 102, 0.08); }
+  .danger { border-left:3px solid var(--danger); background: rgba(255, 107, 107, 0.08); }
+  .ok { border-left:3px solid var(--ok); background: rgba(74, 222, 128, 0.08); }
+  details { background: var(--panel-2); border: 1px solid var(--border); border-radius: 10px; padding: 8px 12px; margin: 12px 0; }
+  summary { cursor: pointer; font-weight: 600; color: #dfe6ff; }
+  .kpi { display:flex; gap:12px; }
+  .kpi .card { flex:1; background: var(--panel-2); border:1px solid var(--border); border-radius: 12px; padding: 12px; }
+  .search { display:flex; gap:8px; margin: 10px 0 16px; }
+  .search input { flex: 1; padding:8px 10px; border-radius:10px; border:1px solid var(--border); background: var(--panel-2); color: var(--text); }
+  .hint { font-size: 12px; color: var(--muted); }
+  .two-col { display:grid; grid-template-columns: 1.1fr .9fr; gap:16px; }
+  @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+  .footer { color: var(--muted); padding: 24px 0 50px; text-align:center; }
+</style>
+</head>
+<body data-theme="dark">
+<header>
+  <div class="container hero">
+    <div>
+      <h1>Vision & Vision-Language Models — Implementation Playbook</h1>
+      <div class="muted">A tab-based, rich reference with extensive code, pipelines, MLOps, and production guidance.</div>
+    </div>
+    <div class="toolbar">
+      <button class="btn" id="themeBtn" title="Toggle Light/Dark">🌗 Theme</button>
+      <button class="btn primary" id="expandAll">Expand All</button>
+      <button class="btn" id="collapseAll">Collapse All</button>
+    </div>
+  </div>
+  <div class="container">
+    <div class="tabs" id="tabs"></div>
+  </div>
+</header>
+
+<main class="container" id="views"></main>
+
+<footer class="container footer">
+  Built for practitioners. Copy code into your repo, wire data, then iterate with PEFT and production serving.
+</footer>
+
+<script>
+// ------- Tab data structure (content as template strings) -------
+const SECTIONS = [
+  {
+    id: "overview",
+    title: "Overview",
+    html: `
+      <div class="kpi">
+        <div class="card"><b>Modalities</b><br/><span class="muted">Images, Video, Text</span></div>
+        <div class="card"><b>Paradigms</b><br/><span class="muted">Supervised, Self/Semi, Contrastive, Instruction</span></div>
+        <div class="card"><b>Deployment</b><br/><span class="muted">Triton, vLLM, TorchServe</span></div>
+      </div>
+      <div class="panel" style="margin-top:12px">
+        <h2>Terminology</h2>
+        <ul>
+          <li><b>Vision models</b>: process pixels (classification, detection, segmentation, tracking, retrieval).</li>
+          <li><b>VLMs / Multimodal</b>: process pixels <i>and</i> text—captioning, VQA, region QA, document AI.</li>
+          <li><b>vLLM</b>: high-throughput inference engine (serving), not a model. Can serve multimodal LLMs.</li>
+        </ul>
+        <div class="callout small ok">Rule of thumb: start with a strong pretrained backbone (ViT/Swin/CLIP), then adapt via PEFT or linear probe before full fine-tuning.</div>
+      </div>
+      <details open><summary>Landscape & Patterns</summary>
+        <div class="panel">
+          <div class="two-col">
+            <div>
+              <h3>Core Tasks</h3>
+              <ul>
+                <li>Classification (ViT/timm), Detection/Segm (MMDetection/MMSeg), Anomaly (anomalib)</li>
+                <li>Retrieval & Moderation (OpenCLIP + FAISS)</li>
+                <li>Captioning/VQA/Chat (BLIP-2, LLaVA, Qwen2-VL)</li>
+                <li>Video (PyTorchVideo/MMAction2; frame sampling to VLM)</li>
+                <li>Document AI & OCR (PaddleOCR + LayoutParser or Donut)</li>
+                <li>Region QA (GroundingDINO + SAM + VLM)</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Data Strategy</h3>
+              <ul>
+                <li>Prefer web-scale pretraining + light adaptation (PEFT, adapters, linear probe).</li>
+                <li>For scarce labels: use pseudo-labels, active learning, and prompt-ensembles.</li>
+                <li>Track dataset versions; freeze evaluation splits to avoid leakage.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </details>
+    `
+  },
+  {
+    id: "setup",
+    title: "Setup & Tooling",
+    html: `
+      <div class="panel">
+        <h2>Environment</h2>
+        <p>Python 3.10+, CUDA 12.x (or ROCm). Install core libs and domain-specific stacks.</p>
+        <pre><button class="copy">Copy</button><code>pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
+pip install transformers datasets accelerate peft timm einops bitsandbytes
+pip install faiss-gpu  # or faiss-cpu
+pip install mmdet mmcv mmsegmentation pytorchvideo monai paddleocr layoutparser anomalib decord opencv-python rapidfuzz</code></pre>
+        <div class="callout small">Use <b>conda</b> or <b>uv</b> for isolated envs. Pin versions for reproducibility. Enable <b>AMP</b> everywhere.</div>
+      </div>
+      <div class="grid">
+        <div class="panel">
+          <h3>Folder Skeleton</h3>
+          <pre><button class="copy">Copy</button><code>repo/
+├─ data/            # raw & processed
+├─ configs/         # yaml/json training configs
+├─ models/          # custom heads, adapters
+├─ scripts/         # train_*.py, infer_*.py
+├─ serving/         # Triton/vLLM configs
+├─ notebooks/       # exploration
+└─ tests/           # unit & smoke tests</code></pre>
+        </div>
+        <div class="panel">
+          <h3>Training Flags (common)</h3>
+          <table>
+            <tr><th>Flag</th><th>Meaning</th><th>Typical</th></tr>
+            <tr><td>--lr</td><td>Base learning rate</td><td>3e-4 (AdamW)</td></tr>
+            <tr><td>--bs</td><td>Batch size (per-device)</td><td>32–128 (images); 1–4 (VLM)</td></tr>
+            <tr><td>--epochs</td><td>Epochs</td><td>10–100 (task/depth dependent)</td></tr>
+            <tr><td>--amp</td><td>Mixed precision</td><td>true</td></tr>
+            <tr><td>--grad-accum</td><td>Accumulate steps</td><td>2–8 for big models</td></tr>
+          </table>
+        </div>
+      </div>
+    `
+  },
+  {
+    id: "usecases",
+    title: "Use Cases (recipes)",
+    html: `
+      <details open><summary><b>1) Image Classification — ViT (timm) with LoRA</b></summary>
+        <div class="panel">
+          <p><b>When:</b> product categories, quality grading, medical slice tags.</p>
+          <p><b>Data:</b> folder or HF dataset; balance classes; augment (MixUp/CutMix, RandAug).</p>
+          <pre><button class="copy">Copy</button><code>import timm, torch, torch.nn as nn
+from torchvision import datasets, transforms
+from torch.utils.data import DataLoader
+from peft import LoraConfig, get_peft_model
+
+tfm = transforms.Compose([transforms.Resize(256), transforms.CenterCrop(224),
+                          transforms.ToTensor(), transforms.Normalize(0.5, 0.5)])
+train = datasets.ImageFolder("data/train", tfm); val = datasets.ImageFolder("data/val", tfm)
+dl = DataLoader(train, batch_size=64, shuffle=True, num_workers=8, pin_memory=True)
+
+model = timm.create_model("vit_base_patch16_224", pretrained=True, num_classes=len(train.classes))
+peft_cfg = LoraConfig(r=8, lora_alpha=16, target_modules=["qkv"], lora_dropout=0.05,
+                      bias="none", task_type="SEQ_CLS")
+model = get_peft_model(model, peft_cfg).cuda()
+opt = torch.optim.AdamW(model.parameters(), lr=3e-4, weight_decay=1e-4)
+scaler = torch.cuda.amp.GradScaler()</code></pre>
+          <div class="two-col">
+            <div class="panel">
+              <h3>Eval Metrics</h3>
+              <ul>
+                <li>Accuracy, Macro-F1 (imbalanced), AUROC</li>
+                <li>Calibration (ECE) for thresholding</li>
+              </ul>
+            </div>
+            <div class="panel">
+              <h3>Production</h3>
+              <ul>
+                <li>Export ONNX/TensorRT, dynamic batch via Triton</li>
+                <li>Canary metrics: drift via embedding stats</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details><summary><b>2) Detection & Segmentation — OpenMMLab (Swin + Mask R-CNN / Mask2Former)</b></summary>
+        <div class="panel">
+          <p><b>When:</b> parts counting, PPE compliance, medical organ segmentation, aerial parcels.</p>
+          <p><b>Tips:</b> Layer-wise LR decay; sliding-window inference; test-time augmentation for tiny objects.</p>
+          <pre><button class="copy">Copy</button><code>from mmengine import Config
+from mmdet.apis import train_detector, init_detector, inference_detector
+cfg = Config.fromfile('configs/mask_rcnn/mask-rcnn_swin-t-p4-w7_fpn_1x_coco.py')
+# edit dataset paths: cfg.train_dataloader.dataset.ann_file, data_prefix, etc.
+train_detector(cfg)</code></pre>
+          <div class="callout small">Evaluate with COCO mAP (bbox/segm); region QA can reuse masks for VLM prompts.</div>
+        </div>
+      </details>
+
+      <details><summary><b>3) Visual Search & Moderation — OpenCLIP + FAISS</b></summary>
+        <div class="panel">
+          <p><b>Pipeline:</b> embed images → index in FAISS → text queries → ANN search → optional re-rank.</p>
+          <pre><button class="copy">Copy</button><code>import open_clip, torch, faiss, numpy as np
+from PIL import Image
+model, _, pre = open_clip.create_model_and_transforms('ViT-H-14', pretrained='laion2b_s32b_b79k')
+tok = open_clip.get_tokenizer('ViT-H-14'); model = model.cuda().eval()
+
+def embed_images(paths):
+  embs = []
+  with torch.no_grad():
+    for p in paths:
+      e = model.encode_image(pre(Image.open(p).convert('RGB')).unsqueeze(0).cuda())
+      e = e / e.norm(dim=-1, keepdim=True); embs.append(e.squeeze(0).float().cpu().numpy())
+  return np.vstack(embs)
+
+vecs = embed_images(image_paths); d = vecs.shape[1]
+index = faiss.index_factory(d, "IVF1024,Flat"); index.train(vecs); index.add(vecs)</code></pre>
+          <div class="two-col">
+            <div class="panel">
+              <h3>Moderation</h3>
+              <p>Classify by comparing image embedding to text labels (zero-shot). Calibrate on small labeled set.</p>
+            </div>
+            <div class="panel">
+              <h3>Ops</h3>
+              <ul><li>Sharded FAISS; HNSW for fast recall</li><li>Cache hot vectors; async re-indexing</li></ul>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details><summary><b>4) Document AI & OCR — PaddleOCR + LayoutParser / Donut / BLIP-2</b></summary>
+        <div class="panel">
+          <p><b>Two tracks:</b> (A) OCR + layout (robust) (B) OCR-free (Donut) for templated docs.</p>
+          <ul>
+            <li><b>OCR + Layout:</b> PaddleOCR → text/boxes → LayoutParser/La youtLMv3 → fields/tables</li>
+            <li><b>OCR-free:</b> Donut for receipts/invoices where layouts are consistent</li>
+          </ul>
+          <pre><button class="copy">Copy</button><code>from transformers import Blip2Processor, Blip2ForConditionalGeneration
+import torch, PIL.Image as Image
+proc = Blip2Processor.from_pretrained("Salesforce/blip2-flan-t5-xl")
+model = Blip2ForConditionalGeneration.from_pretrained(
+  "Salesforce/blip2-flan-t5-xl", torch_dtype=torch.float16).cuda().eval()</code></pre>
+          <div class="callout small warning">Ensure PII handling & redaction; store only hashed references and secure blobs.</div>
+        </div>
+      </details>
+
+      <details><summary><b>5) Multimodal Chat — Qwen2-VL / LLaVA</b></summary>
+        <div class="panel">
+          <p><b>When:</b> defect analysis, QA agents, product attribute extraction, visual notes.</p>
+          <pre><button class="copy">Copy</button><code>from transformers import AutoProcessor, AutoModelForVision2Seq
+import PIL.Image as Image, torch
+mid = "Qwen/Qwen2-VL-7B-Instruct"
+proc = AutoProcessor.from_pretrained(mid)
+model = AutoModelForVision2Seq.from_pretrained(mid, torch_dtype=torch.float16, device_map="auto").eval()</code></pre>
+          <ul>
+            <li><b>PEFT:</b> LoRA on language tower; freeze vision encoder</li>
+            <li><b>Serving:</b> Use vLLM if supported; otherwise TGI</li>
+          </ul>
+        </div>
+      </details>
+
+      <details><summary><b>6) Video Understanding — PyTorchVideo / Frame Sampling to VLM</b></summary>
+        <div class="panel">
+          <p>Decode frames with <code>decord</code>; feed to action models or VLMs that accept multi-image inputs.</p>
+          <div class="two-col">
+            <div class="panel"><h3>Action Recognition</h3><p>Timesformer/SlowFast; metrics: top-1/top-5.</p></div>
+            <div class="panel"><h3>Video QA</h3><p>Uniform frame sampling (8–32); prompt VLM with task constraints.</p></div>
+          </div>
+        </div>
+      </details>
+
+      <details><summary><b>7) Region QA — GroundingDINO + SAM + VLM</b></summary>
+        <div class="panel">
+          <p>Detect text-prompted boxes → refine mask with SAM → crop → ask VLM.</p>
+          <div class="callout small ok">Collect (image, region, text) triples to fine-tune region-aware adapters.</div>
+        </div>
+      </details>
+
+      <details><summary><b>8) Anomaly Detection — anomalib (PaDiM / PatchCore / CFlow)</b></summary>
+        <div class="panel">
+          <p>Train with normal-only images; produce heatmaps; per-category thresholds.</p>
+          <ul><li>Monitoring: false positives; add synthetic defects for robustness.</li><li>Latency: prefer feature-extractor + nearest-neighbor for speed.</li></ul>
+        </div>
+      </details>
+    `
+  },
+  {
+    id: "libraries",
+    title: "Library Catalog",
+    html: `
+      <div class="search">
+        <input id="libSearch" placeholder="Search libraries or purposes…" />
+        <div class="hint">Tip: try 'OCR', 'retrieval', 'segmentation'.</div>
+      </div>
+      <div class="panel">
+        <table id="libTable">
+          <thead><tr><th>Library</th><th>Purpose</th><th>Where it fits</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td><b>torch / torchvision</b></td><td>Core DL, datasets, transforms</td><td>All training & inference</td><td>Enable AMP; pin versions</td></tr>
+            <tr><td><b>transformers</b></td><td>Pretrained transformers (VLMs, ViT)</td><td>Captioning, VQA, chat</td><td>Use Auto* classes, safetensors</td></tr>
+            <tr><td><b>datasets</b></td><td>Data streaming, map/filter</td><td>Fine-tuning pipelines</td><td>Arrow/Parquet under the hood</td></tr>
+            <tr><td><b>accelerate</b></td><td>Distributed/AMP trainer</td><td>Multi-GPU jobs</td><td>CLI to launch training</td></tr>
+            <tr><td><b>peft</b></td><td>LoRA/Adapters</td><td>Lightweight FT</td><td>Great on 1–2 GPUs</td></tr>
+            <tr><td><b>bitsandbytes</b></td><td>4/8-bit weights</td><td>VRAM savings</td><td>bnb.nn.Linear4bit</td></tr>
+            <tr><td><b>timm</b></td><td>Vision backbones</td><td>Classification/features</td><td>Strong pretrained zoo</td></tr>
+            <tr><td><b>mmcv / mmdet / mmseg</b></td><td>Detection/Segmentation</td><td>COCO pipelines</td><td>Config-driven</td></tr>
+            <tr><td><b>open_clip_torch</b></td><td>CLIP embeddings</td><td>Search/moderation</td><td>Zero-shot power</td></tr>
+            <tr><td><b>faiss-gpu</b></td><td>ANN search</td><td>Retrieval</td><td>IVF/HNSW/PQ</td></tr>
+            <tr><td><b>paddleocr</b></td><td>OCR engine</td><td>Docs/receipts</td><td>Fast multilingual</td></tr>
+            <tr><td><b>layoutparser</b></td><td>Layout detection</td><td>Document structure</td><td>Detect blocks/tables</td></tr>
+            <tr><td><b>pytorchvideo</b></td><td>Video models</td><td>Action recognition</td><td>SlowFast/Timesformer</td></tr>
+            <tr><td><b>decord</b></td><td>Video decoding</td><td>Frame sampling</td><td>CPU/GPU decoding</td></tr>
+            <tr><td><b>monai</b></td><td>Medical imaging</td><td>3D UNETR</td><td>Healthcare-friendly</td></tr>
+            <tr><td><b>rasterio / shapely</b></td><td>Geospatial & geometry</td><td>Satellite imagery</td><td>GeoTIFF/GeoJSON</td></tr>
+            <tr><td><b>groundingdino-py</b></td><td>Text-prompt detection</td><td>Region QA</td><td>Pair with SAM</td></tr>
+            <tr><td><b>segment-anything</b></td><td>Universal segmentation</td><td>Masks</td><td>Promptable</td></tr>
+            <tr><td><b>anomalib</b></td><td>Anomaly detection</td><td>Manufacturing QA</td><td>PaDiM/PatchCore</td></tr>
+            <tr><td><b>opencv-python</b></td><td>CV utilities</td><td>Pre/post-processing</td><td>Draw/resize/IO</td></tr>
+            <tr><td><b>scikit-learn</b></td><td>Classical ML utils</td><td>Metrics/PCA</td><td>Model selection</td></tr>
+            <tr><td><b>wandb / tensorboard</b></td><td>Experiment tracking</td><td>Training logs</td><td>Artifacts + charts</td></tr>
+            <tr><td><b>dvc / mlflow</b></td><td>Versioning & registry</td><td>MLOps</td><td>Repro & lineage</td></tr>
+            <tr><td><b>fastapi / uvicorn / pydantic</b></td><td>APIs & schema</td><td>Serving</td><td>Async, typed</td></tr>
+            <tr><td><b>vLLM / Triton / TorchServe</b></td><td>High-perf serving</td><td>Prod inference</td><td>Batching/streaming</td></tr>
+          </tbody>
+        </table>
+      </div>
+    `
+  },
+  {
+    id: "cheatsheet",
+    title: "Cheat-Sheet",
+    html: `
+      <div class="panel">
+        <ul>
+          <li><b>Classification:</b> ViT-B (timm) → simple & strong; try linear probe first.</li>
+          <li><b>Detection/Segm:</b> MMDetection or YOLOv8; Mask2Former + Swin for panoptic.</li>
+          <li><b>Search/Moderation:</b> OpenCLIP + FAISS (IVF-PQ/HNSW); re-rank with cross-encoder if needed.</li>
+          <li><b>Caption/VQA:</b> BLIP-2 for small; Qwen2-VL / LLaVA for chatty reasoning.</li>
+          <li><b>Docs:</b> PaddleOCR + LayoutParser; Donut if layouts stable.</li>
+          <li><b>Video:</b> PyTorchVideo; for QA, sample frames and feed to VLM.</li>
+          <li><b>Region QA:</b> GroundingDINO + SAM + VLM; collect region triples for FT.</li>
+          <li><b>Anomaly:</b> anomalib; tune thresholds by category; visualize heatmaps.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Hardware Sizing (rules of thumb)</h3>
+        <table>
+          <tr><th>Workload</th><th>GPU</th><th>Notes</th></tr>
+          <tr><td>ViT-B training</td><td>1× 24GB</td><td>bs=64, AMP</td></tr>
+          <tr><td>Detection/Segm</td><td>1–2× 24–48GB</td><td>grad accum + AMP</td></tr>
+          <tr><td>VLM (7B) inference</td><td>1× 24GB</td><td>4/8-bit helps</td></tr>
+          <tr><td>VLM (7B) FT (LoRA)</td><td>1–2× 24–48GB</td><td>seq len sensitive</td></tr>
+          <tr><td>FAISS search (1M)</td><td>CPU or 1 GPU</td><td>IVF-PQ, mmap</td></tr>
+        </table>
+      </div>
+    `
+  },
+  {
+    id: "mlops",
+    title: "MLOps & Serving",
+    html: `
+      <div class="panel">
+        <h2>Training Ops</h2>
+        <ul>
+          <li>Track everything (wandb/mlflow): hyperparams, seeds, metrics, artifacts.</li>
+          <li>Data versioning (DVC); immutable eval set; governance for dataset changes.</li>
+          <li>PEFT first; full FT only when justified by gains vs cost.</li>
+        </ul>
+      </div>
+      <div class="grid">
+        <div class="panel">
+          <h3>Optimization</h3>
+          <ul>
+            <li>AMP (FP16), grad checkpointing, flash-attn (if supported).</li>
+            <li>TensorRT for CNN/Vision; 4/8-bit for VLMs (bitsandbytes).</li>
+            <li>Profile input pipeline (augmentations, decoding) to remove CPU bottlenecks.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>Serving Patterns</h3>
+          <ul>
+            <li><b>Triton</b>: vision graphs (ONNX/TensorRT), dynamic batching.</li>
+            <li><b>vLLM</b>: streaming tokens for chat; paged attention; high QPS.</li>
+            <li>Async job queues for heavy pre/post-processing; prefetch & cache.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>Security & Compliance</h3>
+          <ul>
+            <li>PII redaction (OCR outputs); NSFW filters.</li>
+            <li>Model cards; audit logs; prompt/response retention policy.</li>
+            <li>Dataset provenance and reproducibility (seeded runs).</li>
+          </ul>
+        </div>
+      </div>
+      <details><summary>FastAPI Skeleton</summary>
+        <pre><button class="copy">Copy</button><code>from fastapi import FastAPI, UploadFile
+from pydantic import BaseModel
+import io, PIL.Image as Image
+app = FastAPI()
+
+@app.post("/classify")
+async def classify(file: UploadFile):
+    img = Image.open(io.BytesIO(await file.read())).convert("RGB")
+    # preprocess → model → prediction
+    return {"label":"example","score":0.99}</code></pre>
+      </details>
+      <details><summary>Triton Model Repo Layout</summary>
+        <pre><button class="copy">Copy</button><code>model_repository/
+├─ vit_classifier/
+│  ├─ 1/model.plan        # TensorRT engine
+│  └─ config.pbtxt        # batching, inputs/outputs
+├─ clip_retriever/
+│  ├─ 1/model.onnx
+│  └─ config.pbtxt
+└─ ensemble/
+   ├─ 1/model.py          # python backend (pre/post)
+   └─ config.pbtxt</code></pre>
+      </details>
+    `
+  }
+];
+
+// ------- Render tabs & views -------
+const tabsDiv = document.getElementById('tabs');
+const viewsDiv = document.getElementById('views');
+
+SECTIONS.forEach((s, i) => {
+  const t = document.createElement('button');
+  t.className = 'tab' + (i===0 ? ' active' : '');
+  t.textContent = s.title;
+  t.dataset.target = s.id;
+  tabsDiv.appendChild(t);
+
+  const v = document.createElement('section');
+  v.className = 'view' + (i===0 ? ' active' : '');
+  v.id = s.id;
+  v.innerHTML = s.html;
+  viewsDiv.appendChild(v);
+});
+
+// ------- Tab switching -------
+tabsDiv.addEventListener('click', (e) => {
+  if (!e.target.classList.contains('tab')) return;
+  document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+  e.target.classList.add('active');
+  const id = e.target.dataset.target;
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// ------- Copy buttons in <pre> blocks -------
+document.addEventListener('click', (e) => {
+  if (!e.target.classList.contains('copy')) return;
+  const pre = e.target.closest('pre');
+  const code = pre.querySelector('code').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    const old = e.target.textContent;
+    e.target.textContent = 'Copied!';
+    setTimeout(()=>{ e.target.textContent = old; }, 1200);
+  });
+});
+
+// ------- Expand/Collapse all <details> -------
+document.getElementById('expandAll').addEventListener('click', () => {
+  document.querySelectorAll('details').forEach(d => d.open = true);
+});
+document.getElementById('collapseAll').addEventListener('click', () => {
+  document.querySelectorAll('details').forEach(d => d.open = false);
+});
+
+// ------- Theme toggle -------
+const themeBtn = document.getElementById('themeBtn');
+themeBtn.addEventListener('click', () => {
+  const cur = document.body.getAttribute('data-theme');
+  document.body.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+});
+
+// ------- Library search filter -------
+const libSearch = () => {
+  const q = document.getElementById('libSearch').value.toLowerCase();
+  const rows = document.querySelectorAll('#libTable tbody tr');
+  rows.forEach(r => {
+    const txt = r.innerText.toLowerCase();
+    r.style.display = txt.includes(q) ? '' : 'none';
+  });
+};
+document.addEventListener('input', (e) => {
+  if (e.target && e.target.id === 'libSearch') libSearch();
+});
+</script>
+</body>
+</html>

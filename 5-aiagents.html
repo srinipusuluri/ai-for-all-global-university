@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AI vs ML vs DL vs GenAI vs LLM vs AI Agent — Deep Dive (Interactive)</title>
+<meta name="description" content="A single-page, interactive, tab-based deep dive on AI, Machine Learning, Deep Learning, Generative AI, Large Language Models, and AI Agents — with quiz and downloadable certificate." />
+<style>
+  :root{
+    --bg:#0f1226;
+    --panel:#15183a;
+    --panel-2:#1b1f4d;
+    --accent:#7cf7ff;
+    --accent-2:#ff9cf3;
+    --ok:#38d39f;
+    --warn:#ffd166;
+    --err:#ff6b6b;
+    --text:#e8ecff;
+    --muted:#a5b0ff;
+    --shadow: 0 18px 40px rgba(0,0,0,.35);
+    --radius:16px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:radial-gradient(1200px 800px at 10% -20%, #21265f 0%, #0f1226 60%, #0b0e1e 100%); color:var(--text); font-family:system-ui,-apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; line-height:1.5}
+  header{
+    position:sticky; top:0; z-index:5; backdrop-filter:saturate(180%) blur(14px);
+    background:linear-gradient(180deg, rgba(21,24,58,.9) 0%, rgba(21,24,58,.7) 100%);
+    border-bottom:1px solid rgba(124,247,255,.15)
+  }
+  .wrap{max-width:1100px;margin:0 auto;padding:20px}
+  h1{font-size:clamp(22px,3.2vw,36px);margin:8px 0 4px}
+  .sub{color:var(--muted); margin:0 0 14px}
+  .tabs{
+    display:flex; gap:10px; flex-wrap:wrap; margin:16px 0 8px
+  }
+  .tab-btn{
+    border:1px solid rgba(124,247,255,.35); color:var(--text);
+    background:linear-gradient(180deg, rgba(27,31,77,.9), rgba(15,18,38,.9));
+    padding:10px 14px; border-radius:12px; cursor:pointer; transition:.2s transform,.2s box-shadow;
+    font-weight:600; letter-spacing:.2px
+  }
+  .tab-btn:hover{transform:translateY(-1px); box-shadow:0 10px 24px rgba(124,247,255,.15)}
+  .tab-btn.active{outline:2px solid var(--accent); color:#00111a; background:linear-gradient(180deg,#7cf7ff,#4bd0d9)}
+  .panel{
+    display:none; padding:18px; background:linear-gradient(180deg, var(--panel), var(--panel-2));
+    border:1px solid rgba(124,247,255,.18); border-radius:var(--radius); box-shadow:var(--shadow); margin:8px 0 24px
+  }
+  .panel.active{display:block}
+  .grid{
+    display:grid; gap:18px; grid-template-columns:repeat(auto-fit, minmax(260px,1fr))
+  }
+  .card{
+    background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:14px
+  }
+  h2{margin:0 0 8px; font-size:clamp(18px,2.4vw,26px)}
+  h3{margin:10px 0 6px; font-size:18px}
+  ul,ol{margin:0 0 8px 18px}
+  a{color:var(--accent); text-decoration:none; border-bottom:1px dotted rgba(124,247,255,.45)}
+  a:hover{color:#00111a; background:var(--accent); border-bottom-color:transparent}
+  code,.tag{
+    background:rgba(124,247,255,.12); border:1px solid rgba(124,247,255,.2); border-radius:8px; padding:2px 6px
+  }
+  .tag{display:inline-block; margin:2px 4px 2px 0; font-size:12px}
+  details{background:rgba(255,255,255,.03); border:1px dashed rgba(255,255,255,.08); border-radius:12px; padding:10px 12px}
+  summary{cursor:pointer; font-weight:600}
+  .note{color:var(--muted); font-size:14px}
+  .kbd{padding:.2rem .45rem; border-radius:.5rem; border:1px solid rgba(255,255,255,.22)}
+  /* Quiz */
+  #quiz{counter-reset:q}
+  .q{
+    background:linear-gradient(180deg, rgba(21,24,58,.9), rgba(17,20,47,.9));
+    border:1px solid rgba(255,255,255,.12); border-radius:14px; padding:14px; margin:12px 0
+  }
+  .q h4::before{counter-increment:q; content:"Q" counter(q) " · "; color:var(--accent)}
+  .choices{display:grid; gap:8px; margin-top:6px}
+  .choices label{display:flex; gap:8px; align-items:flex-start; padding:8px; border:1px solid rgba(255,255,255,.14); border-radius:10px; cursor:pointer}
+  .choices input{margin-top:3px}
+  .quiz-actions{display:flex; gap:10px; flex-wrap:wrap; margin:12px 0}
+  .btn{
+    border:0; background:linear-gradient(180deg,#ff9cf3,#b86bff);
+    color:#180d2a; font-weight:800; padding:10px 14px; border-radius:12px; cursor:pointer; box-shadow:var(--shadow)
+  }
+  .btn.alt{background:linear-gradient(180deg,#7cf7ff,#4bd0d9); color:#00111a}
+  .score{font-weight:800}
+  .pass{color:var(--ok)} .fail{color:var(--err)}
+  /* Certificate */
+  .cert{
+    display:grid; grid-template-columns:1fr; gap:12px; align-items:start
+  }
+  canvas{width:100%; max-width:900px; background:#fff; border-radius:12px}
+  .footer{
+    margin:26px 0 80px; color:var(--muted); font-size:13px; text-align:center
+  }
+  .kbd{background:rgba(255,255,255,.06)}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>AI vs ML vs DL vs GenAI vs LLM vs AI Agent</h1>
+    <p class="sub">A crisp, modern, tab-based reference with curated links, workflows, pitfalls, tools, and an interactive quiz + downloadable certificate.</p>
+    <div class="tabs" role="tablist" aria-label="Topics">
+      <button class="tab-btn active" data-tab="ai" role="tab" aria-selected="true">Artificial Intelligence (AI)</button>
+      <button class="tab-btn" data-tab="ml" role="tab" aria-selected="false">Machine Learning (ML)</button>
+      <button class="tab-btn" data-tab="dl" role="tab" aria-selected="false">Deep Learning (DL)</button>
+      <button class="tab-btn" data-tab="genai" role="tab" aria-selected="false">Generative AI</button>
+      <button class="tab-btn" data-tab="llm" role="tab" aria-selected="false">Large Language Models (LLMs)</button>
+      <button class="tab-btn" data-tab="agent" role="tab" aria-selected="false">AI Agents</button>
+      <button class="tab-btn" data-tab="quiz" role="tab" aria-selected="false">Quiz & Certificate</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ AI ============ -->
+  <section id="ai" class="panel active" role="tabpanel" aria-labelledby="Artificial Intelligence">
+    <h2>Artificial Intelligence (AI)</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Definition</h3>
+        <p>AI is the broad field of building systems that perform tasks requiring human-like intelligence: <em>perception, reasoning, learning, planning, and decision-making</em>.</p>
+        <p class="note">Umbrella term → includes rule-based systems, search/optimization, symbolic reasoning, and data-driven ML/DL.</p>
+        <div>
+          <span class="tag">Symbolic AI</span>
+          <span class="tag">Search & Planning</span>
+          <span class="tag">Knowledge Graphs</span>
+          <span class="tag">ML / DL</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Typical Workflow</h3>
+        <ol>
+          <li>Define problem & success metrics.</li>
+          <li>Collect/structure knowledge or data.</li>
+          <li>Choose approach (symbolic, ML, hybrid).</li>
+          <li>Build prototype & validate logic.</li>
+          <li>Integrate tools, monitor, iterate.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3>Great Links</h3>
+        <ul>
+          <li><a href="https://en.wikipedia.org/wiki/Artificial_intelligence" target="_blank" rel="noopener">Wikipedia: Artificial Intelligence</a></li>
+          <li><a href="https://plato.stanford.edu/entries/artificial-intelligence/" target="_blank" rel="noopener">Stanford Encyclopedia of Philosophy: AI</a></li>
+          <li><a href="https://courses.cs.washington.edu/courses/cse473/" target="_blank" rel="noopener">Classic AI course (search, logic, planning)</a></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>When to choose non-ML AI?</h3>
+        <ul>
+          <li>Clear rules/constraints (e.g., scheduling, path planning).</li>
+          <li>Need strong guarantees or auditability.</li>
+          <li>Little/no historical data exists.</li>
+        </ul>
+        <details><summary>Common pitfalls</summary>
+          <ul>
+            <li>Over-automating judgment without human oversight.</li>
+            <li>Ignoring uncertainty and error propagation.</li>
+          </ul>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ML ============ -->
+  <section id="ml" class="panel" role="tabpanel">
+    <h2>Machine Learning (ML)</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Definition</h3>
+        <p>ML is a subset of AI where systems learn patterns from data to make predictions/decisions without being explicitly programmed.</p>
+        <p><strong>Paradigms:</strong> Supervised, Unsupervised, Self-supervised, Semi-supervised, Reinforcement Learning.</p>
+      </div>
+      <div class="card">
+        <h3>Workflow</h3>
+        <ol>
+          <li>Collect & label data → <em>train/val/test</em> splits.</li>
+          <li>Preprocess & engineer features.</li>
+          <li>Select model (e.g., linear, tree-based, SVM, DL).</li>
+          <li>Train & tune hyperparameters.</li>
+          <li>Evaluate, deploy, monitor drift, retrain.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3>Learning Resources</h3>
+        <ul>
+          <li><a href="https://cs229.stanford.edu/" target="_blank" rel="noopener">Stanford CS229 (Supervised Learning)</a></li>
+          <li><a href="https://en.wikipedia.org/wiki/Machine_learning" target="_blank" rel="noopener">Wikipedia: Machine Learning</a></li>
+          <li><a href="https://developers.google.com/machine-learning/crash-course" target="_blank" rel="noopener">Google ML Crash Course</a></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Production ML</h3>
+        <ul>
+          <li>Data versioning & lineage (<span class="tag">DVC</span>, <span class="tag">Lakehouse</span>).</li>
+          <li>Model registry, A/B tests, CI/CD for models (<span class="tag">MLOps</span>).</li>
+          <li>Monitoring: performance, bias, concept drift.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DL ============ -->
+  <section id="dl" class="panel" role="tabpanel">
+    <h2>Deep Learning (DL)</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Definition</h3>
+        <p>DL is a subset of ML that uses neural networks with many layers to learn hierarchical representations from data.</p>
+        <p>Architectures: <span class="tag">CNNs</span> (vision), <span class="tag">RNN/LSTM</span> (sequences), <span class="tag">Transformers</span> (attention), <span class="tag">GNNs</span> (graphs).</p>
+      </div>
+      <div class="card">
+        <h3>Workflow</h3>
+        <ol>
+          <li>Gather & normalize data; augment if needed.</li>
+          <li>Define architecture & loss; choose activation.</li>
+          <li>Train with GPU/TPU; prevent overfitting (dropout, regularization, early stop).</li>
+          <li>Fine-tune; export for serving (ONNX, TensorRT).</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3>Links</h3>
+        <ul>
+          <li><a href="https://www.deeplearningbook.org/" target="_blank" rel="noopener">Deep Learning (Goodfellow et al.)</a></li>
+          <li><a href="https://en.wikipedia.org/wiki/Deep_learning" target="_blank" rel="noopener">Wikipedia: Deep Learning</a></li>
+          <li><a href="https://pytorch.org/tutorials/" target="_blank" rel="noopener">PyTorch Tutorials</a></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Tips</h3>
+        <ul>
+          <li>Scale laws: data/compute/parameters trade-offs.</li>
+          <li>Use pretraining + transfer to reduce data needs.</li>
+          <li>Profile bottlenecks (I/O vs compute vs kernel fusion).</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GenAI ============ -->
+  <section id="genai" class="panel" role="tabpanel">
+    <h2>Generative AI</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Definition</h3>
+        <p>GenAI models create new content—text, images, audio, code—by learning the data distribution and sampling from it.</p>
+        <p>Families: <span class="tag">Autoregressive</span>, <span class="tag">Diffusion</span>, <span class="tag">VAEs</span>, <span class="tag">GANs</span>.</p>
+      </div>
+      <div class="card">
+        <h3>Workflow</h3>
+        <ol>
+          <li>Gather & clean data; apply filters & safety checks.</li>
+          <li>Pretrain foundation model; understand patterns.</li>
+          <li>Fine-tune/align (SFT, RLHF, DPO); evaluate quality.</li>
+          <li>Generate samples; add guardrails; deploy use cases.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3>Links</h3>
+        <ul>
+          <li><a href="https://en.wikipedia.org/wiki/Generative_artificial_intelligence" target="_blank" rel="noopener">Wikipedia: Generative AI</a></li>
+          <li><a href="https://huggingface.co/docs" target="_blank" rel="noopener">Hugging Face Docs (models, datasets, spaces)</a></li>
+          <li><a href="https://arxiv.org/abs/2006.11239" target="_blank" rel="noopener">Survey: Generative Adversarial Networks</a></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Safety & Ethics</h3>
+        <ul>
+          <li>Copyright & provenance (watermarking, content authenticity).</li>
+          <li>Bias & toxicity filters; RLHF alignment; red-team testing.</li>
+          <li>Usage policies; consent and domain restrictions.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LLMs ============ -->
+  <section id="llm" class="panel" role="tabpanel">
+    <h2>Large Language Models (LLMs)</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Definition</h3>
+        <p>LLMs are large transformer-based models trained on massive text corpora to understand and generate human-like language. They often power GenAI apps for chat, search, analysis, and code.</p>
+        <p>Key techniques: <span class="tag">Self-attention</span>, <span class="tag">Tokenization</span>, <span class="tag">Pretraining</span>, <span class="tag">Fine-tuning</span>, <span class="tag">RLHF/DPO</span>, <span class="tag">RAG</span>.</p>
+      </div>
+      <div class="card">
+        <h3>Workflow</h3>
+        <ol>
+          <li>Pretraining data + tokenizer design.</li>
+          <li>Train transformer at scale (parallelism, checkpoints).</li>
+          <li>Supervised fine-tuning, safety alignment.</li>
+          <li>Serve via API; optimize tokens/cost; eval reasoning.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3>Links</h3>
+        <ul>
+          <li><a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">Attention Is All You Need (Transformers)</a></li>
+          <li><a href="https://en.wikipedia.org/wiki/Large_language_model" target="_blank" rel="noopener">Wikipedia: LLM</a></li>
+          <li><a href="https://lilianweng.github.io/posts/2023-06-23-agent/" target="_blank" rel="noopener">Lil’Log: LLMs & Agents overview</a></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>LLM Systems Patterns</h3>
+        <ul>
+          <li><strong>RAG</strong>: retrieval + prompts for up-to-date or private data.</li>
+          <li><strong>Function calling</strong>: connect tools/databases.</li>
+          <li><strong>Guardrails</strong>: policies, allow/deny lists, classifiers.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Agents ============ -->
+  <section id="agent" class="panel" role="tabpanel">
+    <h2>AI Agents</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Definition</h3>
+        <p>An AI agent is an autonomous system (often powered by LLMs or policies) that can <em>perceive</em>, <em>reason</em>, and <em>act</em> toward a goal via tools and memory.</p>
+        <p>Ingredients: <span class="tag">Planner</span> <span class="tag">Tool/Function calling</span> <span class="tag">Memory/Retrieval</span> <span class="tag">State/Loops</span> <span class="tag">Safety</span></p>
+      </div>
+      <div class="card">
+        <h3>Workflow</h3>
+        <ol>
+          <li>Set objective & constraints.</li>
+          <li>Perceive context (retrieval, sensors, APIs).</li>
+          <li>Trigger planner / decompose tasks.</li>
+          <li>Act with tools; observe results; update memory.</li>
+          <li>Loop until success; evaluate; log for feedback.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3>Links</h3>
+        <ul>
+          <li><a href="https://en.wikipedia.org/wiki/Intelligent_agent" target="_blank" rel="noopener">Wikipedia: Intelligent Agent</a></li>
+          <li><a href="https://arxiv.org/abs/2308.00352" target="_blank" rel="noopener">ReAct (Reason + Act) prompting</a></li>
+          <li><a href="https://arxiv.org/abs/2210.03629" target="_blank" rel="noopener">Toolformer (tool use with LMs)</a></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Design Considerations</h3>
+        <ul>
+          <li>Determinism vs exploration; budget control.</li>
+          <li>Human-in-the-loop approvals for risky actions.</li>
+          <li>Observability: traces, metrics, replay for debugging.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Quiz ============ -->
+  <section id="quiz" class="panel" role="tabpanel">
+    <h2>Knowledge Check — 12 Questions</h2>
+    <p class="note">Select one answer per question. Score ≥ 9/12 (75%) to unlock the certificate.</p>
+
+    <div id="quizBox"></div>
+
+    <div class="quiz-actions">
+      <button class="btn alt" id="gradeBtn">Grade Quiz</button>
+      <button class="btn" id="resetBtn">Reset</button>
+      <div id="scoreBox" aria-live="polite"></div>
+    </div>
+
+    <hr style="border-color:rgba(255,255,255,.1); margin:18px 0" />
+    <h2>Download Your Certificate</h2>
+    <p class="note">Available after you pass. Enter your name and click <em>Generate</em>. Tip: use <span class="kbd">Ctrl/Cmd + S</span> to save the image if your browser opens it in a new tab.</p>
+    <div class="cert">
+      <input id="name" type="text" placeholder="Your full name" style="padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.06);color:var(--text)" />
+      <div class="quiz-actions">
+        <button class="btn alt" id="certBtn" disabled>Generate Certificate</button>
+        <a id="downloadLink" class="btn" style="display:none" download="AI-DeepDive-Certificate.png">Download PNG</a>
+      </div>
+      <canvas id="certCanvas" width="1600" height="1000" aria-label="Certificate canvas"></canvas>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  Built for you — organized from the public concepts in the LinkedIn infographic: AI vs ML vs DL vs GenAI vs LLM vs Agent. External links point to reputable public sources and should open in new tabs.
+</footer>
+
+<script>
+/* ---------- Tabs ---------- */
+const tabBtns = document.querySelectorAll(".tab-btn");
+const panels = document.querySelectorAll(".panel");
+tabBtns.forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    tabBtns.forEach(b=>{b.classList.remove("active"); b.setAttribute("aria-selected","false")});
+    panels.forEach(p=>p.classList.remove("active"));
+    btn.classList.add("active"); btn.setAttribute("aria-selected","true");
+    document.getElementById(btn.dataset.tab).classList.add("active");
+    document.getElementById(btn.dataset.tab).focus?.();
+    history.replaceState(null,null,`#${btn.dataset.tab}`);
+  });
+});
+/* Deep link support */
+window.addEventListener("load", ()=>{
+  const id = location.hash?.replace("#","") || "ai";
+  const target = document.querySelector(`.tab-btn[data-tab='${id}']`);
+  target?.click();
+});
+
+/* ---------- Quiz ---------- */
+const questions = [
+  // AI
+  {q:"Which statement best describes Artificial Intelligence (AI)?",
+   choices:["Systems that exclusively learn from data without rules",
+            "Any technique enabling machines to perform tasks that normally require human intelligence",
+            "Only neural networks with many layers",
+            "Chatbots only"],
+   answer:1,
+   why:"AI is the umbrella that includes rule-based systems, ML, DL, planning, search, etc."
+  },
+  {q:"Which use case most naturally fits symbolic AI (non-ML)?",
+   choices:["Handwritten digit recognition","Ad ranking using click logs","Constraint-based staff scheduling","Image captioning"],
+   answer:2,
+   why:"Scheduling with hard constraints is well suited to search/planning with guarantees."
+  },
+  // ML
+  {q:"In supervised learning, the primary objective is to:",
+   choices:["Discover latent clusters without labels","Maximize reward through environment interaction","Predict outputs from labeled examples","Generate new data points"],
+   answer:2,
+   why:"Supervised learning maps inputs to outputs using labeled data."
+  },
+  {q:"Which is a common cause of model performance decay in production?",
+   choices:["Parameter count is too high","Concept/data drift over time","Using a validation set","Regularization"],
+   answer:1,
+   why:"Real-world distributions shift; monitoring drift is crucial."
+  },
+  // DL
+  {q:"Deep learning distinguishes itself from classical ML primarily by:",
+   choices:["Requiring no data","Using multi-layer neural networks that learn representations",
+            "Being interpretable by default","Avoiding GPUs"],
+   answer:1,
+   why:"DL uses deep nets to learn hierarchical features; compute is often GPU/TPU."
+  },
+  {q:"Which technique helps reduce overfitting in DL?",
+   choices:["Lower learning rate only","Dropout / early stopping / weight decay","Removing the validation set","Using a larger batch without change"],
+   answer:1,
+   why:"Regularization methods like dropout and early stopping combat overfitting."
+  },
+  // GenAI
+  {q:"Generative AI models fundamentally aim to:",
+   choices:["Minimize classification error","Model and sample from the data distribution","Maximize inference latency","Eliminate the need for data filtering"],
+   answer:1,
+   why:"GenAI learns a distribution p(x) (or p(x|y)) to generate new samples."
+  },
+  {q:"A key alignment step for text GenAI systems is:",
+   choices:["Fourier transform","Reinforcement Learning from Human Feedback (RLHF) or DPO","Bag-of-words vectorization","Only increasing context window"],
+   answer:1,
+   why:"RLHF/DPO aligns outputs with human preferences/safety policies."
+  },
+  // LLMs
+  {q:"Transformers rely on which core mechanism?",
+   choices:["Max pooling","Backpropagation only","Self-attention","Fourier features only"],
+   answer:2,
+   why:"Self-attention lets models weigh relationships between tokens."
+  },
+  {q:"RAG (Retrieval-Augmented Generation) is primarily used to:",
+   choices:["Shrink model size during training","Ground outputs on fresh/private data", "Reduce tokenization errors","Only speed up sampling"],
+   answer:1,
+   why:"RAG retrieves relevant docs at inference time to ground responses."
+  },
+  // Agents
+  {q:"An AI agent typically requires the ability to:",
+   choices:["Only memorize static facts","Perceive context, plan, act with tools, and observe results","Train from scratch per request","Avoid any safety controls"],
+   answer:1,
+   why:"Agents loop through perceive → plan → act → observe with guardrails."
+  },
+  {q:"Human-in-the-loop is most helpful in agents to:",
+   choices:["Increase GPU temperature","Approve risky actions and reduce harm", "Replace memory with caching","Disable logging"],
+   answer:1,
+   why:"HITL approvals improve safety and accountability for high-impact actions."
+  },
+];
+
+const quizBox = document.getElementById("quizBox");
+function drawQuiz(){
+  quizBox.innerHTML = questions.map((qq,idx)=>`
+    <div class="q">
+      <h4>${qq.q}</h4>
+      <div class="choices">
+        ${qq.choices.map((c,i)=>`
+          <label>
+            <input type="radio" name="q${idx}" value="${i}" />
+            <span>${c}</span>
+          </label>
+        `).join("")}
+      </div>
+      <details class="why" id="why-${idx}" style="display:none;margin-top:6px"><summary>Why?</summary><p>${qq.why}</p></details>
+    </div>
+  `).join("");
+}
+drawQuiz();
+
+function grade(){
+  let score = 0;
+  questions.forEach((q,idx)=>{
+    const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+    const correct = q.answer;
+    const reveal = document.getElementById(`why-${idx}`);
+    reveal.style.display = "block";
+    const nodes = document.querySelectorAll(`input[name="q${idx}"]`);
+    nodes.forEach((node,i)=>{
+      const parent = node.parentElement;
+      parent.style.borderColor = (i===correct) ? "var(--ok)" : "rgba(255,255,255,.14)";
+      if (selected && +selected.value === i && i!==correct){
+        parent.style.borderColor = "var(--err)";
+      }
+    });
+    if (selected && +selected.value === correct) score++;
+  });
+  const scoreBox = document.getElementById("scoreBox");
+  const passed = score >= 9;
+  scoreBox.innerHTML = `<span class="score">Score: ${score} / ${questions.length}</span> ${passed?'<span class="pass">✓ Passed</span>':'<span class="fail">✗ Try again</span>'}`;
+  document.getElementById("certBtn").disabled = !passed;
+  return score;
+}
+document.getElementById("gradeBtn").addEventListener("click", grade);
+document.getElementById("resetBtn").addEventListener("click", ()=>{ drawQuiz(); document.getElementById("scoreBox").innerHTML=""; document.getElementById("certBtn").disabled=true; document.getElementById("downloadLink").style.display="none"; });
+
+/* ---------- Certificate ---------- */
+const canvas = document.getElementById("certCanvas");
+const ctx = canvas.getContext("2d");
+function renderCertificate(name, score){
+  // background gradient
+  const g = ctx.createLinearGradient(0,0,0,canvas.height);
+  g.addColorStop(0,"#0f1226");
+  g.addColorStop(.5,"#1b1f4d");
+  g.addColorStop(1,"#0f1226");
+  ctx.fillStyle = g; ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  // border
+  ctx.lineWidth = 14; ctx.strokeStyle = "#7cf7ff"; ctx.strokeRect(28,28, canvas.width-56, canvas.height-56);
+
+  // headline
+  ctx.fillStyle = "#7cf7ff";
+  ctx.font = "bold 60px Inter, Arial, sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText("Certificate of Completion", canvas.width/2, 160);
+
+  // sub
+  ctx.fillStyle = "#e8ecff";
+  ctx.font = "28px Inter, Arial, sans-serif";
+  ctx.fillText("AI • ML • DL • Generative AI • LLM • AI Agents Deep Dive", canvas.width/2, 210);
+
+  // name box
+  ctx.font = "bold 70px Inter, Arial, sans-serif";
+  ctx.fillStyle = "#ff9cf3";
+  ctx.fillText(name, canvas.width/2, 330);
+
+  // body
+  ctx.fillStyle = "#e8ecff";
+  ctx.font = "26px Inter, Arial, sans-serif";
+  const date = new Date().toLocaleDateString();
+  ctx.fillText(`has successfully passed the knowledge check with a score of ${score}/12`, canvas.width/2, 400);
+  ctx.fillText(`Date: ${date}`, canvas.width/2, 450);
+
+  // seal
+  ctx.beginPath();
+  const cx = canvas.width/2, cy = 640, r = 120;
+  ctx.arc(cx,cy,r,0,2*Math.PI);
+  ctx.fillStyle = "#ffffff";
+  ctx.fill();
+  ctx.lineWidth = 6;
+  ctx.strokeStyle = "#b86bff";
+  ctx.stroke();
+  ctx.fillStyle = "#1b1f4d";
+  ctx.font = "bold 28px Inter, Arial, sans-serif";
+  ctx.fillText("AI DEEP DIVE", cx, cy-10);
+  ctx.font = "20px Inter, Arial, sans-serif";
+  ctx.fillText("CERTIFIED", cx, cy+28);
+
+  // signature lines
+  ctx.strokeStyle = "#7cf7ff";
+  ctx.lineWidth = 2; 
+  ctx.beginPath(); ctx.moveTo(200,780); ctx.lineTo(600,780); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(canvas.width-600,780); ctx.lineTo(canvas.width-200,780); ctx.stroke();
+  ctx.fillStyle = "#e8ecff"; ctx.font = "22px Inter, Arial, sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText("Program Lead", 400, 810);
+  ctx.fillText("Reviewer", canvas.width-400, 810);
+
+  // footer
+  ctx.textAlign = "center";
+  ctx.font = "18px Inter, Arial, sans-serif";
+  ctx.fillStyle = "#a5b0ff";
+  ctx.fillText("This certificate is generated locally in your browser.", canvas.width/2, 940);
+}
+
+document.getElementById("certBtn").addEventListener("click", ()=>{
+  const score = (document.getElementById("scoreBox").textContent.match(/Score: (\d+)/)||[])[1] || 0;
+  const name = (document.getElementById("name").value || "Participant").trim();
+  renderCertificate(name, score);
+  // generate download link
+  const link = document.getElementById("downloadLink");
+  link.href = canvas.toDataURL("image/png");
+  link.style.display = "inline-block";
+});
+
+/* If user visits the Quiz tab first, keep canvas blank until generate */
+renderCertificate("Your Name", "—");
+</script>
+</body>
+</html>
+

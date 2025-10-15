@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI College Degrees Interactive Guide</title>
+    <link rel="icon" href="https://icons.duckduckgo.com/ip3/python.org.ico">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #1f77b4;
+        }
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            background-color: #ddd;
+            margin-bottom: 20px;
+        }
+        .tablink {
+            background-color: inherit;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 8px 10px;
+            transition: 0.3s;
+            font-size: 12px;
+        }
+        .tablink:hover {
+            background-color: #ccc;
+        }
+        .tablink.active {
+            background-color: #1f77b4;
+            color: white;
+        }
+        .tabcontent {
+            display: none;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #1f77b4;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        details {
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        details summary {
+            background-color: #f1f1f1;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            list-style: none;
+            font-weight: bold;
+        }
+        details summary:hover {
+            background-color: #e1e1e1;
+            transform: translateY(-2px);
+        }
+        details[open] summary {
+            color: #1f77b4;
+        }
+        details ul {
+            margin: 10px 0 10px 20px;
+            padding-left: 20px;
+        }
+        details li {
+            margin-bottom: 5px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+            transform: scale(1.05);
+        }
+
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            flex: 1 1 300px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .card .icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .card h4 {
+            margin: 10px 0;
+            color: #1f77b4;
+        }
+
+        .card p {
+            margin: 10px 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .card button {
+            background-color: #1f77b4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .card button:hover {
+            background-color: #0056b3;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h3 {
+            color: #1f77b4;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1f77b4, #4a90e2);
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+            margin-bottom: 40px;
+        }
+
+        .hero h1 {
+            font-size: 2.5em;
+            margin: 0 0 20px 0;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            margin: 0 0 30px 0;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero button {
+            background-color: white;
+            color: #1f77b4;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .hero button:hover {
+            background-color: #f0f0f0;
+        }
+
+        #roadmap {
+            margin-bottom: 40px;
+        }
+
+        #roadmap h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #1f77b4;
+        }
+
+        .timeline {
+            position: relative;
+            margin: 0 auto;
+            max-width: 1000px;
+            padding-left: 50px;
+        }
+
+        .timeline:before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #1f77b4;
+        }
+
+        .roadmap-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            position: relative;
+            margin-left: -30px;
+            padding-left: 40px;
+        }
+
+        .roadmap-card:before {
+            content: '';
+            position: absolute;
+            left: -45px;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            background: #1f77b4;
+            border-radius: 50%;
+        }
+
+        .roadmap-card .icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .roadmap-card h4 {
+            margin: 10px 0;
+            color: #1f77b4;
+        }
+
+        .roadmap-card p {
+            margin: 10px 0;
+            color: #555;
+        }
+
+        .roadmap-card .goal {
+            font-weight: bold;
+            color: #1f77b4;
+        }
+
+        .journey-map {
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .journey-map img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .share-section {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .share-section button, .share-section a {
+            background-color: #1f77b4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .share-section button:hover, .share-section a:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2em;
+            }
+            .roadmap-card {
+                margin-left: -20px;
+                padding-left: 30px;
+            }
+            .timeline:before {
+                left: 10px;
+            }
+            .roadmap-card:before {
+                left: -35px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AI College Degrees Interactive Guide</h1>
+        <div class="tabs">
+            <button class="tablink active" onclick="openTab(event, 'Home')">Home</button>
+            <button class="tablink" onclick="openTab(event, 'Introduction')">Introduction to AI Degrees</button>
+            <button class="tablink" onclick="openTab(event, 'Bachelors')">Bachelor's in AI</button>
+            <button class="tablink" onclick="openTab(event, 'Masters')">Master's in AI</button>
+            <button class="tablink" onclick="openTab(event, 'PhD')">PhD in AI</button>
+            <button class="tablink" onclick="openTab(event, 'OnlineDegrees')">Online Degrees</button>
+            <button class="tablink" onclick="openTab(event, 'TopUniversities')">Top Universities</button>
+            <button class="tablink" onclick="openTab(event, 'Admission')">Admission Process</button>
+            <button class="tablink" onclick="openTab(event, 'Funding')">Funding & Scholarships</button>
+            <button class="tablink" onclick="openTab(event, 'Careers')">Careers After AI Degree</button>
+            <button class="tablink" onclick="openTab(event, 'CertificationsVsDegrees')">Certifications vs Degrees</button>
+            <button class="tablink" onclick="openTab(event, 'CaseStudies')">Case Studies</button>
+        </div>
+        <div id="Home" class="tabcontent" style="display: block;">
+            <div class="hero">
+                <h1>AI College Degrees: Chart Your Career Path</h1>
+                <p>A comprehensive guide to pursuing formal education in Artificial Intelligence — from bachelor's to PhD programs.</p>
+                <button onclick="document.getElementById('roadmap').scrollIntoView({behavior: 'smooth'});">Start Exploring</button>
+            </div>
+            <div id="roadmap">
+                <h2>Your AI Degree Pathway</h2>
+                <div class="timeline">
+                    <div class="roadmap-card">
+                        <span class="icon">🎓</span>
+                        <h4>Step 1 – Assess Your Foundation</h4>
+                        <p>Evaluate your interest and build prerequisite knowledge in math, programming, and basics. <span class="goal">Goal: Prepare for higher education.</span></p>
+                    </div>
+                    <div class="roadmap-card">
+                        <span class="icon">📚</span>
+                        <h4>Step 2 – Choose Degree Level</h4>
+                        <p>Select between bachelor's, master's, or PhD based on your career goals and experience. <span class="goal">Goal: Align education with ambitions.</span></p>
+                    </div>
+                    <div class="roadmap-card">
+                        <span class="icon">🏫</span>
+                        <h4>Step 3 – Select Institutions</h4>
+                        <p>Research universities with strong AI programs, faculty, and resources. <span class="goal">Goal: Find the right academic fit.</span></p>
+                    </div>
+                    <div class="roadmap-card">
+                        <span class="icon">📝</span>
+                        <h4>Step 4 – Apply and Admit</h4>
+                        <p>Complete applications, secure funding, and prepare for interviews. <span class="goal">Goal: Gain admission to desired program.</span></p>
+                    </div>
+                    <div class="roadmap-card">
+                        <span class="icon">🔬</span>
+                        <h4>Step 5 – Pursue Degree & Research</h4>
+                        <p>Engage in coursework, labs, and research projects. <span class="goal">Goal: Build expertise and portfolio.</span></p>
+                    </div>
+                    <div class="roadmap-card">
+                        <span class="icon">🚀</span>
+                        <h4>Step 6 – Graduate & Launch Career</h4>
+                        <p>Enter the AI workforce or continue research at PhD level. <span class="goal">Goal: Become a leader in AI innovation.</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="journey-map">
+                <h3>Your AI Education Journey Map</h3>
+                <svg width="800" height="400" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Step 1 -->
+                    <circle cx="100" cy="50" r="30" fill="#1f77b4" stroke="#fff" stroke-width="2"/>
+                    <text x="100" y="56" text-anchor="middle" fill="#fff" font-size="12">Step 1</text>
+                    <text x="100" y="75" text-anchor="middle" fill="#1f77b4" font-size="10">Assess</text><text x="100" y="87" text-anchor="middle" fill="#1f77b4" font-size="10">Foundation</text>
+
+                    <!-- Arrow to Step 2 -->
+                    <line x1="130" y1="50" x2="170" y2="50" stroke="#1f77b4" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                    <!-- Step 2 -->
+                    <circle cx="200" cy="50" r="30" fill="#1f77b4" stroke="#fff" stroke-width="2"/>
+                    <text x="200" y="56" text-anchor="middle" fill="#fff" font-size="12">Step 2</text>
+                    <text x="200" y="75" text-anchor="middle" fill="#1f77b4" font-size="10">Choose</text><text x="200" y="87" text-anchor="middle" fill="#1f77b4" font-size="10">Degree</text>
+
+                    <!-- Arrow to Step 3 -->
+                    <line x1="230" y1="50" x2="270" y2="50" stroke="#1f77b4" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                    <!-- Step 3 -->
+                    <circle cx="300" cy="50" r="30" fill="#1f77b4" stroke="#fff" stroke-width="2"/>
+                    <text x="300" y="56" text-anchor="middle" fill="#fff" font-size="12">Step 3</text>
+                    <text x="300" y="75" text-anchor="middle" fill="#1f77b4" font-size="10">Select</text><text x="300" y="87" text-anchor="middle" fill="#1f77b4" font-size="10">Institutions</text>
+
+                    <!-- Arrow to Step 4 (curve down) -->
+                    <path d="M 330 50 Q 400 50 400 120" stroke="#1f77b4" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+                    <!-- Step 4 -->
+                    <circle cx="400" cy="150" r="30" fill="#1f77b4" stroke="#fff" stroke-width="2"/>
+                    <text x="400" y="156" text-anchor="middle" fill="#fff" font-size="12">Step 4</text>
+                    <text x="400" y="175" text-anchor="middle" fill="#1f77b4" font-size="10">Apply &</text><text x="400" y="187" text-anchor="middle" fill="#1f77b4" font-size="10">Admit</text>
+
+                    <!-- Arrow to Step 5 -->
+                    <line x1="430" y1="150" x2="470" y2="150" stroke="#1f77b4" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                    <!-- Step 5 -->
+                    <circle cx="500" cy="150" r="30" fill="#1f77b4" stroke="#fff" stroke-width="2"/>
+                    <text x="500" y="156" text-anchor="middle" fill="#fff" font-size="12">Step 5</text>
+                    <text x="500" y="175" text-anchor="middle" fill="#1f77b4" font-size="10">Pursue</text><text x="500" y="187" text-anchor="middle" fill="#1f77b4" font-size="10">Degree</text>
+
+                    <!-- Arrow to Step 6 (curve down) -->
+                    <path d="M 530 150 Q 600 150 600 220" stroke="#1f77b4" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+                    <!-- Step 6 -->
+                    <circle cx="600" cy="250" r="30" fill="#ff7f0e" stroke="#fff" stroke-width="2"/>
+                    <text x="600" y="256" text-anchor="middle" fill="#fff" font-size="12">Step 6</text>
+                    <text x="600" y="275" text-anchor="middle" fill="#ff7f0e" font-size="10">Graduate &</text><text x="600" y="287" text-anchor="middle" fill="#ff7f0e" font-size="10">Launch Career</text>
+
+                    <!-- Arrowhead Definition -->
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#1f77b4"/>
+                        </marker>
+                    </defs>
+
+                </svg>
+            </div>
+            <div class="share-section">
+                <button onclick="if(window.external.AddFavorite){window.external.AddFavorite(window.location.href, document.title);}else{alert('Bookmark this URL: ' + window.location.href);}">Bookmark this guide</button>
+                <button onclick="window.open('https://twitter.com/intent/tweet?url='+encodeURIComponent(window.location.href)+'&text='+encodeURIComponent('Check out AI College Degrees Interactive Guide'));">Share with friends</button>
+            </div>
+        </div>
+        <div id="Introduction" class="tabcontent">
+            <h2>Introduction to AI Degrees</h2>
+            <p>Overview of AI education, career prospects, and what to expect from formal AI programs.</p>
+            <p>AI degrees equip students with cutting-edge knowledge in machine learning, data science, and ethical computing, preparing them for transformative roles in tech.</p>
+            <input type="text" id="searchIntroduction" placeholder="Search for AI degree topics..." onkeyup="filterLibs('Introduction')">
+            <details class="overview">
+                <summary><h4>What is an AI Degree?</h4></summary>
+                <ul>
+                    <li><a href="https://www.coursera.org/articles/what-is-an-ai-degree" target="_blank">Coursera: What is an AI Degree?</a></li>
+                    <li><a href="https://www.zdnet.com/article/ai-careers/" target="_blank">ZDNet: AI Careers Overview</a></li>
+                    <li><a href="https://www.nsf.gov/cise/ai/jsp" target="_blank">NSF: AI Research</a></li>
+                    <li><a href="https://ai-jobs.net/" target="_blank">AI Job Statistics</a></li>
+                </ul>
+            </details>
+            <details class="prospects">
+                <summary><h4>Career Prospects in AI</h4></summary>
+                <ul>
+                    <li><a href="https://www.bls.gov/ooh/computer-and-information-technology/machine-learning-engineers.htm" target="_blank">BLS: Machine Learning Engineers</a></li>
+                    <li><a href="https://www.glassdoor.com/Salaries/us-ai-engineer-salary-SRCH_US0,2_KO3,14.htm" target="_blank">Glassdoor: AI Engineer Salaries</a></li>
+                    <li><a href="https://hbr.org/2023/10/ai-jobs" target="_blank">HBR: Future AI Jobs</a></li>
+                    <li><a href="https://www.linkedin.com/jobs/ai-ml-jobs" target="_blank">LinkedIn: AI Job Postings</a></li>
+                </ul>
+            </details>
+            <details class="structure">
+                <summary><h4>Degree Program Structure</h4></summary>
+                <ul>
+                    <li><a href="https://www.college.ch/board/university-ai-programs" target="_blank">Collegedekho: AI Program Structures</a></li>
+                    <li><a href="https://www.edx.org/learn/artificial-intelligence" target="_blank">edX AI Courses</a></li>
+                    <li><a href="https://www.coursera.org/learn/machine-learning-proficient-ai" target="_blank">Coursera: AI Career Paths</a></li>
+                    <li><a href="https://www.udacity.com/school-of-ai" target="_blank">Udacity AI Degrees</a></li>
+                </ul>
+            </details>
+        </div>
+        <div id="Bachelors" class="tabcontent">
+            <h2>Bachelor's in AI Resources</h2>
+            <p>Undergraduate programs, curriculum, top schools, and entry-level opportunities.</p>
+            <p>Bachelor's degrees in AI provide foundational skills in algorithms, data analysis, and application development for entry into the field.</p>
+            <input type="text" id="searchBachelors" placeholder="Search for bachelor's programs..." onkeyup="filterLibs('Bachelors')">
+            <details class="programs">
+                <summary><h4>Bachelor's Programs</h4></summary>
+                <ul>
+                    <li><a href="https://www.stonybrook.edu/commcms/ai/undergraduate" target="_blank">Stony Brook AI Undergraduate</a></li>
+                    <li><a href="https://www.bu.edu/cs/academics/undergraduate/ai/" target="_blank">Boston University AI Major</a></li>
+                    <li><a href="https://www.cmu.edu/scs/ai/" target="_blank">CMU AI Undergraduate</a></li>
+                    <li><a href="https://www.stanford.edu/programs/cs/" target="_blank">Stanford CS with AI Focus</a></li>
+                </ul>
+            </details>
+            <details class="curriculum">
+                <summary><h4>Curriculum Highlights</h4></summary>
+                <ul>
+                    <li><a href="https://www.academic.oup.com/book/44806" target="_blank">AI Textbook for Undergrads</a></li>
+                    <li><a href="https://www.coursera.org/specializations/machine-learning" target="_blank">Coursera ML Specialization</a></li>
+                    <li><a href="https://ocw.mit.edu/courses/6-034-artificial-intelligence-fall-2010/" target="_blank">MIT OCW AI Course</a></li>
+                    <li><a href="https://www.udacity.com/course/intro-to-artificial-intelligence--cs271" target="_blank">Udacity AI Nanodegree</a></li>
+                </ul>
+            </details>
+            <details class="schools">
+                <summary><h4>Top Universities Offering Bachelor's</h4></summary>
+                <ul>
+                    <li><a href="https://www.cmu.edu/scs/ai/" target="_blank">Carnegie Mellon University (CMU)</a></li>
+                    <li><a href="https://www.bu.edu/cs/" target="_blank">Boston University</a></li>
+                    <li><a href="https://www.uvm.edu/cems/cs" target="_blank">University of Vermont</a></li>
+                    <li><a href="https://www.drexel.edu/computer-science/" target="_blank">Drexel University</a></li>
+                </ul>
+            </details>
+        </div>
+        <div id="Masters" class="tabcontent">
+            <h2>Master's in AI Resources</h2>
+            <p>Graduate programs, specializations, research opportunities, and career advancement.</p>
+            <p>Master's degrees offer advanced training in AI theory, cutting-edge techniques, and practical applications for mid-level careers.</p>
+            <input type="text" id="searchMasters" placeholder="Search for master's programs..." onkeyup="filterLibs('Masters')">
+            <details class="programs">
+                <summary><h4>Master's Programs</h4></summary>
+                <ul>
+                    <li><a href="https://www.cmu.edu/ini/msai/" target="_blank">CMU Master of Science in AI</a></li>
+                    <li><a href="https://www.stanford.edu/programs/msai/" target="_blank">Stanford AI Graduate Certificate</a></li>
+                    <li><a href="https://www.gaia.ml/" target="_blank">Georgia Tech OMS CS with AI</a></li>
+                    <li><a href="https://www.imperial.ac.uk/computing/prospective-students/courses/msc-ai/" target="_blank">Imperial College MSc AI</a></li>
+                </ul>
+            </details>
+            <details class="specializations">
+                <summary><h4>Specializations</h4></summary>
+                <ul>
+                    <li><a href="https://www.edx.org/learn/computer-vision" target="_blank">Computer Vision Specialization</a></li>
+                    <li><a href="https://www.coursera.org/specializations/natural-language-processing" target="_blank">NLP Specialization</a></li>
+                    <li><a href="https://www.deeplearning.ai/short-courses/" target="_blank">Deep Learning Specializations</a></li>
+                    <li><a href="https://www.udacity.com/course/robotics-software-engineer--nd209" target="_blank">Robotics AI</a></li>
+                </ul>
+            </details>
+            <details class="research">
+                <summary><h4>Research Opportunities</h4></summary>
+                <ul>
+                    <li><a href="https://arxiv.org/" target="_blank">ArXiv Preprints</a></li>
+                    <li><a href="https://neurips.cc/" target="_blank">NeurIPS Conference</a></li>
+                    <li><a href="https://icml.cc/" target="_blank">ICML Conference</a></li>
+                    <li><a href="https://cvpr2023.thecvf.com/" target="_blank">CVPR Computer Vision</a></li>
+                </ul>
+            </details>
+        </div>
+        <div id="PhD" class="tabcontent">
+            <h2>PhD in AI Resources</h2>
+            <p>Doctoral programs, research focus, publishing, and academic career paths.</p>
+            <p>PhD programs train researchers, innovators, and thought leaders in AI, focusing on original contributions to knowledge.</p>
+            <input type="text" id="searchPhD" placeholder="Search for PhD programs..." onkeyup="filterLibs('PhD')">
+            <details class="programs">
+                <summary><h4>PhD Programs</h4></summary>
+                <ul>
+                    <li><a href="https://www.cmu.edu/scs/ai/phd.html" target="_blank">CMU PhD in Machine Learning</a></li>
+                    <li><a href="https://www.berkeley.edu/ai/phd" target="_blank">UC Berkeley AI PhD</a></li>
+                    <li><a href="https://www.mit.edu/ai/phd" target="_blank">MIT EECS PhD</a></li>
+                    <li><a href="https://www.stanford.edu/ai/phd" target="_blank">Stanford AI PhD</a></li>
+                </ul>
+            </details>
+            <details class="research">
+                <summary><h4>Research Focus Areas</h4></summary>
+                <ul>
+                    <li><a href="https://arxiv.org/abs/2005.11401" target="_blank">RAG Research</a></li>
+                    <li><a href="https://arxiv.org/abs/2010.11929" target="_blank">Vision Transformer Paper</a></li>
+                    <li><a href="https://arxiv.org/abs/1706.03762" target="_blank">Attention Mechanism</a></li>
+                    <li><a href="https://neurips.cc/" target="_blank">NeurIPS Publications</a></li>
+                </ul>
+            </details>
+            <details class="publishing">
+                <summary><h4>Publishing and Academia</h4></summary>
+                <ul>
+                    <li><a href="https://www.elsevier.com/about/press-releases/research/ai-publishing" target="_blank">Publishing in AI Journals</a></li>
+                    <li><a href="https://www.academia.edu/" target="_blank">Academic Networking</a></li>
+                    <li><a href="https://scholar.google.com/" target="_blank">Google Scholar</a></li>
+                    <li><a href="https://orcid.org/" target="_blank">ORCID Researcher ID</a></li>
+                </ul>
+            </details>
+        </div>
+        <div id="OnlineDegrees" class="tabcontent">
+            <h2>Online Degrees in AI</h2>
+            <p>Flexible learning options, accredited programs, top platforms, and tips for online study.</p>
+            <p>Online degrees democratize AI education, offering accessibility and flexibility for working professionals and global learners.</p>
+            <input type="text" id="searchOnlineDegrees" placeholder="Search for online degrees..." onkeyup="filterLibs('OnlineDegrees')">
+            <details class="platforms">
+                <summary><h4>Top Online Platforms</h4></summary>
+                <ul>
+                    <li><a href="https://www.coursera.org/browse/data-science/machine-learning" target="_blank">Coursera AI Degrees</a></li>
+                    <li><a href="https://www.edx.org/learn/artificial-intelligence" target="_blank">edX AI Courses</a></li>
+                    <li><a href="https://www.udacity.com/school-of-ai" target="_blank">Udacity AI Nanodegrees</a></li>
+                    <li><a href="https://www.futurelearn.com/subjects/it-and-computer-science-courses/ai" target="_blank">FutureLearn AI Courses</a></li>
+                </ul>
+            </details>
+            <details class="accr.accredited">
+                <summary><h4>Accredited Programs</h4></summary>
+                <ul>
+                    <li><a href="https://www.atlantic.global/academics/artificial-intelligence/" target="_blank">Atlantic University AI Degree</a></li>
+                    <li><a href="https://www.liberty.edu/online/computer-science/bachelors/ai/" target="_blank">Liberty University Online BA in AI</a></li>
+                    <li><a href="https://www.purdueglobal.edu/degree-programs/computer-science/bachelor-artificial-intelligence/" target="_blank">Purdue Global BA in AI</a></li>
+                    <li><a href="https://www.bloomu.edu/programs/ai-degree-online" target="_blank">Bloomsburg University Online</a></li>
+                </ul>
+            </details>
+            <details class="tips">
+                <summary><h4>Tips for Online Learning</h4></summary>
+                <ul>
+                    <li><a href="https://www.coursera.org/learn/learning-online" target="_blank">Coursera Online Learning Tips</a></li>
+                    <li><a href="https://www.edx.org/learn/learning-strategies" target="_blank">edX Learning Strategies</a></li>
+                    <li><a href="https://www.udacity.com/blog/2022/06/online-learning-tips.html" target="_blank">Udacity Online Tips</a></li>
+                    <li><a href="https://www.codecademy.com/articles/how-to-succeed-in-online-courses" target="_blank">Codecademy Success Guide</a></li>
+                </ul>
+            </details>
+        </div>
+        <div id="TopUniversities" class="tabcontent">
+            <h2>Top Universities for AI Degrees</h2>
+            <p>Global rankings, program strengths, admission stats, and location benefits.</p>
+            <p>Leading universities provide exceptional faculty, resources, and networks for AI education and career launch.</p>
+            <input type="text" id="searchTopUniversities" placeholder="Search for universities..." onkeyup="filterLibs('TopUniversities')">
+            <details class="us">
+                <summary><h4>Top US Universities</h4></summary>
+                <ul>
+                    <li><a href="https://www.stanford.edu/ai" target="_blank">Stanford University</a></li>
+                    <li><a href="https://www.cmu.edu/scs/ai/" target="_blank">Carnegie Mellon University (CMU)</a></li>
+                    <li><a href="https://www.berkeley.edu/ai" target="_blank">UC Berkeley</a></li>
+                    <li><a href="https://www.mit.edu/ai" target="_blank">Massachusetts Institute of Technology (MIT)</a></li>
+                </ul>
+            </details>
+            <details class="europe">
+                <summary><h4>Top European Universities</h4></summary>
+                <ul>
+                    <li><a href="https://www.ed.ac.uk/school-informatics/ai" target="_blank">University of Edinburgh</a></li>
+                    <li><a href="https://www.imperial.ac.uk/ai" target="_blank">Imperial College London</a></li>
+                    <li><a href="https://www.ethz.ch/en/studies/en/study-programmes/doctoral/artificial-intelligence.html" target="_blank">ETH Zurich</a></li>
+                    <li><a href="https://www.tudelft.nl/ai" target="_blank">TU Delft</a></li>
+                </ul>
+            </details>
+            <details class="asia">
+                <summary><h4>Top Asian Universities</h4></summary>
+                <ul>
+                    <li><a href="https://www.tsinghua.edu.cn/ai" target="_blank">Tsinghua University</a></li>
+                    <li><a href="https://www.ntu.edu.sg/ai" target="_blank">National University of Singapore (NUS)</a></li>
+                    <li><a href="https://www.kaist.ac.kr/en/" target="_blank">KAIST</a></li>
+                    <li><a href="https://www.pku.edu.cn/ai" target="_blank">Peking University</a></li>
+                </ul>
+            </details>
+        </div>
+        <div id="Admission" class="tabcontent">
+            <h2>Admission Process for AI Degrees</h2>
+            <p>Application requirements, deadlines, preparation tips, and success stories.</p>
+            <p>Navigating admissions involves strong academics, relevant experience, and clear articulation of passion for AI research and applications.</p>
+            <input type="text" id="searchAdmission" placeholder="Search for admission tips..." onkeyup="filterLibs('Admission')">
+            <details class="requirements">
+                <summary><h4>Application Requirements</h4></summary>
+                <ul>
+                    <li><a href="https://www.khanacademy.org/math/probability" target="_blank">Probability and Statistics Preparation</a></li>
+                    <li><a href="https://www.coursera.org/learn/machine-learning" target="_blank">Machine Learning Foundations</a></li>
+                    <li><a href="https://www.code.org/" target="_blank">Programming Basics</a></li>
+                    <li><a href="https://www.gre.org/" target="_blank">GRE Preparation</a></li>
+                </ul>
+            </details>
+            <details class="deadlines">
+                <summary><h4>Deadlines and Timelines</h4></summary>
+                <ul>
+                    <li><a href="https://www.fafsa.ed.gov/" target="_blank">FAFSA Deadline</a></li>
+                    <li><a href="https://www.gradschools.com/admissions-deadlines" target="_blank">Grad School Deadlines</a></li>
+                    <li><a href="https://www.college-deadlines.com/" target="_blank">College Admission Deadlines</a></li>
+                    <li><a href="https://www.uni-assist.de/" target="_blank">uni-assist for European Admissions</a></li>
+                </ul>
+            </details>
+            <details class="tips">
+                <summary><h4>Preparation Tips</h4></summary>
+                <ul>
+                    <li><a href="https://www.prepscholar.com/gre/blog/gre-prep-tips/" target="_blank">GRE Prep Tips</a></li>
+                    <li><a href="https://www.thegradcafe.com/" target="_blank">Grad School Application Advice</a></li>
+                    <li><a href="https://www.admissionsessays.com/" target="_blank">Personal Statement Writing</a></li>
+                    <li><a href="https://www.universityadmissions.se/" target="_blank">University Admissions Guide</a></li>
+                </ul>
+            </details>
+        </div>
+        <div id="Funding" class="tabcontent">
+            <h2>Funding & Scholarships for AI Degrees</h2>
+            <p>Financial aid options, research grants, work-study programs, and funding sources.</p>
+            <p>Many scholarships and grants make AI education accessible, supporting talented individuals from diverse backgrounds.</p>
+            <input type="text" id="searchFunding" placeholder="Search for funding options..." onkeyup="filterLibs('Funding')">
+            <details class="scholarships">
+                <summary><h4>Scholarships</h4></summary>
+                <ul>
+                    <li><a href="https://www.scholarships.com/financial-aid/college-scholarships/scholarships-by-subject/artificial-intelligence-scholarships" target="_blank">AI-Specific Scholarships</a></li>
+                    <li><a href="https://www.fastweb.com/" target="_blank">FastWeb Scholarship Search</a></li>
+                    <li><a href="https://www.unigo.com/" target="_blank">Unigo Scholarships</a></li>
+                    <li><a href="https://www.scholarships.gov/" target="_blank">US Government Scholarships</a></li>
+                </ul>
+            </details>
+            <details class="grants">
+                <summary><h4>Research Grants</h4></summary>
+                <ul>
+                    <li><a href="https://www.nsf.gov/" target="_blank">NSF Grants for AI Research</a></li>
+                    <li><a href="https://www.nih.gov/grants-funding" target="_blank">NIH Grants</a></li>
+                    <li><a href="https://www.darpa.mil/" target="_blank">DARPA Funding</a></li>
+                    <li><a href="https://www.epsrc.ukri.org/funding/" target="_blank">EPSRC UK Grants</a></li>
+                </ul>
+            </details>
+            <details class="workstudy">
+                <summary><h4>Work-Study Programs</h4></summary>
+                <ul>
+                    <li><a href="https://fafsa.ed.gov/dependencies/workstudy.htm" target="_blank">Federal Work-Study</a></li>
+                    <li><a href="https://www.aauw.org/education/fellowships/" target="_blank">AAUW Fellowships</a></li>
+                    <li><a href="https://www.nafsa.org/academic-programs" target="_blank">NAFSA International Exchanges</a></li>
+                    <li><a href="https://www.grad.ucsb.edu/funding/funding-resources" target="_blank">University Funding Resources</a></li>
+                </ul>
+            </details>
+        </div>
+        <div id="Careers" class="tabcontent">
+            <h2>Careers After AI Degrees</h2>
+            <p>Job roles, industry sectors, salary expectations, and career progression in AI.</p>
+            <p>AI graduates enter high-demand fields like tech giants, research labs, and consulting with strong earning potential.</p>
+            <input type="text" id="searchCareers" placeholder="Search for AI careers..." onkeyup="filterLibs('Careers')">
+            <details class="roles">
+                <summary><h4>AI Job Roles</h4></summary>
+                <ul>
+                    <li><a href="https://www.jobhero.com/career-guides/machine-learning-engineer" target="_blank">Machine Learning Engineer</a></li>
+                    <li><a href="https://www.techtarget.com/searchenterpriseai/definition/data-scientist" target="_blank">Data Scientist</a></li>
+                    <li><a href="https://www.glassdoor.com/Job/ai-researcher-jobs-SRCH_KO0,13.htm" target="_blank">AI Researcher</a></li>
+                    <li><a href="https://www.compasstecnologia.com.br/blog/carreiras/ciclodevida/analista-de-inteligencia-artificial/" target="_blank">AI Analyst</a></li>
+                </ul>
+            </details>
+            <details class="sectors">
+                <summary><h4>Industry Sectors</h4></summary>
+                <ul>
+                    <li><a href="https://www.gartner.com/en/information-technology/insights/ai-in-healthcare" target="_blank">Healthcare AI</a></li>
+                    <li><a href="https://www.forbes.com/sites/forbestechcouncil/2023/04/07/ai-in-finance/" target="_blank">Finance AI</a></li>
+                    <li><a href="https://www.automotiveworld.com/tech/ai-automotive/" target="_blank">Automotive AI</a></li>
+                    <li><a href="https://www.ecommerce-nation.com/ai-in-retail/" target="_blank">Retail AI</a></li>
+                </ul>
+            </details>
+            <details class="salaries">
+                <summary><h4>Salary Expectations</h4></summary>
+                <ul>
+                    <li><a href="https://www.levels.fyi/Salaries/Data-Scientist/" target="_blank">Levels.fyi Salaries</a></li>
+                    <li><a href="https://www.payscale.com/research/US/Job=Data_Scientist/Salary" target="_blank">PayScale AI Salaries</a></li>
+                    <li><a href="https://www.bls.gov/ooh/computer-and-information-technology/machine-learning-engineers.htm" target="_blank">BLS Salary Data</a></li>
+                    <li><a href="https://www.indeed.com/career/machine-learning-engineer/salaries" target="_blank">Indeed Salary Insights</a></li>
+                </ul>
+            </details>
+        </div>
+        <div id="CertificationsVsDegrees" class="tabcontent">
+            <h2>Certifications vs Degrees in AI</h2>
+            <p>Comparing skill-building paths, credibility, time commitment, and career impacts.</p>
+            <p>Degrees provide depth and networks; certifications offer quick skill acquisition for specific roles.</p>
+            <input type="text" id="searchCertificationsVsDegrees" placeholder="Search for cert vs degree comparisons..." onkeyup="filterLibs('CertificationsVsDegrees')">
+            <details class="comparison">
+                <summary><h4>Degrees vs Certifications</h4></summary>
+                <ul>
+                    <li><a href="https://www.zdnet.com/education/computers-tech/certification-vs-degree/" target="_blank">ZDNet Cert vs Degree</a></li>
+                    <li><a href="https://www.edx.org/courses" target="_blank">edX vs University Degrees</a></li>
+                    <li><a href="https://www.coursera.org/articles/degree-vs-certificate" target="_blank">Coursera Comparison</a></li>
+                    <li><a href="https://www.udemy.com/course/comparison-certifications-degrees/" target="_blank">Udemy Career Paths</a></li>
+                </ul>
+            </details>
+            <details class="certifications">
+                <summary><h4>Popular AI Certifications</h4></summary>
+                <ul>
+                    <li><a href="https://www.coursera.org/professional-certificates/google-data-analytics" target="_blank">Google Data Analytics</a></li>
+                    <li><a href="https://www.coursera.org/learn/machine-learning" target="_blank">Andrew Ng Machine Learning</a></li>
+                    <li><a href="https://www.udacity.com/course/ai-product-manager-nanodegree--nd088" target="_blank">AI Product Manager Nanodegree</a></li>
+                    <li><a href="https://www.deeplearning.ai/" target="_blank">Deep Learning Certification</a></li>
+                </ul>
+            </details>
+            <details class="advantages">
+                <summary><h4>Advantages of Each</h4></summary>
+                <ul>
+                    <li><a href="https://www.theguardian.com/education/2023/03/28/why-university-degree-matters" target="_blank">Why University Degrees Matter</a></li>
+                </ul>
+            </details>
+        </div>
+        <div id="CaseStudies" class="tabcontent">
+            <h2>AI Case Studies</h2>
+            <p>Success stories, project examples, industry applications, and learning from real-world implementations.</p>
+            <p>Case studies illustrate how AI education translates to practical innovation and societal impact.</p>
+            <input type="text" id="searchCaseStudies" placeholder="Search for case studies..." onkeyup="filterLibs('CaseStudies')">
+            <details class="success">
+                <summary><h4>Success Stories</h4></summary>
+                <ul>
+                    <li><a href="https://www.stanford.edu/alumni/magazine/" target="_blank">Stanford AI Graduates</a></li>
+                    <li><a href="https://www.cmu.edu/alumni/" target="_blank">CMU AI Alumni</a></li>
+                    <li><a href="https://www.berkeley.edu/news/ai-graduates/" target="_blank">Berkeley AI Successes</a></li>
+                    <li><a href="https://www.mit.edu/news/ai-alumni-impact/" target="_blank">MIT AI Graduates</a></li>
+                </ul>
+            </details>
+            <details class="projects">
+                <summary><h4>Student Projects</h4></summary>
+                <ul>
+                    <li><a href="https://github.com/topics/ai-projects" target="_blank">AI Project Repositories</a></li>
+                    <li><a href="https://www.kaggle.com/competitions" target="_blank">Kaggle Competitions</a></li>
+                    <li><a href="https://paperswithcode.com/" target="_blank">Papers with Code</a></li>
+                    <li><a href="https://www.hackerrank.com/topics/ai" target="_blank">HackerRank AI Challenges</a></li>
+                </ul>
+            </details>
+            <details class="industry">
+                <summary><h4>Industry Applications</h4></summary>
+                <ul>
+                    <li><a href="https://www.openai.com/case-studies/" target="_blank">OpenAI Case Studies</a></li>
+                    <li><a href="https://www.google.com/search/howsearchworks/ai/" target="_blank">Google AI Applications</a></li>
+                    <li><a href="https://www.anthropic.com/research" target="_blank">Anthropic Research</a></li>
+                    <li><a href="https://www.microsoft.com/en-us/ai/" target="_blank">Microsoft AI Case Studies</a></li>
+                </ul>
+            </details>
+        </div>
+
+
+
+    </div>
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+        function filterLibs(tabName = 'CertificationsVsDegrees') {
+            const searchId = tabName === 'CertificationsVsDegrees' ? 'search' : `search${tabName}`;
+            const query = document.getElementById(searchId).value.toLowerCase();
+            const details = document.querySelectorAll(`#${tabName} details`);
+            details.forEach(detail => {
+                const h4 = detail.querySelector('h4').textContent.toLowerCase();
+                const ulText = detail.querySelector('ul') ? detail.querySelector('ul').textContent.toLowerCase() : '';
+                const matches = h4.includes(query) || ulText.includes(query);
+                detail.style.display = matches ? '' : 'none';
+            });
+        }
+        // Add favicons to external links
+        document.querySelectorAll('a[target="_blank"]').forEach(a => {
+            try {
+                const url = new URL(a.href);
+                const img = document.createElement('img');
+                img.src = `https://icons.duckduckgo.com/ip3/${url.hostname}.ico`;
+                img.style.width = '16px';
+                img.style.height = '16px';
+                img.style.marginRight = '5px';
+                img.onerror = () => img.style.display = 'none'; // Hide if favicon fails
+                a.insertBefore(img, a.firstChild);
+            } catch (e) {
+                // Skip malformed URLs
+            }
+        });
+    </script>
+</body>
+</html>
