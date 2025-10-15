@@ -1,15 +1,67 @@
-# AI for All Virtual University
+<div align="center">
+  <img src="./images/welcome.png" alt="AI for All Virtual University" width="200" style="border-radius:15px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
 
-[![Visit AI FOR ALL Site](https://img.shields.io/badge/Visit-AI%20FOR%20ALL-blue)](https://srinipusuluri.github.io/ai-for-all/) | Created by [Srinivasa Pusuluri](https://www.linkedin.com/in/pusulurisrinivasa/) | [Schedule 1-1 Free Sessions](https://docs.google.com/forms/d/1CbYODkVmHtE_vVCywD6EyOP0i9fWCiDmjv7bomAE4Wo/viewform) | [Join Faculty/Volunteer/Mentor](https://docs.google.com/forms/d/e/1FAIpQLSfZMPiXsYL1CbFz5fIVTf-qiah8I53zo2GGAq8_2zwYKPkd_g/viewform)
+  <h1>🤖 AI for All Virtual University</h1>
 
-**Mission:** Enable everyone to learn and build AI step by step.  
-**Vision:** Democratize AI so it's accessible to all, empowering innovation.
+  <p><em>Empowering global AI education for everyone, everywhere</em></p>
 
-**Goal:** Empowering global AI education for everyone, everywhere.
+  <p>
+    <img src="https://img.shields.io/github/stars/srinipusuluri/ai-for-all-global-university?style=social" alt="GitHub stars">
+    <img src="https://img.shields.io/github/forks/srinipusuluri/ai-for-all-global-university?style=social" alt="GitHub forks">
+    <img src="https://img.shields.io/github/watchers/srinipusuluri/ai-for-all-global-university?style=social" alt="GitHub watchers">
+    <img src="https://img.shields.io/github/repo-size/srinipusuluri/ai-for-all-global-university" alt="Repo size">
+    <img src="https://img.shields.io/github/license/srinipusuluri/ai-for-all-global-university" alt="License">
+    <img src="https://img.shields.io/github/issues/srinipusuluri/ai-for-all-global-university" alt="Issues">
+  </p>
+
+  <br>
+
+  **Mission:** Enable everyone to learn and build AI step by step.<br>
+  **Vision:** Democratize AI so it's accessible to all, empowering innovation.<br>
+  **Goal:** Empowering global AI education for everyone, everywhere.
+
+  <br>
+
+  <p>
+    <a href="https://srinipusuluri.github.io/ai-for-all/"><img src="https://img.shields.io/badge/🌟_Visit_AI_FOR_ALL_Site-blue?style=for-the-badge" alt="AI FOR ALL Site"></a>
+    <a href="https://www.linkedin.com/in/pusulurisrinivasa/"><img src="https://img.shields.io/badge/👨‍🏫_Created_by_Srinivasa_Pusuluri-blue?style=for-the-badge" alt="LinkedIn"></a>
+    <a href="https://docs.google.com/forms/d/1CbYODkVmHtE_vVCywD6EyOP0i9fWCiDmjv7bomAE4Wo/viewform"><img src="https://img.shields.io/badge/📅_Schedule_1--1_Free_Sessions-green?style=for-the-badge" alt="Schedule Sessions"></a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfZMPiXsYL1CbFz5fIVTf-qiah8I53zo2GGAq8_2zwYKPkd_g/viewform"><img src="https://img.shields.io/badge/🤝_Join_Faculty/Volunteer/Mentor-orange?style=for-the-badge" alt="Join Faculty"></a>
+  </p>
+
+  <br>
+
+  **[🎯 Interactive Course Catalog](docs/index.html)** | **[📚 GitHub Repository](https://github.com/srinipusuluri/ai-for-all-global-university)**
+
+</div>
 
 A comprehensive, accessible AI education platform providing structured course materials for learners at all levels, from high school students to advanced researchers.
 
 ## 🎓 Course Curriculum
+
+<div align="center">
+
+### 📊 Learning Statistics
+<p>
+  <img src="https://img.shields.io/badge/✅_Courses_Available-20+-brightgreen" alt="Courses">
+  <img src="https://img.shields.io/badge/🎓_Learning_Levels-5-blue" alt="Levels">
+  <img src="https://img.shields.io/badge/📝_Interactive_Quizzes-5-orange" alt="Quizzes">
+  <img src="https://img.shields.io/badge/🚀_Advanced_Content-LLM_+_More-purple" alt="Advanced">
+</p>
+
+</div>
+
+### 🎯 Learning Levels Overview
+
+| Level | Target Audience | Focus Areas | Duration |
+|-------|----------------|-------------|----------|
+| **1️⃣ Foundations** | Beginners, High School | Basic Programming, Math, AI Concepts | 2-4 weeks |
+| **2️⃣ Intermediate** | Students, Enthusiasts | ML/DL Theory, Data Science | 1-2 months |
+| **3️⃣ Specialized** | Practitioners | Domain Expertise, Advanced Topics | 2-3 months |
+| **4️⃣ Advanced** | Researchers, Experts | Architecture, Cutting-edge | 3-6 months |
+| **5️⃣ Assessment** | All Learners | Knowledge Testing, Practice | Ongoing |
+
+<hr>
 
 ### Level 1: Foundations
 - **High School AI** - Age-appropriate AI introduction for younger students
@@ -45,24 +97,78 @@ A comprehensive, accessible AI education platform providing structured course ma
 
 ## 📖 How to Access Courses
 
-🎉 **New: Interactive Homepage!** Visit our modern course catalog at [`docs/index.html`](docs/index.html) for an organized, visual overview of all available courses.
+### 🚀 Quick Start
 
-**Direct Access:** All course materials are provided as HTML files in the `docs/` directory. To view any course:
+<div align="center">
 
-1. Clone this repository: `git clone https://github.com/srinipusuluri/ai-for-all-global-university`
-2. Navigate to the `docs/` folder and open `index.html` in your web browser for the course catalog
-3. Or directly open any HTML course file (e.g., `docs/1-AAIBasics.html`)
-4. All courses are self-contained with embedded resources
+```
+🌐 Browser Access
+├── 🎯 Interactive Homepage → docs/index.html
+└── 📚 Direct Course Access → docs/any-course.html
+
+💻 Local Development
+├── Clone Repository → git clone <repo-url>
+├── Navigate → cd AI_FOR_ALL_Virtual_University
+└── Open Browser → docs/index.html
+
+📱 Mobile Friendly
+└── All courses work on phones and tablets!
+```
+
+</div>
+
+### 🎯 Course Access Methods
+
+**🌐 Direct Browser Access (Recommended):**
+- Visit the [Interactive Course Catalog](docs/index.html) for a beautiful overview
+- Click any course card to start learning immediately
+- All courses are self-contained HTML files
+
+**💻 Local Development:**
+```bash
+git clone https://github.com/srinipusuluri/ai-for-all-global-university
+cd AI_FOR_ALL_Virtual_University
+open docs/index.html  # macOS
+# or
+start docs/index.html  # Windows
+# or
+xdg-open docs/index.html  # Linux
+```
+
+### 📚 Available Course Formats
+
+| Format | Access | Features |
+|--------|--------|----------|
+| **🎨 Visual Interface** | [Homepage](docs/index.html) | Cards, animations, search |
+| **📄 Standalone HTML** | `docs/*.html` | Self-contained, embeddable |
+| **📝 Interactive Quizzes** | `quizs/` | Progressive difficulty |
+
+<hr>
 
 ## 🏗️ Repository Structure
 
+<div align="center">
+
 ```
-AI_FOR_ALL_Virtual_University/
-├── docs/                 # HTML course materials
-├── README.md            # This file
-├── .git/               # Git repository data
-└── .DS_Store           # macOS system file
+📁 AI_FOR_ALL_Virtual_University/
+├── 🏠 docs/                 → HTML course materials & homepage
+│   ├── index.html          → Interactive course catalog
+│   ├── 1-*.html            → Foundation level courses
+│   ├── 2-*.html            → Intermediate courses
+│   ├── 4-*.html            → Specialized topics
+│   └── 5-*.html            → Advanced courses
+├── 🧠 images/              → Welcome images & assets
+├── 📝 quizs/               → Interactive assessments
+│   ├── python/             → Python quizzes
+│   ├── aiadvanced/         → Advanced AI tests
+│   ├── aibasics/           → Foundation quizzes
+│   ├── python-highschool/  → High school level tests
+│   └── genai-interview/    → Interview prep questions
+├── 📖 README.md            → This documentation
+└── ⚙️ .git/                → Version control
 ```
+
+</div>
 
 ## 🎯 Learning Objectives
 
