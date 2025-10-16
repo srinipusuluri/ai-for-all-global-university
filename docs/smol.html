@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SmolAgents — One‑Page Guide (Docs • GitHub • Self‑Learn • Jobs)</title>
+  <meta name="description" content="A vibrant one-page guide to SmolAgents: overview, install, examples, docs, GitHub, tutorials, and jobs mentioning smolagents." />
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+
+  <style>
+    :root{--bg:#0b0b13;--card:#121225;--muted:#8aa0ff;--accent:#7cf6c4;--hot:#ff7ab6;--ink:#e6e6ff;--grad:linear-gradient(135deg,#6f77ff 0%,#7cf6c4 40%,#ffb86b 70%,#ff7ab6 100%);}*{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:radial-gradient(1200px 600px at 80% -10%,rgba(124,246,196,.15),transparent 60%),radial-gradient(1000px 500px at 10% 110%,rgba(111,119,255,.18),transparent 60%),var(--bg);color:var(--ink)}
+    a{color:var(--accent)} a:hover{text-decoration:underline}
+    .container{max-width:1200px;margin:0 auto;padding:28px}
+    .pill{display:inline-flex;gap:.5rem;align-items:center;padding:.4rem .8rem;border-radius:999px;background:rgba(138,160,255,.12);border:1px solid rgba(138,160,255,.35);font-size:.85rem;color:var(--muted)}
+    .btn{display:inline-flex;align-items:center;gap:.6rem;padding:.9rem 1.1rem;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);backdrop-filter:blur(6px);transition:.2s box-shadow,.2s transform}
+    .btn:hover{box-shadow:0 10px 30px rgba(0,0,0,.3),inset 0 0 0 9999px rgba(255,255,255,.02);transform:translateY(-2px)}
+    .btn.primary{background-image:var(--grad);color:#0b0b13;border:none}
+    .grid{display:grid;gap:22px}
+    @media(min-width:900px){.grid.cols-3{grid-template-columns:1.2fr 1fr 1fr}}
+    @media(min-width:900px){.grid.cols-2{grid-template-columns:1.1fr 1fr}}
+    header.hero{position:relative;border-bottom:1px solid rgba(255,255,255,.08)}
+    .hero-wrap{display:grid;gap:26px;align-items:center}
+    @media(min-width:980px){.hero-wrap{grid-template-columns:1.2fr .8fr}}
+    .hero h1{font-family:"Space Grotesk";font-weight:800;font-size:clamp(2rem,5vw,3.6rem);line-height:1.05;margin:10px 0;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero p{font-size:1.08rem;opacity:.9}
+    .hero-card{background:radial-gradient(400px 200px at 100% 0%,rgba(255,122,182,.15),transparent 60%),radial-gradient(300px 150px at 0% 100%,rgba(124,246,196,.12),transparent 60%),var(--card);border:1px solid rgba(255,255,255,.10);border-radius:22px;padding:20px}
+    section{margin:38px 0}
+    h2{font-family:"Space Grotesk";font-weight:700;font-size:1.6rem;margin:0 0 14px}
+    .card{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:18px}
+    .list{display:grid;gap:10px}
+    .list a{display:flex;align-items:center;gap:.7rem;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08)}
+    .code{background:#0c0c19;border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px;overflow:auto}
+    .footer{opacity:.8;border-top:1px dashed rgba(255,255,255,.15);padding-top:16px;margin-top:28px;font-size:.9rem}
+    .theme-toggle{position:fixed;right:18px;top:18px;z-index:50;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);backdrop-filter:blur(6px);border-radius:999px;padding:.6rem .8rem;display:inline-flex;align-items:center;gap:.5rem;cursor:pointer}
+    :root[data-theme="light"]{--bg:#f7f8fb;--card:#ffffff;--muted:#4451b5;--accent:#1a7f64;--hot:#c8246b;--ink:#12121a}
+  </style>
+</head>
+<body>
+  <button id="themeToggle" class="theme-toggle" title="Toggle theme"><i class="fa-regular fa-moon"></i><span style="font-size:.9rem">Theme</span></button>
+  <header class="hero">
+    <div class="container hero-wrap">
+      <div>
+        <span class="pill"><i class="fa-solid fa-feather"></i> Lightweight • Tool‑use • Multi‑agent • Python</span>
+        <h1>SmolAgents — Lightweight Agentic Framework</h1>
+        <p>SmolAgents is a lightweight Python framework for building tool‑using agents and multi‑agent systems with minimal overhead. Ideal for fast prototyping, hackable code, and embedding inside your apps.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px">
+          <a class="btn primary" href="https://www.google.com/search?q=smolagents" target="_blank" rel="noopener"><i class="fa-solid fa-rocket"></i> Explore SmolAgents</a>
+          <a class="btn" href="https://www.google.com/search?q=smolagents+docs" target="_blank" rel="noopener"><i class="fa-regular fa-file-lines"></i> Docs</a>
+          <a class="btn" href="https://www.google.com/search?q=smolagents+GitHub" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div style="font-size:.9rem;color:#b7c0ff">Quick Install</div>
+        <div class="code"><pre><code># Install (Python)
+pip install -U smolagents
+
+# Optional: extras for web, vector DBs, notebooks
+# pip install "smolagents[web,retrieval,notebook]"
+</code></pre></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="grid cols-3">
+      <div class="card">
+        <h2><i class="fa-solid fa-diagram-project"></i> What is SmolAgents?</h2>
+        <p>A minimal agent runtime exposing <em>tools</em> (functions/APIs), planning loops, and optional multi‑agent collaboration. Keep the core tiny, add just what you need.</p>
+        <div class="list">
+          <a href="https://www.google.com/search?q=smolagents+tutorial" target="_blank"><i class="fa-solid fa-person-running"></i><span>Tutorials</span></a>
+          <a href="https://www.google.com/search?q=smolagents+examples" target="_blank"><i class="fa-solid fa-flask"></i><span>Examples & templates</span></a>
+          <a href="https://www.google.com/search?q=smolagents+tools" target="_blank"><i class="fa-solid fa-screwdriver-wrench"></i><span>Tool interface</span></a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2><i class="fa-solid fa-robot"></i> SmolAgents in Agentic AI</h2>
+        <ul>
+          <li><strong>Single‑agent:</strong> prompt → choose tools → act → observe → reflect.</li>
+          <li><strong>Multi‑agent:</strong> small specialists (web, code, retrieval) coordinated via messages.</li>
+          <li><strong>RAG:</strong> call retrievers/vector DBs as tools to ground responses.</li>
+          <li><strong>Interop:</strong> can be orchestrated by n8n/LangFlow or called from LangChain nodes.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2><i class="fa-solid fa-graduation-cap"></i> Learn Path</h2>
+        <ol style="margin-left:1rem">
+          <li>Install & run the minimal single‑agent example.</li>
+          <li>Add one <em>tool</em> (e.g., search or calculator).</li>
+          <li>Introduce memory/RAG and an evaluator tool.</li>
+          <li>Scale to two or three cooperating smol‑agents.</li>
+          <li>Export as an API (FastAPI/Flask) for apps or automations.</li>
+        </ol>
+        <div class="list" style="margin-top:10px">
+          <a href="https://www.google.com/search?q=smolagents+YouTube+tutorial" target="_blank"><i class="fa-brands fa-youtube"></i><span>YouTube tutorials</span></a>
+          <a href="https://www.google.com/search?q=smolagents+best+practices" target="_blank"><i class="fa-regular fa-lightbulb"></i><span>Best practices</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid cols-2">
+      <div class="card">
+        <h2><i class="fa-solid fa-gears"></i> Minimal Agent (Illustrative)</h2>
+        <div class="code"><pre><code>"""
+Illustrative pseudo‑example of a smolagents‑style agent with a tool.
+Check the official docs for up‑to‑date APIs.
+"""
+from typing import Any
+
+# 1) Define a tool (any Python function)
+def web_search(query: str) -> list[str]:
+    return ["result 1", "result 2"]  # replace with real search
+
+# 2) Agent loop (very small sketch)
+def agent(prompt: str) -> str:
+    plan = f"Search for: {prompt}"
+    results = web_search(prompt)
+    answer = f"Based on {len(results)} results, here's a summary..."
+    return answer
+
+print(agent("latest on retrieval-augmented generation"))
+</code></pre></div>
+        <p style="opacity:.85;margin-top:8px">Swap in real tools (HTTP, vector DBs, code exec) and an LLM call for planning/reflecting.</p>
+      </div>
+      <div class="card">
+        <h2><i class="fa-solid fa-shield-halved"></i> Safety & Observability</h2>
+        <ul>
+          <li>Sandbox tool exec; restrict file/network access.</li>
+          <li>Log tool inputs/outputs; keep an audit trail.</li>
+          <li>Use allow/deny lists for tools and domains.</li>
+          <li>Add evaluators (self‑critique or rule checks) per step.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="grid cols-2">
+      <div class="card">
+        <h2><i class="fa-solid fa-link"></i> Handy Links</h2>
+        <div class="list">
+          <a href="https://www.google.com/search?q=smolagents+pip+install" target="_blank"><i class="fa-solid fa-download"></i><span>Install guides</span></a>
+          <a href="https://www.google.com/search?q=smolagents+api+reference" target="_blank"><i class="fa-solid fa-book"></i><span>API reference</span></a>
+          <a href="https://www.google.com/search?q=smolagents+issues" target="_blank"><i class="fa-solid fa-bug"></i><span>Issues / community</span></a>
+        </div>
+      </div>
+      <div class="card">
+        <h2><i class="fa-solid fa-briefcase"></i> Jobs & Opportunities</h2>
+        <div class="list">
+          <a href="https://www.linkedin.com/jobs/search/?keywords=smolagents" target="_blank"><i class="fa-brands fa-linkedin"></i><span>LinkedIn: “smolagents”</span></a>
+          <a href="https://www.indeed.com/jobs?q=smolagents" target="_blank"><i class="fa-solid fa-magnifying-glass"></i><span>Indeed: “smolagents”</span></a>
+          <a href="https://wellfound.com/jobs#%7B%22q%22:%22smolagents%22%7D" target="_blank"><i class="fa-solid fa-seedling"></i><span>Wellfound search</span></a>
+        </div>
+        <p style="opacity:.85;margin-top:8px">Tip: also search for “agentic”, “tool‑using agents”, “multi‑agent”, and “RAG”.</p>
+      </div>
+    </section>
+
+    <p class="footer">Prepared by <a href="https://www.linkedin.com/in/pusulurisrinivasa/" target="_blank" rel="noopener">https://www.linkedin.com/in/pusulurisrinivasa/</a>. Links use Google/LinkedIn searches for freshness. Fonts: Inter + Space Grotesk. Icons: Font Awesome.</p>
+  </main>
+
+  <script>
+    (function(){
+      const root=document.documentElement,key='theme';
+      function apply(t){root.setAttribute('data-theme',t)}
+      const saved=localStorage.getItem(key);
+      if(saved){apply(saved)} else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches){apply('light')}
+      const btn=document.getElementById('themeToggle');
+      btn.addEventListener('click',()=>{
+        const next=(root.getAttribute('data-theme')==='light')?'dark':'light';
+        apply(next);localStorage.setItem(key,next);
+        btn.querySelector('i').className=next==='light'?'fa-regular fa-sun':'fa-regular fa-moon';
+      });
+    })();
+  </script>
+</body>
+</html>
