@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Market Research Analyst — Picker + News + Reports</title>
+<style>
+  :root{
+    --bg:#0b0d14;--bg2:#0f1320;--card:rgba(255,255,255,.06);--text:#e6e6ea;--muted:#9aa3b2;
+    --brand:#6C5CE7;--accent:#00D1FF;--ok:#55efc4;--warn:#FFB341;--bad:#FF6B6B;
+    --border:rgba(255,255,255,.12);--shadow:0 8px 40px rgba(108,92,231,.35);
+  }
+  body{margin:0;background:linear-gradient(180deg,var(--bg),var(--bg2));color:var(--text);font:14px/1.35 system-ui,Segoe UI,Roboto,Helvetica,Arial;}
+  .header{border-bottom:1px solid var(--border);background:linear-gradient(135deg,var(--brand),var(--accent));color:#fff;box-shadow:var(--shadow)}
+  .header-inner{max-width:1100px;margin:0 auto;display:flex;gap:10px;align-items:center;padding:16px 20px;justify-content:space-between}
+  h1{margin:0;font-size:20px;letter-spacing:.2px}
+  .wrap{max-width:1100px;margin:0 auto;padding:20px}
+  .btn{border:0;background:var(--brand);color:#fff;padding:10px 14px;border-radius:12px;font-weight:600;box-shadow:var(--shadow);cursor:pointer}
+  .btn:disabled{opacity:.6;cursor:not-allowed}
+  .ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:16px}
+  .tabs{display:flex;gap:8px;margin:14px 0}
+  .tab{padding:8px 12px;border:1px solid var(--border);border-radius:999px;background:transparent;color:var(--text);cursor:pointer}
+  .tab.active{background:var(--brand);color:#fff;box-shadow:var(--shadow)}
+  table{width:100%;border-collapse:collapse}
+  th,td{padding:10px 8px;border-bottom:1px dashed var(--border);text-align:left;vertical-align:top}
+  th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+  .sig-buy{color:var(--ok);font-weight:700}
+  .sig-watch{color:var(--warn);font-weight:700}
+  .sig-avoid{color:var(--bad);font-weight:700}
+  .muted{color:var(--muted)}
+  a.link{display:inline-block;padding:6px 10px;border:1px solid var(--border);border-radius:10px;text-decoration:none;color:inherit}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid var(--border);padding:6px 10px;border-radius:999px}
+  .chip button{background:transparent;border:0;color:#fff;cursor:pointer}
+  .picker{position:relative;flex:1;min-width:260px}
+  .picker input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text)}
+  .dropdown{position:absolute;top:44px;left:0;right:0;background:var(--bg2);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);max-height:260px;overflow:auto;z-index:10}
+  .item{padding:8px 10px;border-bottom:1px dashed var(--border);cursor:pointer}
+  .item:hover{background:rgba(255,255,255,.06)}
+  .small{font-size:12px}
+  .error{color:var(--bad)}
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-inner">
+      <h1>Market Research Analyst — Stocks + News + Reports</h1>
+      <div class="row" style="align-items:center">
+        <button class="btn ghost" id="sampleBtn">Sample (AAPL,MSFT,NVDA)</button>
+        <button class="btn" id="analyzeBtn">Analyze</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="card">
+      <div class="row" style="align-items:flex-start">
+        <div class="picker">
+          <input id="pickerInput" placeholder="Search stocks (e.g., TSLA, NVDA, OKLO)" autocomplete="off">
+          <div id="pickerList" class="dropdown" style="display:none"></div>
+        </div>
+        <div id="selected" class="chips"></div>
+      </div>
+      <div class="small muted" style="margin-top:8px">
+        Pick stocks using live suggestions. Price data via Yahoo chart API (through AllOrigins). News via Google News RSS + Bing News RSS. Reports via arXiv + Bing PDF search (last 30 days). Research tool only — not investment advice.
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="overview">Overview</button>
+      <button class="tab" data-tab="news">News</button>
+      <button class="tab" data-tab="reports">Reports (PDFs, last 30d)</button>
+      <button class="tab" data-tab="method">Methodology</button>
+    </div>
+
+    <div id="tab-overview" class="card"></div>
+    <div id="tab-news" class="card" style="display:none"></div>
+    <div id="tab-reports" class="card" style="display:none"></div>
+    <div id="tab-method" class="card" style="display:none">
+      <h3>How this analysis is built</h3>
+      <ol>
+        <li><b>Data:</b> 2 years of daily closes via Yahoo’s chart API (JSON; proxied for CORS).</li>
+        <li><b>Features:</b> 1/3/6-month momentum; annualized volatility (σ of log-returns × √252); max drawdown (1y window).</li>
+        <li><b>Trend & targets:</b> Linear regression of last 60 trading days → 30/60/90-day projected prices with target dates.</li>
+        <li><b>Signals:</b> <b>BUY</b> if (price &gt; 50-DMA & 50-DMA &gt; 200-DMA) OR (1m & 3m momentum &gt; 0) and drawdown &gt; −50%;
+            else <b>WATCH</b> (mild negative 1m) or <b>AVOID</b>.</li>
+        <li><b>News:</b> Google News + Bing News RSS per ticker.</li>
+        <li><b>Reports:</b> arXiv (Atom API) and Bing PDF search, filtered to last 30 days.</li>
+      </ol>
+    </div>
+  </div>
+
+<script>
+(() => {
+  // ---------- Utilities ----------
+  const $ = s => document.querySelector(s);
+  const $tab = id => $("#tab-"+id);
+  document.querySelectorAll(".tab").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+      btn.classList.add("active");
+      const id = btn.dataset.tab;
+      ["overview","news","reports","method"].forEach(t=>$tab(t).style.display = (t===id) ? "block":"none");
+    });
+  });
+
+  const mean = a => a.reduce((s,x)=>s+x,0)/a.length;
+  const stdev = a => { const m = mean(a); return Math.sqrt(mean(a.map(x=>(x-m)**2))); };
+  const pct = (a,b) => (a/b - 1);
+  const logret = a => a.slice(1).map((v,i)=>Math.log(v / a[i]));
+  const maxDrawdown = a => { let peak=a[0], minDD=0; for (const p of a){ if(p>peak) peak=p; const dd=p/peak-1; if(dd<minDD) minDD=dd; } return minDD; };
+  function linReg(y){ const n=y.length; if(!n) return {a:0,b:0,r2:0}; const xs=y.map((_,i)=>i), xb=mean(xs), yb=mean(y);
+    let num=0, den=0, sst=0, ssr=0; for(let i=0;i<n;i++){ num+=(xs[i]-xb)*(y[i]-yb); den+=(xs[i]-xb)**2; }
+    const b=den?num/den:0, a=yb-b*xb; for(let i=0;i<n;i++){ const yp=a+b*xs[i]; sst+=(y[i]-yb)**2; ssr+=(y[i]-yp)**2; }
+    const r2=sst?1-ssr/sst:0; return {a,b,r2}; }
+  const pctFmt = x => (Number.isFinite(x) ? (x*100).toFixed(2)+"%" : "—");
+  const fmtDate = d => d.toISOString().slice(0,10);
+  const daysAgo = n => new Date(Date.now() - n*86400000);
+
+  // ---------- Selection model ----------
+  const selected = new Map(); // symbol -> {symbol, name, exch}
+  const selectedDiv = $("#selected");
+  function renderSelected(){
+    selectedDiv.innerHTML = "";
+    for (const [sym, info] of selected){
+      const chip = document.createElement("div");
+      chip.className = "chip";
+      chip.innerHTML = `<b>${sym}</b><span class="muted small">${info.name || ""} ${info.exch?(" · "+info.exch):""}</span> <button title="Remove">✖</button>`;
+      chip.querySelector("button").onclick = () => { selected.delete(sym); renderSelected(); };
+      selectedDiv.appendChild(chip);
+    }
+  }
+  // Seed defaults
+  ["TMC","OKLO","UAMY","TMRC","TMQ","NB","LEU","MP"].forEach(s=>selected.set(s,{symbol:s,name:"",exch:""}));
+  renderSelected();
+
+  // ---------- Picker (Yahoo query2 search) ----------
+  const pickerInput = $("#pickerInput");
+  const pickerList = $("#pickerList");
+  let lastQuery = "", debounceTimer = null;
+  const viaAllOrigins = url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+
+  async function searchYahoo(q){
+    const url = `https://query2.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(q)}&quotesCount=10&newsCount=0`;
+    const r = await fetch(viaAllOrigins(url));
+    if (!r.ok) throw new Error("HTTP "+r.status);
+    const j = await r.json();
+    const out = (j.quotes||[])
+      .filter(x => x.symbol && !x.symbol.includes("=") && !x.symbol.includes("^"))
+      .map(x => ({ symbol:x.symbol, name:x.shortname||x.longname||"", exch:x.exchange||x.exchDisp||x.quoteType||"" }));
+    return out;
+  }
+  function openDropdown(items){
+    if (!items.length){ pickerList.style.display="none"; return; }
+    pickerList.innerHTML = items.map(it => `<div class="item" data-sym="${it.symbol}"><b>${it.symbol}</b> — ${it.name||"—"} <span class="muted small">(${it.exch})</span></div>`).join("");
+    pickerList.style.display = "block";
+    [...pickerList.querySelectorAll(".item")].forEach(div => {
+      div.onclick = () => {
+        const sym = div.getAttribute("data-sym");
+        const it = items.find(x => x.symbol===sym);
+        selected.set(it.symbol, it);
+        renderSelected();
+        pickerList.style.display="none";
+        pickerInput.value = "";
+      };
+    });
+  }
+  pickerInput.addEventListener("input", () => {
+    const q = pickerInput.value.trim();
+    if (q === lastQuery){ return; }
+    lastQuery = q;
+    if (debounceTimer) clearTimeout(debounceTimer);
+    if (!q){ pickerList.style.display="none"; return; }
+    debounceTimer = setTimeout(async () => {
+      try{
+        const items = await searchYahoo(q);
+        openDropdown(items);
+      }catch(e){
+        pickerList.innerHTML = `<div class="item error">Search error: ${e.message}</div>`;
+        pickerList.style.display = "block";
+      }
+    }, 250);
+  });
+  document.addEventListener("click", (e)=>{
+    if (!pickerList.contains(e.target) && e.target !== pickerInput){
+      pickerList.style.display="none";
+    }
+  });
+
+  // ---------- Data fetch helpers ----------
+  async function fetchJSON(url){
+    const r = await fetch(viaAllOrigins(url));
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    return r.json();
+  }
+  async function fetchText(url){
+    const r = await fetch(viaAllOrigins(url));
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    return r.text();
+  }
+  function parseXML(text){ return new window.DOMParser().parseFromString(text, "text/xml"); }
+
+  // ---------- Prices (Yahoo) ----------
+  async function fetchPrices(ticker){
+    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?range=2y&interval=1d&includePrePost=false`;
+    const js = await fetchJSON(url);
+    const res = js && js.chart && js.chart.result && js.chart.result[0];
+    if (!res) throw new Error("No data");
+    const closes = (res.indicators.quote[0].close)||[];
+    const ts = res.timestamp || [];
+    const arr = [];
+    for (let i=0;i<closes.length;i++){
+      if (closes[i]!=null && ts[i]!=null){ arr.push({t:new Date(ts[i]*1000), c:closes[i]}); }
+    }
+    if (arr.length < 60) throw new Error("Insufficient data");
+    return arr;
+  }
+
+  function computeMetrics(points){
+    const c = points.map(p=>p.c), last = c.at(-1);
+    const idx = c.length-1;
+    const m1 = idx>21 ? pct(last, c[idx-21]) : NaN;
+    const m3 = idx>63 ? pct(last, c[idx-63]) : NaN;
+    const m6 = idx>126 ? pct(last, c[idx-126]) : NaN;
+    const lrWin = c.slice(-60);
+    const {a,b,r2} = linReg(lrWin);
+    const proj = [30,60,90].map(d => ({d, price: a + b*(lrWin.length + d), date: fmtDate(new Date(Date.now()+d*86400000))}));
+    const vol = stdev(logret(c)) * Math.sqrt(252);
+    const dd = maxDrawdown(c.slice(-252));
+    const sma = n => c.length>=n ? mean(c.slice(-n)) : NaN;
+    const s50=sma(50), s200=sma(200);
+    const bullish = (!isNaN(s50)&&!isNaN(s200)&&last>s50&&s50>s200) || (m3>0 && m1>0);
+    let signal="AVOID"; if (bullish && dd>-0.5) signal="BUY"; else if (m1>-0.05) signal="WATCH";
+    return { last, m1,m3,m6, vol, dd, proj, signal, r2 };
+  }
+
+  // ---------- News (Google + Bing RSS) ----------
+  async function fetchGoogleNews(ticker){
+    const q = encodeURIComponent(`${ticker} stock OR ${ticker} company`);
+    const url = `https://news.google.com/rss/search?q=${q}`;
+    const xml = parseXML(await fetchText(url));
+    const items = [...xml.querySelectorAll("item")].slice(0,8).map(n => ({
+      title: n.querySelector("title")?.textContent||"",
+      link: n.querySelector("link")?.textContent||"",
+      pubDate: n.querySelector("pubDate")?.textContent||""
+    }));
+    return items;
+  }
+  async function fetchBingNews(ticker){
+    const q = encodeURIComponent(`${ticker} stock`);
+    const url = `https://www.bing.com/news/search?q=${q}&format=rss`;
+    const xml = parseXML(await fetchText(url));
+    const items = [...xml.querySelectorAll("item")].slice(0,8).map(n => ({
+      title: n.querySelector("title")?.textContent||"",
+      link: n.querySelector("link")?.textContent||"",
+      pubDate: n.querySelector("pubDate")?.textContent||""
+    }));
+    return items;
+  }
+
+  // ---------- Reports (arXiv + Bing PDF), last 30 days ----------
+  function inLast30Days(dateStr){
+    const d = new Date(dateStr);
+    return !isNaN(d) && d >= daysAgo(30);
+  }
+  async function fetchArxiv(ticker){
+    const q = encodeURIComponent(`all:${ticker}`);
+    const url = `http://export.arxiv.org/api/query?search_query=${q}&sortBy=submittedDate&sortOrder=descending&max_results=20`;
+    const text = await fetchText(url);
+    const xml = parseXML(text);
+    const entries = [...xml.querySelectorAll("entry")].map(e => {
+      const title = e.querySelector("title")?.textContent?.trim()||"";
+      const published = e.querySelector("published")?.textContent||"";
+      let link = "";
+      const links = [...e.querySelectorAll("link")];
+      const pdf = links.find(l => l.getAttribute("title")==="pdf" || (l.getAttribute("href")||"").endsWith(".pdf"));
+      link = (pdf && pdf.getAttribute("href")) || e.querySelector("id")?.textContent || "";
+      return {title, link, date: published};
+    }).filter(x => x.date && inLast30Days(x.date));
+    return entries.slice(0,5);
+  }
+  async function fetchPDFsViaBing(ticker){
+    const q = encodeURIComponent(`${ticker} (report OR research) filetype:pdf`);
+    const url = `https://www.bing.com/search?q=${q}&format=rss`;
+    const xml = parseXML(await fetchText(url));
+    const items = [...xml.querySelectorAll("item")].map(n => ({
+      title: n.querySelector("title")?.textContent||"",
+      link: n.querySelector("link")?.textContent||"",
+      pubDate: n.querySelector("pubDate")?.textContent||""
+    })).filter(x => x.link && /\.pdf(\?|$)/i.test(x.link))
+      .filter(x => !x.pubDate || inLast30Days(x.pubDate))
+      .slice(0,5);
+    return items;
+  }
+
+  function sigClass(s){ return s==="BUY" ? "sig-buy" : (s==="WATCH" ? "sig-watch" : "sig-avoid"); }
+
+  // ---------- Renderers ----------
+  function renderOverview(rows){
+    const el = $tab("overview");
+    if (!rows.length){ el.innerHTML="<div class='muted'>No data.</div>"; return; }
+    const html = `
+      <h3>Topline</h3>
+      <div class="muted small" style="margin-bottom:10px">${new Date().toLocaleString()}</div>
+      <div style="overflow:auto">
+      <table>
+        <thead><tr>
+          <th>Ticker</th><th>Last</th><th>1m</th><th>3m</th><th>6m</th>
+          <th>Vol (ann)</th><th>Drawdown</th><th>Signal</th><th>Projections (30/60/90d)</th><th>Status</th>
+        </tr></thead>
+        <tbody>
+          ${rows.map(r=> r.metrics ? `
+            <tr>
+              <td><b>${r.ticker}</b></td>
+              <td>$${r.metrics.last.toFixed(2)}</td>
+              <td>${pctFmt(r.metrics.m1)}</td>
+              <td>${pctFmt(r.metrics.m3)}</td>
+              <td>${pctFmt(r.metrics.m6)}</td>
+              <td>${pctFmt(r.metrics.vol)}</td>
+              <td>${pctFmt(r.metrics.dd)}</td>
+              <td class="${sigClass(r.metrics.signal)}">${r.metrics.signal}</td>
+              <td class="small">
+                ${r.metrics.proj.map(p=>`${p.d}d → $${p.price.toFixed(2)} on ${p.date}`).join("<br/>")}
+              </td>
+              <td class="muted">OK</td>
+            </tr>` : `
+            <tr>
+              <td><b>${r.ticker}</b></td><td colspan="8">—</td>
+              <td class="error">${r.error||"Failed"}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+      </div>`;
+    el.innerHTML = html;
+  }
+
+  function renderNews(tickerNews){
+    const el = $tab("news");
+    let html = `<h3>News (Google News + Bing News)</h3>`;
+    if (!tickerNews.length){ html += "<div class='muted'>No tickers.</div>"; el.innerHTML = html; return; }
+    for (const item of tickerNews){
+      html += `<div style="margin:10px 0"><b>${item.ticker}</b>`;
+      html += `<div class="chips" style="margin-top:6px">
+                 <a class="link" target="_blank" href="https://finance.yahoo.com/quote/${encodeURIComponent(item.ticker)}/news">Yahoo Finance News</a>
+                 <a class="link" target="_blank" href="https://news.google.com/search?q=${encodeURIComponent(item.ticker)}">Google News</a>
+               </div>`;
+      const list = [...(item.google||[]), ...(item.bing||[])].slice(0,10);
+      if (!list.length) html += `<div class="muted small">No recent headlines.</div>`;
+      else {
+        html += "<ul>";
+        for (const n of list){
+          const when = n.pubDate ? new Date(n.pubDate).toLocaleDateString() : "";
+          html += `<li><a target="_blank" href="${n.link}">${n.title}</a> <span class="muted small">${when}</span></li>`;
+        }
+        html += "</ul>";
+      }
+      html += `</div>`;
+    }
+    el.innerHTML = html;
+  }
+
+  function renderReports(tickerReports){
+    const el = $tab("reports");
+    let html = `<h3>Reports (PDFs) — last 30 days</h3>`;
+    if (!tickerReports.length){ html += "<div class='muted'>No tickers.</div>"; el.innerHTML = html; return; }
+    for (const item of tickerReports){
+      html += `<div style="margin:10px 0"><b>${item.ticker}</b>`;
+      const entries = [...(item.arxiv||[]), ...(item.pdfs||[])];
+      if (!entries.length) html += `<div class="muted small">No PDFs found in last 30 days.</div>`;
+      else {
+        html += "<ul>";
+        for (const e of entries){
+          const when = e.date ? new Date(e.date).toLocaleDateString() : "";
+          html += `<li><a target="_blank" href="${e.link}">${e.title || e.link}</a> <span class="muted small">${when}</span></li>`;
+        }
+        html += "</ul>";
+      }
+      html += `</div>`;
+    }
+    el.innerHTML = html;
+  }
+
+  // ---------- Orchestrator ----------
+  async function analyze(){
+    const btn = $("#analyzeBtn"); btn.disabled = true; btn.textContent = "Analyzing…";
+    try{
+      const tickers = Array.from(selected.keys());
+      if (!tickers.length){ alert("Pick at least one symbol from the search box."); btn.disabled=false; btn.textContent="Analyze"; return; }
+      // Prices
+      const rows = [];
+      for (const t of tickers){
+        try {
+          const pts = await fetchPrices(t);
+          rows.push({ticker: t, metrics: computeMetrics(pts)});
+        } catch (e) {
+          console.error("Price error", t, e);
+          rows.push({ticker: t, error: String(e.message||e)});
+        }
+      }
+      renderOverview(rows);
+
+      // News (parallel)
+      const newsResults = [];
+      for (const t of tickers){
+        const [g,b] = await Promise.allSettled([fetchGoogleNews(t), fetchBingNews(t)]);
+        newsResults.push({
+          ticker: t,
+          google: g.status==="fulfilled" ? g.value : [],
+          bing: b.status==="fulfilled" ? b.value : []
+        });
+      }
+      renderNews(newsResults);
+
+      // Reports (parallel)
+      const repResults = [];
+      for (const t of tickers){
+        const [ax,pdfs] = await Promise.allSettled([fetchArxiv(t), fetchPDFsViaBing(t)]);
+        repResults.push({
+          ticker: t,
+          arxiv: ax.status==="fulfilled" ? ax.value : [],
+          pdfs: pdfs.status==="fulfilled" ? pdfs.value : []
+        });
+      }
+      renderReports(repResults);
+    } finally {
+      btn.disabled = false; btn.textContent = "Analyze";
+    }
+  }
+
+  $("#analyzeBtn").addEventListener("click", analyze);
+  $("#sampleBtn").addEventListener("click", ()=>{
+    selected.clear();
+    ["AAPL","MSFT","NVDA"].forEach(s=>selected.set(s,{symbol:s,name:"",exch:""}));
+    renderSelected();
+  });
+
+  // initial run
+  analyze();
+})();
+</script>
+</body>
+</html>
